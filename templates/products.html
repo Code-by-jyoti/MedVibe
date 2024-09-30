@@ -1,0 +1,152 @@
+<!-- templates/products.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/product.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Left Sidebar (Filters) -->
+        <div class="sidebar">
+            <div class="filter-header">
+                <h3>Filter by</h3>
+                <a href="{{ url_for('products') }}" class="clear-filters">Clear Filters</a>
+            </div>  
+            <form method="get" action="{{ url_for('products') }}">
+                <!-- Categories -->
+                <div class="filter-container">
+                    <h4>Category</h4>
+                    <div class="filter-scroll">
+                        {% for category in categories %}
+                            <div class="filter-option">
+                                <input type="radio" name="product_category" value="{{ category.id }}" id="category-{{ category.id }}">
+                                <label for="category-{{ category.id }}">{{ category.name }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                
+                <!-- Subcategories -->
+                <div class="filter-container" id="subcategoryContainer" style="display: none;">
+                    <h4>Subcategory</h4>
+                    <div class="filter-scroll">
+                        {% for subcategory in subcategories %}
+                            <div class="filter-option" data-category="{{ subcategory.category_id }}" style="display: none;">
+                                <input type="radio" name="subcategory" value="{{ subcategory.id }}" id="subcategory-{{ subcategory.id }}">
+                                <label for="subcategory-{{ subcategory.id }}">{{ subcategory.name }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Brands -->
+                <div class="filter-container" id="brandContainer" style="display: none;">
+                    <h4>Brand</h4>
+                    <div class="filter-scroll">
+                        {% for brand in brands %}
+                            <div class="filter-option" data-subcategory="{{ brand.subcategory_id }}" style="display: none;">
+                                <input type="radio" name="brand" value="{{ brand.id }}" id="brand-{{ brand.id }}">
+                                <label for="brand-{{ brand.id }}">{{ brand.name }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Price Range -->
+                <div class="filter-container">
+                    <h4>Price</h4>
+                    <div class="filter-scroll">
+                        <div class="filter-option">
+                            <input type="radio" name="price" value="100-1000" {% if request.args.get('price') == '100-1000' %}checked{% endif %}>
+                            <label>100 - 1000</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" name="price" value="1000-3000" {% if request.args.get('price') == '1000-3000' %}checked{% endif %}>
+                            <label>1000 - 3000</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clear Button -->
+                <div class="clear-filter">
+                    <button type="submit">Filter</button> 
+                </div>
+            </form>
+        </div>
+
+        <!-- Right Content (Products) -->
+        <div class="products">
+            <h3>Products</h3>
+            <div class="product-grid">
+                {% for product in products.items %}  <!-- Change here to access paginated items -->
+                <div class="product-card">
+                    <a href="{{ url_for('product_detail', product_id=product.id) }}" class="product-card">
+                        <img src="{{ url_for('static', filename='PC_product_images/' + product.image_filename) }}" alt="{{ product.name }}">
+                        <h4>{{ product.name }}</h4>
+                        <p><strong>MRP:</strong> ₹{{ "%.2f"|format(product.mrp * (1 - ((product.discount or 0) / 100))) }}</p>
+                        
+                        {% if product.discount %}
+                            <p>
+                                <strong>₹{{ product.discounted_price }}</strong> 
+                                <span style="text-decoration: line-through;">(₹{{ product.mrp }})</span>
+                                <span style="color: green;"> {{ product.discount }}% off</span>
+                            </p>
+                        {% else %}
+                            <p>
+                                <strong>₹{{ product.mrp }}</strong>
+                            </p>
+                        {% endif %}
+                    </a>
+                    
+                    <div class="button-container">
+                        <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="POST" class="quantity-form" onsubmit="updateCart(this); return false;">
+                            <div class="quantity-selector" style="display: none;">
+                                <button type="button" class="decrease" onclick="changeQuantity(this, -1)">-</button>
+                                <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" class="quantity-input" readonly>
+                                <button type="button" class="increase" onclick="changeQuantity(this, 1)">+</button>
+                            </div>
+                            <button type="button" class="add-button" onclick="toggleQuantitySelector(this)">Add</button>
+                        </form>
+                        
+                    </div>                       
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Pagination Controls -->
+            <div class="pagination">
+                {% if products.has_prev %}
+                    <a href="{{ url_for('products', page=products.prev_num) }}">&laquo; Previous</a>
+                {% endif %}
+            
+                {% for page_num in range(1, products.pages + 1) %}
+                    {% if page_num == products.page %}
+                        <span class="current-page">{{ page_num }}</span>
+                    {% else %}
+                        <a href="{{ url_for('products', page=page_num) }}">{{ page_num }}</a>
+                    {% endif %}
+                {% endfor %}
+            
+                {% if products.has_next %}
+                    <a href="{{ url_for('products', page=products.next_num) }}">Next &raquo;</a>
+                {% endif %}
+            </div>
+
+            <!-- View Cart Button with notification -->
+            <div class="notification-container" style="display: none;">
+                <p id="notification">Added 1 product to cart.</p>
+                <button id="view-cart-button">View Cart</button>
+            </div>
+            
+        </div>        
+    </div>
+    <script src="{{ url_for('static', filename='js/add.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/scripts1.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/product.js') }}"></script>
+    
+</body>
+</html>

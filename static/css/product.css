@@ -1,0 +1,493 @@
+/* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+.container {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 25%;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-height: 1100px; /* Set a fixed height */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+
+.filter-container {
+    margin-bottom: 20px;
+}
+
+.filter-scroll {
+    max-height: 200px; /* Set the max height for scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 15px; /* More padding for better spacing */
+    border-radius: 10px; /* Rounded corners */
+    background-color: #ffffff; /* White background for visibility */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    position: relative; /* Needed for custom scrollbar */
+}
+
+/* Custom Scrollbar */
+.filter-scroll::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+.filter-scroll::-webkit-scrollbar-track {
+    background: #f0f4f8; /* Track color */
+    border-radius: 10px; /* Rounded track */
+}
+
+.filter-scroll::-webkit-scrollbar-thumb {
+    background: #007bff; /* Scrollbar color */
+    border-radius: 10px; /* Rounded scrollbar */
+}
+
+.filter-scroll::-webkit-scrollbar-thumb:hover {
+    background: #0056b3; /* Darker on hover */
+}
+
+/* Add transition for smooth scrollbar effect */
+.filter-scroll {
+    transition: box-shadow 0.3s ease;
+}
+
+.filter-scroll:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow on hover for depth */
+}
+
+.filter-option {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s;
+}
+
+.filter-option:last-child {
+    border-bottom: none; /* Remove border from the last option */
+}
+
+.filter-option:hover {
+    background-color: #e7f1ff; /* Change background on hover */
+}
+
+.filter-option input[type="radio"] {
+    margin-right: 10px;
+}
+
+/* Header for each filter category */
+h4 {
+    margin: 0;
+    padding: 10px 15px;
+    color: #333;
+    font-size: 1.1em;
+    border-bottom: 2px solid #007bff;
+    background-color: #f0f8ff; /* Light background */
+    border-radius: 5px; /* Rounded corners */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h4:hover {
+    background-color: #e0f7fa; /* Slightly darker on hover */
+    color: #007bff; /* Change text color */
+}
+
+
+/* Filter Header */
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px; /* Space below the filter header */
+}
+
+.clear-filters {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.clear-filters:hover {
+    color: #0056b3;
+}
+
+
+.clear-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.clear-filter button {
+    padding: 10px 15px;
+    background-color: #1a504c;
+    width: 400px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.clear-filter button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.products {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.product-card {
+    background-color: #ffffff; /* White background */
+    border: 1px solid #e0e0e0; /* Light grey border */
+    border-radius: 10px; /* Rounded corners */
+    padding: 10px; /* Inner spacing */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    text-align: center; /* Center text */
+    transition: transform 0.2s; /* Smooth hover effect */
+    
+}
+.product-card a {
+    display: block; /* Makes the entire card clickable */
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Maintain text color */
+}
+
+.product-card:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+.product-card img {
+    width: 50%; /* Responsive image */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Rounded image */
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px; /* Add space above */
+}
+
+.add-button {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 15px; /* Inner spacing */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s; /* Smooth color transition */
+}
+
+.add-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.quantity-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px; /* Space between buttons */
+}
+
+.btn-decrease, .btn-increase {
+    background-color: #007bff; /* Primary color */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 15px; /* Inner spacing */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+}
+
+.btn-decrease:hover, .btn-increase:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.quantity {
+    margin: 0 10px; /* Space between buttons and quantity text */
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Bold text */
+    color: #333; /* Dark text color */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .btn-decrease, .btn-increase {
+        font-size: 14px; /* Smaller text on small screens */
+        padding: 8px 10px; /* Adjust padding */
+    }
+
+    .quantity {
+        font-size: 14px; /* Smaller quantity text */
+    }
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.pagination a {
+    text-decoration: none;
+    color: #1a504c;
+    padding: 8px 12px;
+    border: 1px solid #007BFF;
+    margin: 0 5px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination a:hover {
+    background-color: #007BFF;
+    color: #ffffff;
+}
+
+.pagination .current-page {
+    padding: 8px 12px;
+    margin: 0 5px;
+    border: 1px solid #007BFF;
+    border-radius: 4px;
+    background-color: #007BFF;
+    color: #ffffff;
+}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .pagination a {
+        padding: 6px 10px; /* Slightly reduce padding for smaller screens */
+        font-size: 14px; /* Smaller font size for better fit */
+    }
+
+    .pagination .current-page {
+        padding: 6px 10px; /* Same padding for current page */
+    }
+}
+
+@media (max-width: 480px) {
+    .pagination {
+        flex-direction: column; /* Stack pagination items on very small screens */
+        align-items: flex-start; /* Align items to the start */
+    }
+
+    .pagination a {
+        margin: 5px 0; /* Vertical margin for stacked items */
+        width: 100%; /* Full width for each pagination item */
+        text-align: center; /* Center text on small buttons */
+    }
+
+    .pagination .current-page {
+        width: 100%; /* Full width for current page indicator */
+        text-align: center; /* Center text on small buttons */
+    }
+}
+
+/* Notification container */
+.notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(40, 167, 69, 0.9); /* Semi-transparent green background */
+    color: #fff; /* White text */
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Floating shadow effect */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Show the notification with opacity and slide-in effect */
+.notification-container.show {
+    opacity: 1;
+    transform: translateX(0); /* Slide in from right */
+}
+
+/* Notification text */
+#notification {
+    font-size: 16px;
+    margin-right: 15px;
+    flex-grow: 1;
+}
+
+/* "View Cart" button in the notification */
+.notification-container button {
+    background-color: #fff;
+    color: #28a745; /* Green text */
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Button hover effect */
+.notification-container button:hover {
+    background-color: #28a745; /* Green background */
+    color: #fff; /* White text */
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .notification-container {
+        bottom: 10px;
+        right: 10px;
+        padding: 10px 15px;
+    }
+
+    #notification {
+        font-size: 14px;
+    }
+
+    .notification-container button {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+}
+
+/* Container for the quantity selector */
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.quantity-selector button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.quantity-selector button:hover {
+    background-color: #45a049; /* Darker green */
+}
+
+.quantity-selector .decrease,
+.quantity-selector .increase {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.quantity-selector .quantity-input {
+    width: 60px;
+    text-align: center;
+    border: 1px solid #ccc;
+    margin: 0 10px;
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+
+/* Submit button centered */
+.submit-button {
+    background-color: #ff5722; /* Orange */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.submit-button:hover {
+    background-color: #e64a19; /* Darker orange */
+}
+/* Discount Badge */
+.discount-badge1 {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    background-color: #1a504c;
+    color: white;
+    font-size: 0.9em;
+    padding: 10px 15px;
+    border-radius: 50px;
+    font-weight: bold;
+    z-index: 10;
+    animation: badgePop 0.5s ease-in-out;
+}
+
+@keyframes badgePop {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        flex: 0 0 250px; /* Keep a smaller width for the sidebar */
+    }
+
+    .products {
+        flex-basis: calc(100% - 250px); /* Make product section occupy remaining space */
+        min-width: 200px; /* Set a minimum width to avoid getting too small */
+    }
+
+    .product-item {
+        flex: 0 0 100%; /* One product per row on small screens */
+    }
+}
+
+/* Large Screen Adjustments */
+@media (min-width: 769px) {
+    .sidebar {
+        flex: 0 0 300px; /* Sidebar fixed width on large screens */
+    }
+
+    .products {
+        flex-basis: calc(100% - 300px); /* Adjust product section based on sidebar width */
+    }
+
+    .product-item {
+        flex: 0 0 45%; /* Two products per row on larger screens */
+    }
+}
+

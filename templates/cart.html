@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Your Shopping Cart</h1>
+        {% if products %}
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Image</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product.name }}</td>
+                            <td>
+                                <a href="{{ url_for('product_detail', product_id=product.id) }}">
+                                    <img src="{{ url_for('static', filename='PC_product_images/' + product.image_filename) }}" alt="{{ product.name }}" class="product-image">
+                                </a>
+                            </td>
+                            <td>
+                                <div class="quantity-controls">
+                                    <button onclick="updateQuantity('{{ product.id }}', -1, {{ product.stock }}, {{ product.mrp * (1 - ((product.discount or 0) / 100)) }})">-</button>
+                                    <input type="number" id="quantity-{{ product.id }}" value="{{ cart_items.get(product.id|string, 0) }}" min="1" readonly>
+                                    <button onclick="updateQuantity('{{ product.id }}', 1, {{ product.stock }}, {{ product.mrp * (1 - ((product.discount or 0) / 100)) }})">+</button>
+                                </div>
+                            </td>
+                            <td>₹{{ "%.2f"|format(product.mrp * (1 - ((product.discount or 0) / 100))) }}</td>
+                            <td id="total-{{ product.id }}" class="product-total">
+                                ₹{{ "%.2f"|format(cart_items.get(product.id|string, 0) * (product.mrp * (1 - ((product.discount or 0) / 100)))) }}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('remove_from_cart', product_id=product.id) }}" class="remove-button"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="4">Total Amount</td>
+                        <td id="cart-total">₹{{ "%.2f"|format(total_price) }}</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        {% else %}
+        <div class="empty-cart">
+            <i class="fas fa-shopping-cart empty-icon"></i>
+            <p>Your cart is empty.</p>
+            
+        </div>
+        {% endif %}
+    
+      
+        <!-- Buttons container -->
+        <div class="cart-buttons {% if products %}with-products{% else %}without-products{% endif %}">
+          <a href="{{ url_for('Home') }}" class="continue-shopping">Continue Shopping</a>
+          {% if products %}
+           <a href="{{ url_for('checkout') }}" class="proceed-button">Proceed</a>
+          {% endif %}
+        </div>
+
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+</body>
+</html>

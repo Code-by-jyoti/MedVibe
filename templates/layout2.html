@@ -1,0 +1,96 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedVibe Navigation Bar</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/slider.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/items.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/testimonals.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/faq_home.css') }}">
+    
+</head>
+<body>
+    <nav class="header">
+        <div class="header-left">
+            <img src="static/images/logo.png" class="icon logo">
+        </div>
+        <div class="header-icons">
+            {% if session.get('email') %}
+                <!-- Show profile icon if user is logged in -->
+                <a href="{{ url_for('profile') }}" class="icon">
+                    <img src="{{ url_for('static', filename='images/login.png') }}" alt="Profile">
+                    <span class="icon-text">My Profile</span>
+                </a>
+            {% else %}
+                <!-- Show login icon if user is not logged in -->
+                <a href="{{ url_for('login') }}" class="icon">
+                    <img src="{{ url_for('static', filename='images/login.png') }}" alt="Login">
+                    <span class="icon-text">Login</span>
+                </a>
+            {% endif %}
+            <a href="{{ url_for('cart') }}" class="icon">
+                <img src="{{ url_for('static', filename='images/cart.png') }}" alt="Cart">
+                <span class="icon-text">Cart</span>
+            </a>
+        </div>
+    </nav>
+    {% block body%}
+
+    {% endblock %}
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-row">
+                <div class="footer-column">
+                    <h3>MedVibe</h3><br>
+                    <p>Your trusted source for medical information and health advice.</p>
+                </div>
+    
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="/aboutAs">About Us</a></li>
+                        <li><a href="/services">Services</a></li>
+                        <li><a href="/main">Blog</a></li>
+                        <li><a href="/contact">Contact Us</a></li>
+                        <li><a href="/FAQ">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column"></div>
+                  <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Returns & Cancellations</a></li>
+                    </ul>
+                </div>
+    
+                
+                <div class="footer-column">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="footer-bottom">
+                <p>&copy; 2024 MedVibe. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    
+   
+</body>
+</html>

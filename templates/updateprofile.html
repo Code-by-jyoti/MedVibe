@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+                 <h1>RE type Informaton</h1>
+        <p><strong>Email:</strong> 
+            <input type="email" name="email" value="{{ user.email }}" required>
+        </p>
+        <p><strong>Phone:</strong> 
+            <input type="text" name="phone" value="{{ user.phone }}">
+        </p>
+        <p><strong>Address:</strong> 
+            <input type="text" name="address" value="{{ user.address }}">
+        </p>
+        <p><strong>State:</strong> 
+            <input type="text" name="state" value="{{ user.state }}">
+        </p>
+        <p><strong>City:</strong> 
+            <input type="text" name="city" value="{{ user.city }}">
+        </p>
+        <button type="submit">Update Details</button>
+    </form>
+    
+</body>
+</html>

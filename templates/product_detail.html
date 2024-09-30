@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} - Product Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pro_detail.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/related_images1.css') }}">
+  
+</head>
+<body>
+    <div class="container">
+        <div class="product-detail">
+            <!-- Vertical Slider for Related Images -->
+            <div class="related-images-slider">
+                
+                <img src="{{ url_for('static', filename='PC_product_images/' + product.image_filename) }}" 
+                  alt="{{ product.name }}" 
+                 data-image="{{ url_for('static', filename='PC_product_images/' + product.image_filename) }}"
+                 onclick="changeMainImage(this)" 
+                 style="border: 1px solid #ddd; margin: 10px 0;">
+                
+                <!-- Loop to display related images dynamically from the database -->
+                {% for related_image in related_images %}
+                    <img src="{{ url_for('static', filename='related_images/' + related_image.image_filename) }}" 
+                         alt="{{ related_image.name }}" 
+                         data-image="{{ url_for('static', filename='related_images/' + related_image.image_filename) }}"
+                         onclick="changeMainImage(this)">
+                {% endfor %}
+            </div>
+
+            <!-- Product Image Wrapper -->
+            <div class="image-wrapper">
+                <!-- Main Product Image -->
+                <img id="mainProductImage" class="product-image zoom" src="{{ url_for('static', filename='PC_product_images/' + product.image_filename) }}" alt="{{ product.name }}">
+            </div>
+
+            <!-- Zoomed Image View -->
+            <div class="zoomed-view"></div>
+
+            <!-- Product Information -->
+            <div class="product-info">
+                <h1>{{ product.name }}</h1>
+                <p><strong>Description:</strong> {{ product.description }}</p>
+                <p><strong>MRP:</strong> ₹{{ product.mrp }}</p>
+                
+                {% if product.discount %}
+                    <p><strong>Discounted Price:</strong> ₹{{ "%.2f"|format(product.mrp * (1 - product.discount / 100)) }}</p>
+                    
+                {% else %}
+                    <p><strong>Price:</strong> ₹{{ product.mrp }}</p>
+                {% endif %}
+            </div>
+            
+
+            <div class="price-quantity-container">
+                <p><strong>MRP:</strong> ₹{{ "%.2f"|format(product.mrp * (1 - ((product.discount or 0) / 100))) }}</p><br>
+            
+                {% if product.discount %}
+                  <div class="discount-badge">-{{ product.discount }}% OFF</div>
+                {% endif %}
+                <label for="quantity">Select Quantity:</label>
+                <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="POST" class="quantity-form">
+                    <select name="quantity" id="quantity" class="quantity-dropdown" onchange="updateTotal()">
+                        {% for quantity in available_quantities %}
+                            <option value="{{ quantity }}" {% if quantity == added_quantity %}selected{% endif %}>
+                                {{ quantity }}{% if quantity > 1 %}{% endif %}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <p id="total-price" style="font-weight: bold;">Total: ₹<span>{{ "%.2f"|format(product.mrp * (1 - ((product.discount or 0) / 100))) }}</span></p>
+                    
+                    <button type="submit" class="add-button">Add to Cart</button>
+                </form><br>
+            
+               
+                <div class="back-to-products">
+                    <a href="{{ url_for('products') }}">Back to Products</a>
+                </div>
+            </div>
+
+            
+            <script>
+                document.getElementById('quantity').addEventListener('change', function() {
+                    const quantity = this.value;
+            
+                    // Directly pass the value without formatting issues
+                    const price = {{ product.mrp * (1 - ((product.discount or 0) / 100)) | round(2) }};  // Rounded to 2 decimal places
+            
+                    const total = (price * quantity).toFixed(2); // Calculate total price
+                    document.getElementById('total-price').querySelector('span').innerText = total; // Update the displayed total
+                });
+            </script>
+            
+            
+            
+        </div>
+        <hr>
+        <!-- Collapsible Product Details Section -->
+        <button class="collapsible">
+            <span>Product Details</span>
+            <span class="caret">&#x25B6;</span> <!-- Right caret -->
+        </button>
+        <div class="content">
+            <h2>Description</h2>
+            <p>{{ product.description }}</p>
+            
+            <h4>Features:</h4>
+    <ul>
+        {% if product.features %}
+            {% for feature in product.features.split(',') %}
+                <li>{{ feature.strip() }}</li>
+            {% endfor %}
+        {% else %}
+            <li>No features available.</li>
+        {% endif %}
+    </ul>
+
+    <h4>Uses of {{ product.name }}</h4>
+    <p>{{ product.product_category.name }}</p>
+
+    <h4>Benefits:</h4>
+    <ul>
+        {% if product.benefits %}
+            {% for benefit in product.benefits.split(',') %}
+                <li>{{ benefit.strip() }}</li>
+            {% endfor %}
+        {% else %}
+            <li>No benefits available.</li>
+        {% endif %}
+    </ul>
+
+    <h4>Uses:</h4>
+    <ul>
+        {% if product.uses %}
+            {% for use in product.uses.split(',') %}
+                <li>{{ use.strip() }}</li>
+            {% endfor %}
+        {% else %}
+            <li>No uses available.</li>
+        {% endif %}
+    </ul>
+
+    <h4>Safety Information:</h4>
+    <ul>
+        {% if product.safety_info %}
+            {% for safety in product.safety_info.split(',') %}
+                <li>{{ safety.strip() }}</li>
+            {% endfor %}
+        {% else %}
+            <li>No safety information available.</li>
+        {% endif %}
+    </ul>
+        </div>
+        <hr>
+        <div class="safety-advice">
+            <h2>Safety Advice</h2>
+            
+            <div class="info-box">
+                <h4>Country of Origin:</h4>
+                <p>{{ product.country_of_origin }}</p> <!-- Add this field to your product model -->
+                
+                <h4>Manufacturer:</h4>
+                <p>{{ product.manufacturer }}</p> <!-- Add this field to your product model -->
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/zoom_collapsible.js') }}"></script>
+</body>
+</html>

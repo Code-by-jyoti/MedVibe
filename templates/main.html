@@ -1,0 +1,101 @@
+{% extends "layout3.html" %}
+{% block body%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Blog Site{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/blog.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Health Blogs</h1>
+    </header>
+    
+    <div class="content">
+        {% block content %}
+        <!-- Index Page Content -->
+        {% if request.endpoint == 'main' %}
+        <h2>Categories</h2>
+        <div class="category-wrapper">
+            <div class="categories">
+                {% for category in categories %}
+                <a href="{{ url_for('category_detail', category_id=category.id) }}" class="category-link">
+                    <div class="category-card">
+                        <img src="{{ url_for('static', filename='cat_images/' ~ category.image_filename) }}" alt="{{ category.name }}">
+                        <h4>{{ category.title }}</h4>
+                        <p>{{ category.description }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <h2>Latest Blogs</h2>
+        <div class="latest-blogs">
+            {% for blog in separate_blogs %}
+                <div class="blog-card">
+                    <img src="{{ url_for('static', filename='blog_images/' ~ blog.image_filename) }}" alt="{{ blog.title }}">
+                    <div class="blog-content">
+                        <h4>{{ blog.title }}</h4>
+                        <p>{{ blog.description[:123] }}...</p>
+                        <a href="{{ url_for('blog_detail', blog_id=blog.id) }}">Read more</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% elif request.endpoint == 'blog_detail' %}
+        <!-- Blog Detail Page Content -->
+        <div class="blog-detail">
+            <img src="{{ url_for('static', filename='blog_images/' ~ blog.image_filename) }}" class="blog-image1" id="blogImage1">
+            <img src="{{ url_for('static', filename='catgory_images/' ~ blog.image_filename) }}" class="blog-image2" id="blogImage2">
+            <h2>{{ blog.title }}</h2>
+            <h4>{{ blog.description }}</h4>
+            <p>{{ blog.detail_page }}</p>
+        </div>
+        {% elif request.endpoint == 'category_detail' %}
+        <!-- Category Detail Page Content -->
+        <h2>{{ category.name }}</h2>
+        <div class="blogs">
+            {% for blog in user %}
+                <div class="blog-card">
+                    <img src="{{ url_for('static', filename='catgory_images/' ~ blog.image_filename) }}" alt="{{ blog.title }}">
+                    <h4>{{ blog.title }}</h4>
+                    <p>{{ blog.description[:100] }}...</p>
+                    <a href="{{ url_for('blog_detail', blog_id=blog.id) }}">Read more</a>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endblock %}
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const currentPage = window.location.pathname;
+            const blogImage1 = document.getElementById('blogImage1');
+            const blogImage2 = document.getElementById('blogImage2');
+        
+            if (currentPage.startsWith('/blog/')) {
+                const blogId = currentPage.split('/').pop();
+                const img1BlogIds = ['5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
+        
+                if (img1BlogIds.includes(blogId)) {
+                    if (blogImage1) blogImage1.style.display = 'block';
+                    if (blogImage2) blogImage2.style.display = 'none';
+                } else {
+                    if (blogImage1) blogImage1.style.display = 'none';
+                    if (blogImage2) blogImage2.style.display = 'block';
+                }
+            } else {
+                if (blogImage1) blogImage1.style.display = 'block';
+                if (blogImage2) blogImage2.style.display = 'none';
+            }
+        });
+    </script>
+    
+</body>
+</html><br>
+
+{% endblock %}

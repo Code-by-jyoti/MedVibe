@@ -1,0 +1,102 @@
+
+
+/* Slider container */
+.slider-container {
+    position: sticky;
+    width: 100%;                    /* Full width */
+    max-width: 1500px;               /* Maximum width to keep it centered and not too big */
+    margin: auto;                    /* Center the slider */
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Inner slider holding the slides */
+.slider {
+    display: flex;
+    transition: transform 0.4s ease;
+    gap: 15px;                       /* Space between slides */
+    padding: 0 7.5px;                /* Padding on the sides */
+}
+
+/* Individual slide */
+.slide {
+    flex: 1;
+    min-width: calc(33.33% - 15px);  /* 3 slides visible on larger screens */
+    box-sizing: border-box;
+}
+
+/* Slide images */
+.slide img {
+    width: 100%;                     /* Full width of slide */
+    height: auto;                    /* Keep aspect ratio */
+    border-radius: 10px;              /* Rounded corners */
+}
+
+/* Previous and next buttons */
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 1000;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+
+/* Dots under the slider */
+.dots {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    margin: 0 3px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.6s ease;
+}
+
+.dot.active {
+    background-color: #717171;
+}
+
+/* Medium screens (tablets) */
+@media (max-width: 768px) {
+    .slide {
+        min-width: calc(50% - 15px);  /* Show 2 slides per view on medium screens */
+    }
+    .prev, .next {
+        padding: 8px;
+    }
+}
+
+/* Small screens (mobile) */
+@media (max-width: 480px) {
+    .slide {
+        min-width: calc(100% - 15px); /* Show 1 slide per view on small screens */
+    }
+    .prev, .next {
+        padding: 6px;
+        font-size: 16px;
+    }
+    .dot {
+        width: 8px;
+        height: 8px;
+    }
+}

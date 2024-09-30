@@ -1,0 +1,41 @@
+/* Styling for the related images slider */
+.related-images-slider {
+    width: 100px;
+    height: 400px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.related-images-slider img {
+    width: 80px;
+    height: 100px;
+    margin: 10px 0;
+    cursor: pointer;
+    border: 1px solid #ddd;
+}
+
+.related-images-slider img:hover {
+    border-color: #00bfff;
+}
+
+.product-detail {
+    display: flex;
+    align-items: flex-start;
+}
+
+.image-wrapper {
+    position: relative;
+}
+
+.zoomed-view {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    display: none;
+    background-repeat: no-repeat;
+    border: 1px solid #ddd;
+    z-index: 100;
+}

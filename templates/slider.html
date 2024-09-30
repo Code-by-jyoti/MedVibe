@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Slider</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slider.css') }}">
+</head>
+<body>
+    <div class="slider-container">
+        <div class="slider">
+            <!-- Loop through images dynamically -->
+            {% for image in images %}
+            <div class="slide">
+            <img src="{{ url_for('static', filename='images/' + image) }}" alt="Image {{ loop.index }}"></div>
+            {% endfor %}
+        </div>
+        <button class="prev" onclick="prevSlide()">&#10094;</button>
+        <button class="next" onclick="nextSlide()">&#10095;</button>
+        <div class="dots">
+            <!-- Add dots dynamically based on the number of images -->
+            {% for image in images %}
+            <span class="dot" onclick="currentSlide( {loopindex0} )"></span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/item_script.js') }}"></script>
+</body>
+</html>
+

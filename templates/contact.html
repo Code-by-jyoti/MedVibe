@@ -1,0 +1,42 @@
+{% extends "layout2.html" %}
+{% block body%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Medvibe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+</head>
+<body>
+
+    <main>
+        <section class="contact-section">
+            <h1>Contact Us</h1>
+            <address>
+                <p>Medvibe Limited</p>
+                <p>#19, Bishop Gardens,</p>
+                <p>Raja Annamalaipuram,</p>
+                <p>Chennai, Tamil Nadu - 600028</p>
+            </address>
+
+            <h2>For queries related to Online orders</h2>
+            <p>Email: <a href="mailto:contactusnow@Medvibe.org">contactusnow@Medvibe.org</a></p>
+
+            <h2>For queries related to Medvibe Store experience</h2>
+            <p>Email: <a href="mailto:customerservice@Medvibe.org">customerservice@Medvibe.org</a></p>
+
+            <h2>For Corporate and Bulk inquiries</h2>
+            <p>Email: <a href="mailto:customerservice@Medvibe.org">customerservice@Medvibe.org</a></p>
+
+            <h2>For launching New Brands on Medvibe</h2>
+            <p>Email: <a href="mailto:brandlisting@Medvibe.org">brandlisting@Medvibe.org</a></p>
+        </section>
+    </main>
+
+
+    <script src="{{ url_for('static', filename='js/Scripts.js') }}"></script>
+</body>
+</html>
+
+{% endblock %}

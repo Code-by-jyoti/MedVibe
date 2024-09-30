@@ -1,0 +1,54 @@
+
+{% block body%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Footer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<footer>
+    <div class="footer-container">
+        <div class="footer-row">
+            <div class="footer-column">
+                <h3>MedVibe</h3><br>
+                <p>Your trusted source for medical information and health advice.</p>
+            </div>
+
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/aboutAs">About Us</a></li>
+                    <li><a href="/services">Services</a></li>
+                    <li><a href="/main">Blog</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <p>Email: info@medvibe.com</p>
+                <p>Phone: +1-234-567-890</p>
+                <p>Address: 123 Health St, Wellness City, WC 45678</p>
+            </div>
+
+            <div class="footer-column">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 MedVibe. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+</html>
+{% endblock %}

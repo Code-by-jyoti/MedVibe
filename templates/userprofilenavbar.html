@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Side Nav Bar with Location and Map</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-mhABgVIs/6V6eak+7nE6qxppAt+dRaofEjlhB0n0c6A=" crossorigin=""/>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background-color:  #1a504c;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar .left-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo {
+            height: auto;
+            width: 130px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .navbar .location-toggle {
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 16px;
+            color: white;
+        }
+
+        .navbar .location-toggle span {
+            margin-left: 8px;
+        }
+
+        .menu-toggle {
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            right: 0;
+            background-color:  #1a504c;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidenav a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidenav a:hover {
+            background-color: #145e58;
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            left: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        /* Map Style */
+        #map {
+            height: 400px;
+            margin-top: 20px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px;
+            }
+
+            .menu-toggle {
+                display: block;
+                font-size: 28px;
+            }
+
+            .navbar .logo {
+                width: 100px;
+            }
+
+            .navbar .location-toggle {
+                font-size: 14px;
+            }
+        }
+
+    </style>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-MgSoF7uKa0Ax+Ue3zeqEhUl1FYpGxbMvg4gTYY2zJeY=" crossorigin=""></script>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="left-section">
+            <!-- Logo -->
+            <a href="#"><img src="static/images/logo.png" alt="Logo" class="logo"></a>
+            
+            <!-- Location Toggle -->
+            
+        </div>
+
+        <!-- Menu Icon -->
+        <span class="menu-toggle" onclick="openNav()">☰</span>
+    </div>
+
+    <!-- Side navigation -->
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <a href="{{ url_for('Home') }}">Home</a>
+        <a href="#">Profile</a>
+        <a href="#">History</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+        
+    </div>
+
+
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+
+        let map;
+        let marker;
+
+        function toggleLocation() {
+            const locationStatus = document.getElementById('location-status');
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        locationStatus.textContent = 'Location On';
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+
+                        // Display map and marker
+                        displayMap(latitude, longitude);
+                    },
+                    () => {
+                        locationStatus.textContent = 'Location Off';
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function displayMap(lat, lon) {
+            // Initialize map if it's not already initialized
+            if (!map) {
+                map = L.map('map').setView([lat, lon], 13);
+
+                // Load OpenStreetMap tiles
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+            }
+
+            // Remove previous marker if it exists
+            if (marker) {
+                marker.remove();
+            }
+
+            // Add marker for user's location
+            marker = L.marker([lat, lon]).addTo(map)
+                .bindPopup('You are here!')
+                .openPopup();
+        }
+    </script>
+
+</body>
+</html>
+
+</br>
+</br>
+{% block content %}
+{% endblock %}

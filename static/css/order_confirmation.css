@@ -1,0 +1,91 @@
+/* order_confirmation.css */
+
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(to right, #e0f7fa, #e1f5fe);
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.container:hover {
+    transform: scale(1.01);
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #00796b;
+    font-size: 2.5rem;
+}
+
+p {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+ul {
+    list-style-type: none;
+    margin: 20px 0;
+    padding: 0;
+}
+
+ul li {
+    background: #f1f1f1;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+a.continue-shopping {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 25px;
+    background: #00796b;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: background 0.3s, transform 0.2s;
+}
+
+a.continue-shopping:hover {
+    background: #004d40;
+    transform: translateY(-2px);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    a.continue-shopping {
+        font-size: 1rem;
+    }
+}

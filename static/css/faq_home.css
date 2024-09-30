@@ -1,0 +1,136 @@
+
+.faq_container1 {
+    background: url('/static/images/faq_back.jpg') no-repeat center center; 
+    background-size: cover;  
+    padding: 3rem; /* Padding for spacing around the faq_container */
+    display: flex; /* Flexbox for alignment */
+    justify-content: center; /* Center align the inner container */
+}
+
+/* General Styles for FAQ Container */
+.faq_container {
+    max-width: 900px; /* Increase this value for wider container */
+    width: 90%; /* Set a responsive width */
+    padding: 2rem; /* Add padding for spacing */
+    background: rgba(255, 255, 255, 0.8); /* White background with slight transparency */
+    border-radius: 1rem; /* Rounded corners for container */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+/* Header Styles */
+.faq_container h1 {
+    font-size: 2.25rem; /* Slightly larger font size for header */
+    color: #333; /* Dark color for text */
+    font-weight: 700; /* Bold font weight */
+    text-align: center; /* Center align text */
+    margin-bottom: 1.5rem; /* Space below the header */
+}
+
+/* Accordion Styles */
+.accordion1 {
+    border: none; /* Remove default border */
+    background-color: #fff; /* White background for accordion */
+}
+
+/* Accordion Item Styles */
+.accordion-item1 {
+    border: 1px solid #e5e5e5; /* Light border around each item */
+    margin-bottom: 1rem; /* Space between accordion items */
+    background-color: #ffffff; /* White background for each item */
+    border-radius: 0.75rem; /* Rounded corners */
+}
+
+/* Accordion Header Styles */
+.accordion-header1 {
+    border-bottom: 1px solid #e5e5e5; /* Light border below header */
+}
+
+/* Accordion Button Styles */
+.accordion-button1 {
+    font-size: 1.125rem; /* Font size for accordion buttons */
+    font-weight: 600; /* Semi-bold font weight */
+    color: #444; /* Darker text color */
+    background-color: #f7f7f7; /* Light background color */
+    border: none; /* Remove default border */
+    border-radius: 0.75rem; /* Rounded corners */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transitions */
+    padding: 1rem; /* Padding for button */
+    text-align: left; /* Align text to the left */
+    width: 100%; /* Full width for button */
+    display: flex; /* Flexbox for alignment */
+    justify-content: space-between; /* Space between text and caret */
+    align-items: center; /* Center align items vertically */
+}
+
+.accordion-button1:focus {
+    box-shadow: none; /* Remove focus shadow */
+}
+
+.accordion-button1:hover {
+    background-color: #e9ecef; /* Darker background on hover */
+    color: #000; /* Darker text color on hover */
+}
+
+/* Accordion Body Styles */
+.accordion-body1 {
+    padding: 1rem; /* Padding for content */
+    color: #555; /* Slightly lighter text color */
+    font-size: 1rem; /* Font size for content */
+    line-height: 1.6; /* Improve readability */
+    display: none; /* Initially hidden */
+}
+
+/* Show the body when active */
+.accordion-item1.active .accordion-body1 {
+    display: block; /* Show the content when active */
+}
+
+.caret {
+    font-size: 0.75rem; /* Smaller font size for caret */
+    color: #666; /* Lighter color for caret */
+    transition: transform 0.3s ease; /* Smooth transition for rotation */
+}
+
+/* Rotate caret when active */
+.accordion-item1.active .caret {
+    transform: rotate(180deg); /* Rotate caret when active */
+}
+
+
+/* Container for button */
+.text-center {
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically, if needed */
+    margin-top: 2rem; /* Space above the button */
+}
+
+/* "View All FAQs" Button Styles */
+.text-center .btn {
+    font-size: 1.125rem; /* Font size for button */
+    padding: 0.75rem 1.5rem; /* Button padding */
+    border-radius: 0.75rem; /* Rounded corners */
+    text-transform: uppercase; /* Uppercase text for emphasis */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Smooth transition effects */
+    border: 2px solid #1a504c; /* Border color */
+    background-color: transparent; /* Transparent background */
+    color: #0069d9; /* Text color matching border */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Ensure button is inline-block */
+}
+
+.text-center .btn-primary {
+    border-color: #1a504c; /* Border color for primary button */
+    color: #1a504c; /* Text color matching border */
+}
+
+.text-center .btn-primary:hover {
+    background-color: #308f89; /* Background color on hover */
+    color: #fff; /* Text color on hover */
+    border-color: #1a504c; /* Border color on hover */
+}
+
+.text-center .btn-primary:focus, 
+.text-center .btn-primary:active {
+    box-shadow: none; /* Remove focus shadow */
+}

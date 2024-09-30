@@ -1,0 +1,162 @@
+/* General Styles */
+
+.category_container {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    width: 30%;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.sidebar h3 {
+    margin-top: 0;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 90px; /* Set a fixed height for sidebar items */
+    box-sizing: border-box; /* Ensure padding is included in height */
+}
+
+.sidebar li:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar img {
+    width: 70px;
+    height: 70px;
+    margin-right: 10px;
+}
+
+.sidebar span {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.products {
+    width: 75%;
+    padding: 20px;
+    position: relative;
+}
+
+.product-list {
+    margin-top: 30px; /* Adjust this value to increase or decrease spacing */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.product-item {
+    width: 230px; /* Fixed width for each product item */
+    height: 230px; /* Fixed height for each product item */
+    box-sizing: border-box;
+    border: 1px solid #b4abab;
+    border-radius: 8px;
+    display: none; /* Hide all products initially */
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+    color: #333;
+    text-decoration: none;
+}
+
+.product-item img {
+    width: 60%;
+    height: 150px;
+    object-fit: contain;
+    margin-top: 10px;
+}
+
+.product-item p {
+    padding: 20px;
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.product-item.active {
+    display: block;
+}
+
+.product-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.view-all {
+    position: absolute; /* Make the button positioned relative to the .products container */
+    top: 0; /* Align it to the top */
+    right: 0; /* Align it to the right */
+    padding: 1px 10px; /* Add padding for the button */
+    margin-top: 10px; /* Remove any margin on top */
+    margin-bottom: 150px;
+    color: #1fad4f;
+    text-decoration: none;
+    font-weight: 40;
+    font-size: 18px;
+    
+}
+.view-all:hover {
+    text-decoration: underline;
+    
+}
+
+/* Responsive Styles */
+@media (min-width: 1024px) {
+    .product-item {
+        width: calc((100% / 3) - 20px); /* Three items per row on larger screens with gaps */
+    }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    .product-item {
+        width: calc((100% / 3) - 20px); /* Three items per row on medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Stack sidebar and products vertically on medium screens */
+    }
+
+    .sidebar {
+        width: 90%; /* Full width on smaller screens */
+    }
+
+    .products {
+        width: 90%; /* Full width on smaller screens */
+    }
+
+    .product-item {
+        width: calc((100% / 2) - 20px); /* Two items per row on smaller screens */
+        height: auto; /* Allow height to adjust based on content */
+    }
+}
+
+@media (max-width: 480px) {
+    .product-item {
+        width: calc((100% / 2) - 20px); /* Two items per row on extra small screens */
+        height: auto; /* Allow height to adjust based on content */
+    }
+}

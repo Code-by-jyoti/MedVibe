@@ -1,0 +1,147 @@
+/* General Body Styling */
+body {
+    background-color: #f0f2f5;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container and Card Styling */
+.container {
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 30vh;
+    
+
+.card {
+    border-radius: 20px;
+    box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s, box-shadow 0.3s;
+    background-color: #fff;
+    padding: 30px;
+}
+
+/* Card Title Styling */
+.card-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #343a40;
+    text-align: center;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    position: relative;
+    letter-spacing: 1px;
+    z-index: 1;
+}
+
+.card-title::after {
+    content: '';
+    width: 60px;
+    height: 4px;
+    background-color: #007bff;
+    display: block;
+    margin: 10px auto 0;
+    border-radius: 5px;
+}
+
+/* Form Styling */
+.form-group label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #495057;
+}
+
+.form-control {
+    border: 2px solid #ced4da;
+    border-radius: 12px;
+    padding: 12px 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #f8f9fa;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
+    background-color: #fff;
+}
+
+/* Button Styling */
+.btn-primary {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    border: none;
+    border-radius: 50px;
+    padding: 12px 40px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    letter-spacing: 1px;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #003f7f 100%);
+    box-shadow: 0px 8px 20px rgba(0, 123, 255, 0.5);
+    transform: scale(1.05);
+}
+
+/* Input Field Styling */
+.form-group input {
+    padding: 15px;
+    font-size: 1rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+.form-group input::placeholder {
+    color: #adb5bd;
+}
+
+/* Responsive Styling */
+@media only screen and (max-width: 768px) {
+    .container {
+        margin-top: 20px;
+    }
+
+    .card-title {
+        font-size: 1.8rem;
+    }
+
+    .form-group label {
+        font-size: 1rem;
+    }
+
+    .btn-primary {
+        padding: 10px 30px;
+        font-size: 1rem;
+    }
+}
+
+/* Decorative Elements */
+.card::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 100px;
+    height: 100px;
+    background: rgba(0, 123, 255, 0.1);
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.card::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: -15px;
+    width: 100px;
+    height: 100px;
+    background: rgba(0, 123, 255, 0.1);
+    border-radius: 50%;
+    z-index: -1;
+}

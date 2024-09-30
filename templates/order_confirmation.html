@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/order_confirmation.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Order Confirmation</h1>
+        <p>Thank you, {{ name }}! Your order has been successfully placed.</p>
+        <p><strong>Order ID:</strong> {{ order_id }}</p>  <!-- Displaying the Order ID -->
+        <p><strong>Order Summary:</strong></p>
+        <ul>
+            {% for item in products %}
+                <li>{{ item.product_name }} (Quantity: {{ item.quantity }}) - ₹{{ "%.2f"|format(item.total) }}</li>
+            {% endfor %}
+            <li><strong>Total Amount: ₹{{ "%.2f"|format(total_price) }}</strong></li>
+        </ul>
+        <p>Your order will be delivered to your address with Cash on Delivery.</p>
+        <a href="{{ url_for('Home') }}" class="continue-shopping">Continue Shopping</a>
+    </div>
+</body>
+</html>

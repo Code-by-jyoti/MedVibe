@@ -1,0 +1,163 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a504c;
+    padding: 10px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+  
+.header-left {
+    display: flex;
+    align-items: center; /* Vertically centers the logo */
+    padding: 10px; /* Optional: adds some space around the logo */
+}
+
+.header-left .logo {
+    max-width: 100px; /* Adjust the size of the logo */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.icon {
+    display: block; /* Ensures the image is treated as a block element */
+}
+
+  
+  .header-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .header-icons .icon {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+  }
+  
+  .header-icons .icon img {
+    width: 30px; /* Standardized width */
+    height: 30px; /* Standardized height */
+    object-fit: cover;
+    margin-right: 5px;
+    transition: transform 0.3s ease;
+  }
+  
+  .header-icons .icon:hover img {
+    transform: scale(1.1);
+  }
+  
+  .header-icons .icon-text {
+    display: none;
+  }
+  
+  .header-icons .icon:hover .icon-text {
+    display: inline;
+  }
+
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+main {
+    padding: 30px;
+    background-color: #fff;
+    margin: 20px auto;
+    max-width: 800px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: fadeInContent 2s ease-in-out forwards;
+}
+
+h1 {
+    color: #0b7545;
+    text-align: center;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: slideInFromTop 1.5s ease-in-out forwards;
+    animation-delay: 0.5s; /* Delay the header animation to make it stand out */
+}
+
+address, .contact-section h2, .contact-section p {
+    opacity: 0;
+    animation: slideInFromLeft 1.5s ease-in-out forwards;
+}
+
+address {
+    font-style: normal;
+    margin-bottom: 20px;
+}
+
+.contact-section h2 {
+    color: #0b7545;
+    margin-top: 20px;
+}
+
+.contact-section p {
+    margin: 5px 0;
+}
+
+a {
+    color: #0b7545;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #0b7545;
+}
+
+
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    main {
+        padding: 15px;
+    }
+
+    footer {
+        font-size: 20px;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes fadeInContent {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInFromTop {
+    0% { opacity: 0; transform: translateY(-50px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInFromLeft {
+    0% { opacity: 0; transform: translateX(-50px); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInFooter {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}

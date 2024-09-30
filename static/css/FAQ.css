@@ -1,0 +1,139 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a504c;
+    padding: 10px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+  
+.header-left {
+    display: flex;
+    align-items: center; /* Vertically centers the logo */
+    padding: 10px; /* Optional: adds some space around the logo */
+}
+
+.header-left .logo {
+    max-width: 100px; /* Adjust the size of the logo */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.icon {
+    display: block; /* Ensures the image is treated as a block element */
+}
+
+  
+  .header-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .header-icons .icon {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+  }
+  
+  .header-icons .icon img {
+    width: 30px; /* Standardized width */
+    height: 30px; /* Standardized height */
+    object-fit: cover;
+    margin-right: 5px;
+    transition: transform 0.3s ease;
+  }
+  
+  .header-icons .icon:hover img {
+    transform: scale(1.1);
+  }
+  
+  .header-icons .icon-text {
+    display: none;
+  }
+  
+  .header-icons .icon:hover .icon-text {
+    display: inline;
+  }
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    font-weight: bold;
+    font-size: 2.5rem;
+    animation: slideInFromTop 1.5s ease-out; /* Apply animation */
+}
+
+/* Header animation */
+@keyframes slideInFromTop {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px); /* Start off-screen (above) */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* Slide in to normal position */
+    }
+}
+
+.accordion-item {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    border: none;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto; /* Center the accordion items */
+}
+
+.accordion-header {
+    margin-bottom: 0;
+}
+
+.question {
+    background-color: #53d366;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center; /* Center the question text */
+}
+
+.accordion-button {
+    background-color: #53d366;
+    color: #ffffff;
+    font-weight: bold;
+    text-align: center; /* Center the button text */
+}
+
+.accordion-button:not(.collapsed) {
+    color: #ffffff;
+    background-color: #53a14d; /* Darker green when expanded */
+}
+
+.accordion-button:hover {
+    background-color: #4ab75a; /* Lighter green on hover */
+}
+
+.accordion-body {
+    background-color: rgb(230, 244, 243)
+}

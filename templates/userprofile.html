@@ -1,0 +1,58 @@
+{% extends 'userprofilenavbar.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/userprofile.css') }}">
+
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">MY PROFILE</h2>
+                        <form method="POST" action="{{ url_for('profile') }}">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="email"><strong>Email:</strong></label>
+                                    <input type="email" class="form-control" name="email" value="{{ user.email }}" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="phone_number"><strong>Phone:</strong></label>
+                                    <input type="text" class="form-control" name="phone" value="{{ user.phone }}">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="address"><strong>Address:</strong></label>
+                                    <input type="text" class="form-control" name="address" value="{{ user.address }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="state"><strong>State:</strong></label>
+                                    <input type="text" class="form-control" name="state" value="{{ user.state }}">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="city"><strong>City:</strong></label>
+                                    <input type="text" class="form-control" name="city" value="{{ user.city }}">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Details</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

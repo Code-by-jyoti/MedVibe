@@ -1,0 +1,354 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1a504c;
+  padding: 3px 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header-left {
+  display: flex;
+  align-items: left; /* Vertically centers the logo */
+  padding: 10px; /* Optional: adds some space around the logo */
+}
+
+.header-left .logo {
+  max-width: 100px; /* Adjust the size of the logo */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.icon {
+  display: block; /* Ensures the image is treated as a block element */
+}
+
+
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header-icons .icon {
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.header-icons .icon img {
+  width: 30px; /* Standardized width */
+  height: 30px; /* Standardized height */
+  object-fit: cover;
+  margin-right: 5px;
+  transition: transform 0.3s ease;
+}
+
+.header-icons .icon:hover img {
+  transform: scale(1.1);
+}
+
+.header-icons .icon-text {
+  display: none;
+}
+
+.header-icons .icon:hover .icon-text {
+  display: inline;
+}
+  
+.navbar {
+  display: flex;
+  justify-content: center;
+  padding: 7px;
+  
+}
+
+.nav{
+color: #1a504c;
+text-decoration: none;
+font-size: 1em;
+padding: 8px 30px;
+border-radius: 20px;
+transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav:hover {
+  background-color: #1a504c;
+  color: white;
+  transform: translateY(-3px);
+}
+
+.navbar-dropdown {
+  display: flex;
+  justify-content: center;
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+/* Existing styles... */
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+.navbar-dropdown {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.dropdown {
+    width: 100%;
+    margin-right: 0;
+}
+
+.dropdown-button {
+    width: 100%;
+    text-align: left;
+    padding: 10px 15px;
+}
+
+.dropdown-content {
+    width: 100%;
+    position: relative;
+    top: 0;
+    box-shadow: none;
+}
+}
+
+/* Optional: Media query for even smaller screens */
+@media (max-width: 480px) {
+.navbar-dropdown {
+    padding: 5px;
+}
+
+.dropdown-button {
+    font-size: 14px;
+}
+}
+
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin-right: 50px;
+}
+
+.dropdown-button {
+  font-size: 16px;
+  color: #1a504c;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.dropdown-button:hover {
+  background-color: #1a504c;
+  color: white;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  top: 100%;
+  left: 0;
+  z-index: 5;
+  width: 250px;
+  max-height: 300px; /* Add max height for scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.dropdown-content a {
+  color: #333;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  transition: background-color 0.3s;
+}
+
+.dropdown-content a:hover {
+  background-color: #dfdfdf;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-item {
+  position: relative;
+}
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px; /* Ensure enough height */
+  background-color: #1a504c;
+  color: white;
+  padding: 30px 15px; /* More padding to avoid crowding */
+  text-align: center;
+  position: relative; /* Ensure correct layering */
+}
+
+@keyframes wave {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animated-text {
+  font-size: 36px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 20px; /* Increase space between animated text and search bar */
+  animation: wave 1.5s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes fadeIn {
+  0% {
+      opacity: 0;
+      transform: translateY(-20px);
+  }
+  50% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+  100% {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(250, 244, 244, 0.8);
+  border-radius: 60px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  width: 100%;
+  max-width: 600px; /* Prevent exceeding this width */
+  margin-top: 20px;
+  position: relative; /* Allow absolute positioning for the dropdown */
+}
+
+.search-container input[type="text"] {
+  padding: 15px 20px;
+  border: none;
+  border-radius: 30px;
+  width: 100%;
+  font-size: 14px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.search-container input[type="text"]:focus {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  outline: none;
+}
+
+.search-container input[type="text"]::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+.dropdown-content-search {
+  display: none; /* Hidden by default */
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px; /* Rounded corners for the dropdown */
+  max-height: 300px; /* Limit height */
+  overflow-y: auto; /* Add scroll if necessary */
+  z-index: 1000; /* Ensure it appears above other content */
+  width: 100%; /* Match the input width */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  top: 100%; /* Position it directly below the search bar */
+  left: 0; /* Align it to the left of the container */
+}
+
+.suggestion-item {
+  padding: 12px 16px; /* Padding for each suggestion */
+  cursor: pointer;
+  transition: background-color 0.3s; /* Smooth transition on hover */
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0; /* Highlight background on hover */
+}
+
+.suggestion-name {
+  font-weight: bold; /* Make the product name bold */
+  color: #333; /* Dark text color */
+}
+
+.suggestion-category {
+  color: #777; /* Lighter color for the category */
+  font-size: 12px; /* Smaller font for the category */
+}
+
+.view-all {
+  text-align: center; /* Center the "View All" option */
+  color: #007BFF; /* Link color */
+  font-weight: bold; /* Make it bold */
+  cursor: pointer;
+}
+
+.view-all:hover {
+  text-decoration: underline; /* Underline on hover for emphasis */
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .search-container {
+      width: 90%;
+  }
+
+  .dropdown-content-search {
+      max-width: 90%; /* Adjust max width for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .search-container {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+  }
+
+  .suggestion-item {
+      padding: 10px; /* Reduce padding for smaller screens */
+  }
+}
+
+@keyframes floatingPlaceholder {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

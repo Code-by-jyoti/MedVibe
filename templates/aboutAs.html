@@ -1,0 +1,138 @@
+{% extends "layout2.html" %}
+{% block body%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | MedVibe</title>
+   
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/aboutAs.css') }}">
+    <!-- Add Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Raleway:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Outer Container -->
+    <div class="outer-container">
+        <!-- Main Container -->
+        <div class="main-container">
+            <!-- Hero Section with New Font Styles -->
+            <section class="hero-container">
+                <div class="hero-section">
+                    <h1>Welcome to MedVibe</h1>
+                    <p class="slogan">Where Wellness Meets Vibe</p>
+                    <p>Discover more about us...</p>
+                </div>
+
+                <!-- About Content Section -->
+                <section class="about-content">
+                    <!-- Mission Section -->
+                    <div class="about-section mission">
+                        <div class="about-icon"><i class="fas fa-bullseye"></i></div>
+                        <h2>Our Mission</h2>
+                        <p>At MedVibe, our mission is to provide accessible and affordable healthcare solutions to all. We are committed to ensuring the well-being of our customers by offering a wide range of high-quality medicines and health essentials.</p>
+                    </div>
+
+                    <!-- Vision Section -->
+                    <div class="about-section vision">
+                        <div class="about-icon"><i class="fas fa-eye"></i></div>
+                        <h2>Our Vision</h2>
+                        <p>We envision a world where everyone has easy access to the best health and wellness products. Our goal is to be the leading online platform for medicines and health essentials, trusted by millions worldwide.</p>
+                    </div>
+
+                    <!-- Values Section -->
+                    <div class="about-section values">
+                        <div class="about-icon"><i class="fas fa-heartbeat"></i></div>
+                        <h2>Our Values</h2>
+                        <p>We value integrity, customer focus, and innovation. Our team is dedicated to maintaining these values in every aspect of our business, ensuring that we always deliver the best service and products to our customers.</p>
+                    </div>
+                </section>
+
+                <!-- Who We Are Section -->
+                <section class="who-we-are">
+                    <h2>Who We Are</h2>
+                    <div class="who-we-are-content">
+                        <p>MedVibe is a team of dedicated healthcare professionals and technology experts committed to revolutionizing the way people access medicines and health products. At MedVibe.com, we help you look after your own health effortlessly as well as take care of loved ones wherever they may reside in India. You can buy and send medicines from any corner of the country - with just a few clicks of the mouse.</p>
+                    </div>
+                </section>
+
+                <!-- What We Offer Section -->
+                <section class="what-we-offer">
+                    <h2>What We Offer</h2>
+                    <div class="offer-grid">
+                        <div class="offer-item">
+                            <i class="fas fa-capsules"></i>
+                            <h3>Wide Range of Medicines</h3>
+                            <p>Find all your essential medicines, from prescriptions to over-the-counter solutions, all in one place.</p>
+                        </div>
+                        <div class="offer-item">
+                            <i class="fas fa-first-aid"></i>
+                            <h3>Health Essentials</h3>
+                            <p>From vitamins and supplements to personal care products, we provide everything you need to maintain your well-being.</p>
+                        </div>
+                        <div class="offer-item">
+                            <i class="fas fa-truck"></i>
+                            <h3>Fast Delivery</h3>
+                            <p>Enjoy quick and reliable delivery of your orders right to your doorstep, ensuring you get your products when you need them.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Team Section -->
+                <div class="about-team">
+                    <h2>Meet Our Team</h2>
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <img src="static/images/F.png">
+                            <h3>Jyoti Yadav</h3>
+                            <p>Team Leader</p>
+                        </div>
+                        <div class="team-member">
+                            <img src="static/images/M.png" alt="">
+                            <h3>Omkar Ule</h3>
+                            <p>Team Co-leader</p>
+                        </div>
+                        <div class="team-member">
+                            <img src="static/images/F.png">
+                            <h3>Shital Mate</h3>
+                            <p>Team Member</p>
+                        </div>
+                        <div class="team-member">
+                            <img src="static/images/F.png">
+                            <h3>Karina Shirke</h3>
+                            <p>Team Member</p>
+                        </div>
+                        <div class="team-member">
+                            <img src="static/images/M.png" >
+                            <h3>Vivek Maurya</h3>
+                            <p>Team Member</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+   
+    <script>
+        document.addEventListener('scroll', function() {
+            const footer = document.querySelector('.about-footer');
+            const scrollY = window.scrollY;
+            const documentHeight = document.documentElement.scrollHeight;
+            const viewportHeight = window.innerHeight;
+
+            if (scrollY + viewportHeight >= documentHeight) {
+                footer.classList.add('footer-visible');
+            } else {
+                footer.classList.remove('footer-visible');
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+{% endblock %}

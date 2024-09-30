@@ -1,0 +1,444 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a504c;
+    padding: 10px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+  
+.header-left {
+    display: flex;
+    align-items: left; /* Vertically centers the logo */
+    padding: 10px; /* Optional: adds some space around the logo */
+}
+
+.header-left .logo {
+    max-width: 100px; /* Adjust the size of the logo */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.icon {
+    display: block; /* Ensures the image is treated as a block element */
+}
+  
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+  
+.header-icons .icon {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+  
+.header-icons .icon img {
+    width: 30px; /* Standardized width */
+    height: 30px; /* Standardized height */
+    object-fit: cover;
+    margin-right: 5px;
+    transition: transform 0.3s ease;
+}
+  
+.header-icons .icon:hover img {
+    transform: scale(1.1);
+}
+  
+.header-icons .icon-text {
+    display: none;
+}
+  
+.header-icons .icon:hover .icon-text {
+    display: inline;
+}
+
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+h2 {
+    text-align: center;
+    margin: 20px 0;
+    color: #333;
+}
+
+/* Header Styles */
+header {
+    background-color: #1a504c; /* Background color for the header */
+    color: #fff; /* Text color */
+    padding: 20px; /* Padding around the header content */
+    text-align: center; /* Center align the text */
+    font-family: Arial, sans-serif; /* Font family for the header */
+    border-bottom: 4px solid #103910; /* Bottom border for added emphasis */
+}
+
+header h1 {
+    font-size: 2.5em; /* Font size for the heading */
+    margin: 0; /* Remove default margin */
+    line-height: 1.2; /* Line height for spacing */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    header {
+        padding: 15px; /* Adjust padding for smaller screens */
+    }
+
+    header h1 {
+        font-size: 2em; /* Adjust font size for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 10px; /* Further adjust padding for very small screens */
+    }
+
+    header h1 {
+        font-size: 1.5em; /* Further adjust font size for very small screens */
+    }
+}
+
+
+/* Blog Cards Container */
+.blogs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Blog Card Styling */
+.blog-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* Blog Card Image */
+.blog-card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+/* Blog Card Title */
+.blog-card h4 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Blog Card Description */
+.blog-card p {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 15px;
+    height: 60px; /* Adjust based on how much text you want to show */
+    overflow: hidden;
+}
+
+/* Read More Link */
+.blog-card a {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #1a504c;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.blog-card a:hover {
+    background-color: #205b63;
+}
+
+/* Hover Effect */
+.blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .blog-card {
+        width: 100%;
+    }
+}
+
+
+
+/* Blog Categories Section */
+.category-wrapper {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px 0;
+    margin-bottom: 40px;
+}
+
+.categories {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adds space between category cards */
+}
+
+.category-card {
+    flex: 0 0 180px; /* Adjusted fixed width for category cards */
+    height: auto; /* Let the height adjust automatically */
+    width: 130px;
+    margin: 0 10px;
+    padding: 5px; /* Reduced padding for a more compact design */
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s ease;
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
+}
+
+/* Category Image */
+.category-card img {
+    width: 100%;
+    height: 130px; /* Reduced image height for a compact look */
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.category-card h4 {
+    font-size: 16px; /* Slightly smaller font size */
+    margin-bottom: 6px;
+    color: #333;
+    font-weight: bold;
+}
+
+.category-card p {
+    font-size: 12px; /* Smaller font size for compact text */
+    color: #666;
+}
+
+/* Hover effect for category cards */
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+    .category-card {
+        flex: 0 0 45%; /* Adjust width for smaller screens */
+        height: auto; /* Let height adjust automatically */
+    }
+}
+
+@media (max-width: 600px) {
+    .category-card {
+        flex: 0 0 100%; /* Full width on mobile screens */
+        height: auto;
+    }
+}
+
+/* Latest Blogs Section */
+.latest-blogs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; 
+    justify-content: center; /* Center the blog cards */
+}
+
+.blog-card {
+    display: flex;
+    flex-direction: column;
+    width: 30%; /* Adjust width as needed */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s ease;
+}
+
+.blog-card img {
+    width: 100%;
+    height: 180px; /* Adjust height as needed */
+    object-fit: cover;
+}
+
+.blog-content {
+    padding: 15px;
+}
+
+.blog-card h4 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+.blog-card p {
+    margin: 0 0 10px;
+    color: #666;
+}
+
+.blog-card a {
+    color: #f7f9fa;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.blog-card a:hover {
+    text-decoration: underline;
+}
+
+/* Ensure the last row of blog cards is aligned */
+
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .blog-card {
+        width: 45%;
+    }
+}
+
+@media (max-width: 768px) {
+    .blog-card {
+        width: 100%;
+    }
+}
+
+
+/* Blog Detail Page Container */
+.blog-detail {
+    max-width: 800px; /* Maximum width for the content */
+    margin: 20px auto; /* Center the content and add vertical margins */
+    padding: 20px;
+    background-color: #fff; /* Background color for the content area */
+    border-radius: 8px; /* Rounded corners for the container */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for a subtle lift effect */
+    font-family: Arial, sans-serif; /* Font family for the page */
+}
+
+/* Blog Image */
+.blog-image1 {
+    width: 80%; /* Make the image smaller */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Rounded corners for the image */
+    margin-bottom: 20px; /* Space below the image */
+    display: block; /* Make the image a block element */
+    margin-left: auto; /* Center the image */
+    margin-right: auto; /* Center the image */
+    
+}
+
+.blog-image2 {
+    width: 80%; /* Make the image smaller */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Rounded corners for the image */
+    margin-bottom: 20px; /* Space below the image */
+    display: block; /* Make the image a block element */
+    margin-left: auto; /* Center the image */
+    margin-right: auto; /* Center the image */
+    
+}
+
+/* Blog Title */
+.blog-detail h2 {
+    font-size: 1.8em; /* Larger font size for the title */
+    color: #333; /* Dark text color */
+    margin-bottom: 20px; /* Space below the title */
+    text-align: center; /* Center align the title */
+}
+
+.blog-detail h4 {
+    font-size: 0.9em; /* Larger font size for the title */
+    color: #1a504c; /* Dark text color */
+    margin-bottom: 20px; /* Space below the title */
+    text-align: justify; /* Center align the title */
+    font-family: Inter, sans-serif;
+    font-weight: 100;
+}
+
+/* Blog Description */
+.blog-detail p {
+    font-size: 1.0em; /* Slightly larger font size for readability */
+    line-height: 1.6; /* Line height for better readability */
+    color: #666; /* Slightly lighter text color */
+    margin-bottom: 20px; /* Space below paragraphs */
+}
+
+/* Read More Link */
+.blog-detail a {
+    color: #1a504c; /* Primary color for links */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Make the link text bold */
+    display: inline-block; /* Ensure proper spacing */
+    margin-top: 20px; /* Space above the link */
+}
+
+.blog-detail a:hover {
+    text-decoration: underline; /* Add underline on hover */
+    color: #205b63; /* Darker color on hover */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .blog-detail {
+        padding: 15px; /* Adjust padding for smaller screens */
+    }
+
+    .blog-detail h2 {
+        font-size: 2em; /* Adjust title font size for smaller screens */
+    }
+
+    .blog-detail p {
+        font-size: 1em; /* Adjust paragraph font size for smaller screens */
+    }
+
+    .blog-detail a {
+        font-size: 1em; /* Adjust link font size for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .blog-detail {
+        padding: 10px; /* Further adjust padding for very small screens */
+    }
+
+    .blog-detail h2 {
+        font-size: 1.5em; /* Adjust title font size for very small screens */
+    }
+
+    .blog-detail p {
+        font-size: 0.9em; /* Adjust paragraph font size for very small screens */
+    }
+}
+
+
+

@@ -1,0 +1,121 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+.testimonial-section {
+  padding: 40px;
+  text-align: center;
+  background-color: white;
+  
+}
+
+.testimonial-section h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #333;
+  text-align: left;
+}
+
+.testimonial-section p {
+  font-size: 1.2rem;
+  color: #777;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.testimonial-container {
+  display: flex;
+  overflow-x: hidden;
+  justify-content: center;
+  gap: 60px;
+}
+
+.testimonial {
+  background-color: #f0f7ff;
+  border-radius: 10px;
+  padding: 20px;
+  min-width: 300px;
+  min-height: 250px;
+  max-width: 300px;
+  max-height: 250px;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.testimonial:hover {
+  transform: translateY(-10px);
+}
+
+.testimonial:before {
+  content: "“";
+  font-size: 10rem;
+  color: #d6e9ff;
+  position: absolute;
+  top: -30px;
+  left: -5px;
+  z-index: 1;
+}
+
+.testimonial h3 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.testimonial p {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+.testimonial .author {
+  font-size: 0.9rem;
+  color: #aaa;
+  font-style: italic;
+  margin-top: auto;
+}
+
+.testimonial-navigation {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.testimonial-navigation button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 0 10px;
+}
+
+.testimonial-navigation button:focus {
+  outline: none;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 600px) {
+  .testimonial {
+    min-width: 250px;
+    max-width: 250px;
+    min-height: 220px;
+    max-height: 220px;
+  }
+}
