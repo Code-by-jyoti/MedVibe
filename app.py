@@ -41,7 +41,7 @@ def lay():
     return render_template("layout.html")
 
 @myapp.route('/items')
-def index():
+def items():
     return render_template('items.html')
 
 @myapp.route('/contact')
