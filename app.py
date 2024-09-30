@@ -15,12 +15,12 @@ load_dotenv()
 myapp = Flask(__name__)
 
 @myapp.route('/')
-def Home():
+def index():
     faqs = FAQ.query.limit(6).all()  # Fetch all the FAQ data
 
     images = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg', '8.jpg']  # Sample images for Home
     
-    return render_template("Home.html", faqs=faqs, images=images)
+    return render_template("index.html", faqs=faqs, images=images)
 
 @myapp.route('/main')
 def main():

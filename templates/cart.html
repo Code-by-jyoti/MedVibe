@@ -65,7 +65,7 @@
       
         <!-- Buttons container -->
         <div class="cart-buttons {% if products %}with-products{% else %}without-products{% endif %}">
-          <a href="{{ url_for('Home') }}" class="continue-shopping">Continue Shopping</a>
+          <a href="{{ url_for('index') }}" class="continue-shopping">Continue Shopping</a>
           {% if products %}
            <a href="{{ url_for('checkout') }}" class="proceed-button">Proceed</a>
           {% endif %}
