@@ -12,9 +12,9 @@ from werkzeug.security import generate_password_hash  # Import for password hash
 # Load environment variables from .env file
 load_dotenv()
 
-myapp = Flask(__name__)
+app = Flask(__name__)
 
-@myapp.route('/')
+@app.route('/')
 def index():
     faqs = FAQ.query.limit(6).all()  # Fetch all the FAQ data
 
@@ -22,7 +22,7 @@ def index():
     
     return render_template("index.html", faqs=faqs, images=images)
 
-@myapp.route('/main')
+@app.route('/main')
 def main():
     categories = Category.query.all()  # Fetch all categories
     category_blogs = {}
@@ -36,66 +36,66 @@ def main():
 
    
 
-@myapp.route('/layout')
+@app.route('/layout')
 def lay():
     return render_template("layout.html")
 
-@myapp.route('/items')
+@app.route('/items')
 def items():
     return render_template('items.html')
 
-@myapp.route('/contact')
+@app.route('/contact')
 def contact():
     return render_template('contact.html')
 
-@myapp.route('/testimonals')
+@app.route('/testimonals')
 def testimonials():
     return render_template("testimonals.html")
 
-@myapp.route('/aboutAs')
+@app.route('/aboutAs')
 def about():
     return render_template("aboutAs.html")
 
-@myapp.route('/location')
+@app.route('/location')
 def location():
     return render_template("location.html")
 
-@myapp.route('/category/<int:category_id>')
+@app.route('/category/<int:category_id>')
 def category_detail(category_id):
     category = Category.query.get_or_404(category_id)
     user = Blog.query.filter_by(category_id=category_id).all()
     return render_template('main.html', category=category, user=user)
 
-@myapp.route('/blog/<int:blog_id>')
+@app.route('/blog/<int:blog_id>')
 def blog_detail(blog_id):
     blog = Blog.query.get_or_404(blog_id)
     return render_template('main.html', blog=blog)
 
 
-@myapp.route('/FAQ')
+@app.route('/FAQ')
 def faq():
     faqs = FAQ.query.all()  # This should fetch all the FAQ data
     return render_template('FAQ.html', faqs=faqs)
 
-@myapp.route('/footer')
+@app.route('/footer')
 def Footer():
     return render_template("footer.html")
 
-@myapp.route('/userprofilenavbar')
+@app.route('/userprofilenavbar')
 def userp():
     return render_template("userprofilenavbar.html")
 
 
 
-myapp.secret_key = secrets.token_hex(32)
+app.secret_key = secrets.token_hex(32)
 
-myapp.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
-myapp.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-myapp.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
-myapp.config['SESSION_COOKIE_SECURE'] = False  # Change to True if using HTTPS
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
+app.config['SESSION_COOKIE_SECURE'] = False  # Change to True if using HTTPS
 
-db = SQLAlchemy(myapp)
-migrate = Migrate(myapp, db)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -204,14 +204,14 @@ class OrderItem(db.Model):
     total = db.Column(db.Float, nullable=False)
 
 # Configure email
-myapp.config['MAIL_SERVER'] = 'smtp.gmail.com'
-myapp.config['MAIL_PORT'] = 465
-myapp.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
-myapp.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
-myapp.config['MAIL_USE_TLS'] = False
-myapp.config['MAIL_USE_SSL'] = True
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
 
-mail = Mail(myapp)
+mail = Mail(app)
 
 def send_reset_email(email, token):
     msg = Message('Password Reset Request',
@@ -228,7 +228,7 @@ If you did not make this request, simply ignore this email.
     mail.send(msg)
 
 
-@myapp.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         email = request.form['email']
@@ -273,7 +273,7 @@ def register():
 
     return render_template('register.html')
 
-@myapp.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form['email']
@@ -287,7 +287,7 @@ def login():
             flash('email or password is wrong. Please try again.', 'danger')
     return render_template('login.html')
 
-@myapp.route('/userprofile', methods=['GET', 'POST'])
+@app.route('/userprofile', methods=['GET', 'POST'])
 def profile():
     if 'email' not in session:
         return redirect(url_for('login'))
@@ -309,18 +309,18 @@ def profile():
     return render_template('userprofile.html', user=user)
 
 
-@myapp.route('/logout')
+@app.route('/logout')
 def logout():
     session.pop('email', None)
     flash('You have been logged out.', 'success')
     return redirect(url_for('login'))
 
-@myapp.before_request
+@app.before_request
 def make_session_permanent():
     session.permanent = True
     session.modified = True  # Mark the session as modified
 
-@myapp.route('/forgot_password', methods=['GET', 'POST'])
+@app.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
         email = request.form['email']
@@ -339,7 +339,7 @@ def forgot_password():
     return render_template('forgot_password.html')
 
 
-@myapp.route('/reset_password/<token>', methods=['GET', 'POST'])
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
     reset_token = ResetToken.query.filter_by(token=token).first()
     if not reset_token:
@@ -365,7 +365,7 @@ def reset_password(token):
     return render_template('reset_password.html', token=token)
 
 
-@myapp.route('/catalog')
+@app.route('/catalog')
 def products():
     categories = ProductCategory.query.all()
     subcategories = Subcategory.query.all()
@@ -405,7 +405,7 @@ def products():
                            subcategories=subcategories, brands=brands,
                            products=products)
 
-@myapp.route('/product/<int:product_id>')
+@app.route('/product/<int:product_id>')
 def product_detail(product_id):
     product = Product.query.get(product_id)
     related_images = RelatedImage.query.filter_by(product_id=product_id).all()
@@ -420,7 +420,7 @@ def product_detail(product_id):
     added_quantity = request.args.get('added_quantity', default=1, type=int)
     return render_template('product_detail.html', product=product, related_images=related_images,available_quantities=available_quantities,added_quantity=added_quantity)
 
-@myapp.route('/add_to_cart/<int:product_id>', methods=['POST'])
+@app.route('/add_to_cart/<int:product_id>', methods=['POST'])
 def add_to_cart(product_id):
     quantity = int(request.form['quantity'])
     cart_items = session.get('cart', {})
@@ -438,7 +438,7 @@ def add_to_cart(product_id):
     
     return redirect(url_for('cart'))
 
-@myapp.route('/cart')
+@app.route('/cart')
 def cart():
     cart_items = session.get('cart', {})
     product_ids = list(map(int, cart_items.keys()))
@@ -458,7 +458,7 @@ def cart():
 
 
 
-@myapp.route('/remove_from_cart/<int:product_id>')
+@app.route('/remove_from_cart/<int:product_id>')
 def remove_from_cart(product_id):
     cart_items = session.get('cart', {})
     if str(product_id) in cart_items:  # Convert product_id to string
@@ -468,7 +468,7 @@ def remove_from_cart(product_id):
 
 from flask import session, request, redirect, url_for, flash, render_template
 
-@myapp.route('/checkout', methods=['GET', 'POST'])
+@app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     # Check if user is authenticated
     if 'email' not in session:  # Ensure user is logged in
@@ -538,7 +538,7 @@ def calculate_total_price(products, cart_items):
     return total
 
 
-@myapp.route('/order_confirmation/<int:order_id>')
+@app.route('/order_confirmation/<int:order_id>')
 def order_confirmation(order_id):
     order = Order.query.get(order_id)
     
@@ -561,7 +561,7 @@ def order_confirmation(order_id):
 
 
 
-@myapp.route('/update_cart/<int:product_id>/<int:quantity>', methods=['POST'])
+@app.route('/update_cart/<int:product_id>/<int:quantity>', methods=['POST'])
 def update_cart(product_id, quantity):
     cart_items = session.get('cart', {})
     
@@ -574,7 +574,7 @@ def update_cart(product_id, quantity):
     return '', 204  # No content response
 
 
-@myapp.route('/search_suggestions', methods=['GET'])
+@app.route('/search_suggestions', methods=['GET'])
 def search_suggestions():
     query = request.args.get('q', '')  # Get the search query from the URL parameter
     if query:
@@ -599,4 +599,4 @@ def search_suggestions():
 
 
 if __name__ == '__main__':
-    myapp.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
