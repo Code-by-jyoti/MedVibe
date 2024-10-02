@@ -3,26 +3,43 @@ from flask_mail import Mail, Message
 import secrets
 import os
 from dotenv import load_dotenv
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import timedelta
-from datetime import datetime
 from werkzeug.security import check_password_hash  # Make sure to use hashed passwords
 from werkzeug.security import generate_password_hash  # Import for password hashing
+from models import db, User, ResetToken, FAQ, Category, Blog, ProductCategory, Subcategory, Brand, Product, RelatedImage, Order, OrderItem
 # Load environment variables from .env file
 load_dotenv()
 
-app = Flask(__name__)
+myapp = Flask(__name__)
 
-@app.route('/')
+myapp.secret_key = secrets.token_hex(32)
+myapp.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
+myapp.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+myapp.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
+myapp.config['SESSION_COOKIE_SECURE'] = False  # Change to True if using HTTPS
+
+db.init_app(myapp)
+migrate = Migrate(myapp, db)
+
+# Configure email
+myapp.config['MAIL_SERVER'] = 'smtp.gmail.com'
+myapp.config['MAIL_PORT'] = 465
+myapp.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+myapp.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+myapp.config['MAIL_USE_TLS'] = False
+myapp.config['MAIL_USE_SSL'] = True
+
+mail = Mail(myapp)
+
+
+@myapp.route('/')
 def index():
     faqs = FAQ.query.limit(6).all()  # Fetch all the FAQ data
-
     images = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg', '8.jpg']  # Sample images for Home
-    
     return render_template("index.html", faqs=faqs, images=images)
 
-@app.route('/main')
+@myapp.route('/main')
 def main():
     categories = Category.query.all()  # Fetch all categories
     category_blogs = {}
@@ -33,185 +50,53 @@ def main():
 
     return render_template("main.html", categories=categories, category_blogs=category_blogs, separate_blogs=separate_blogs)
 
-
-   
-
-@app.route('/layout')
+@myapp.route('/layout')
 def lay():
     return render_template("layout.html")
 
-@app.route('/items')
+@myapp.route('/items')
 def items():
     return render_template('items.html')
 
-@app.route('/contact')
+@myapp.route('/contact')
 def contact():
     return render_template('contact.html')
 
-@app.route('/testimonals')
+@myapp.route('/testimonals')
 def testimonials():
     return render_template("testimonals.html")
 
-@app.route('/aboutAs')
+@myapp.route('/aboutAs')
 def about():
     return render_template("aboutAs.html")
 
-@app.route('/location')
+@myapp.route('/location')
 def location():
     return render_template("location.html")
 
-@app.route('/category/<int:category_id>')
+@myapp.route('/category/<int:category_id>')
 def category_detail(category_id):
     category = Category.query.get_or_404(category_id)
     user = Blog.query.filter_by(category_id=category_id).all()
     return render_template('main.html', category=category, user=user)
 
-@app.route('/blog/<int:blog_id>')
+@myapp.route('/blog/<int:blog_id>')
 def blog_detail(blog_id):
     blog = Blog.query.get_or_404(blog_id)
     return render_template('main.html', blog=blog)
 
-
-@app.route('/FAQ')
+@myapp.route('/FAQ')
 def faq():
     faqs = FAQ.query.all()  # This should fetch all the FAQ data
     return render_template('FAQ.html', faqs=faqs)
 
-@app.route('/footer')
+@myapp.route('/footer')
 def Footer():
     return render_template("footer.html")
 
-@app.route('/userprofilenavbar')
+@myapp.route('/userprofilenavbar')
 def userp():
     return render_template("userprofilenavbar.html")
-
-
-
-app.secret_key = secrets.token_hex(32)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
-app.config['SESSION_COOKIE_SECURE'] = False  # Change to True if using HTTPS
-
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(150), unique=True, nullable=False)
-    password = db.Column(db.String(150), nullable=False)
-    phone = db.Column(db.String(10), nullable=True)  # Adjust length as needed
-    city = db.Column(db.String(100), nullable=True)
-    state = db.Column(db.String(100), nullable=True)
-    address = db.Column(db.Text, nullable=True)  # Use Text for longer addresses
-
-class ResetToken(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    token = db.Column(db.String(255), unique=True, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-class FAQ(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    question = db.Column(db.String(200), nullable=False)
-    answer = db.Column(db.Text, nullable=False)
-
-class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(255), nullable=False)
-    image_filename = db.Column(db.String(100))  # Image for the category
-    blogs = db.relationship('Blog', backref='category', lazy=True)
-
-class Blog(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    image_filename = db.Column(db.String(100))  # Blog image
-    detail_page = db.Column(db.Text, nullable=False)  # Full content
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=True)
-    # category_id can be NULL for the separate 11 blogs
-
-class ProductCategory(db.Model):
-    __tablename__ = 'product_category'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    subcategories = db.relationship('Subcategory', backref='product_category', lazy=True)
-    products = db.relationship('Product', backref='product_category', lazy=True)
-
-    def __repr__(self):
-        return f'<ProductCategory {self.name}>'
-    
-class Subcategory(db.Model):
-    __tablename__ = 'subcategory'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('product_category.id'), nullable=False)
-    products = db.relationship('Product', backref='subcategory', lazy=True)
-
-class Brand(db.Model):
-    __tablename__ = 'brand'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('product_category.id'), nullable=True)  # Foreign key to Category
-    subcategory_id = db.Column(db.Integer, db.ForeignKey('subcategory.id'), nullable=True)  # Foreign key to Subcategory
-    products = db.relationship('Product', backref='brand', lazy=True)
-
-class Product(db.Model):
-    __tablename__ = 'product'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    mrp = db.Column(db.Float, nullable=False)  # Add MRP field
-    discount = db.Column(db.Float, nullable=True)  # Discount percentage
-    description = db.Column(db.String(500), nullable=True)
-    category_id = db.Column(db.Integer, db.ForeignKey('product_category.id'), nullable=False)
-    subcategory_id = db.Column(db.Integer, db.ForeignKey('subcategory.id'), nullable=True)
-    brand_id = db.Column(db.Integer, db.ForeignKey('brand.id'), nullable=True)
-    image_filename = db.Column(db.String(100), nullable=True)
-    stock = db.Column(db.Integer, nullable=False, default=0)  # Add stock field
-    benefits = db.Column(db.Text, nullable=True)  # New field for benefits
-    directions = db.Column(db.Text, nullable=True)  # New field for directions
-    features = db.Column(db.Text, nullable=True)  # New field for features
-    safety_information = db.Column(db.Text, nullable=True)  # Optional field for safety information
-    country_of_origin = db.Column(db.String(100), nullable=True)  # Country of origin field
-    manufacturer = db.Column(db.String(100), nullable=True)        # Manufacturer field
-    
-    def __repr__(self):
-        return f'<Product {self.name}>'
-    
-class RelatedImage(db.Model):
-    __tablename__ = 'related_images'
-    id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
-    image_filename = db.Column(db.String(100), nullable=False)
-
-class Order(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_email = db.Column(db.String(120), nullable=False)
-    total_amount = db.Column(db.Float, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    name = db.Column(db.String(100))  # Add this line to store the name
-    items = db.relationship('OrderItem', backref='order', lazy=True)
-
-class OrderItem(db.Model):
-    __tablename__ = 'OrderItem'
-    id = db.Column(db.Integer, primary_key=True)
-    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
-    product_id = db.Column(db.Integer, nullable=False)
-    product_name = db.Column(db.String(120), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    total = db.Column(db.Float, nullable=False)
-
-# Configure email
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
-
-mail = Mail(app)
 
 def send_reset_email(email, token):
     msg = Message('Password Reset Request',
@@ -227,8 +112,7 @@ If you did not make this request, simply ignore this email.
 '''
     mail.send(msg)
 
-
-@app.route('/register', methods=['GET', 'POST'])
+@myapp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         email = request.form['email']
@@ -252,8 +136,6 @@ def register():
 
         # Hash the password for security
         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
-
-
         # Create a new user
         new_user = User(
             email=email,
@@ -262,8 +144,7 @@ def register():
             city=city,
             state=state,
             address=address
-        )
-        
+        )    
         # Add the new user to the database
         db.session.add(new_user)
         db.session.commit()
@@ -273,7 +154,7 @@ def register():
 
     return render_template('register.html')
 
-@app.route('/login', methods=['GET', 'POST'])
+@myapp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form['email']
@@ -287,7 +168,7 @@ def login():
             flash('email or password is wrong. Please try again.', 'danger')
     return render_template('login.html')
 
-@app.route('/userprofile', methods=['GET', 'POST'])
+@myapp.route('/userprofile', methods=['GET', 'POST'])
 def profile():
     if 'email' not in session:
         return redirect(url_for('login'))
@@ -308,19 +189,18 @@ def profile():
     # Render the profile page with the user data
     return render_template('userprofile.html', user=user)
 
-
-@app.route('/logout')
+@myapp.route('/logout')
 def logout():
     session.pop('email', None)
     flash('You have been logged out.', 'success')
     return redirect(url_for('login'))
 
-@app.before_request
+@myapp.before_request
 def make_session_permanent():
     session.permanent = True
     session.modified = True  # Mark the session as modified
 
-@app.route('/forgot_password', methods=['GET', 'POST'])
+@myapp.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
         email = request.form['email']
@@ -338,8 +218,7 @@ def forgot_password():
             flash('Email not found.', 'danger')
     return render_template('forgot_password.html')
 
-
-@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+@myapp.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
     reset_token = ResetToken.query.filter_by(token=token).first()
     if not reset_token:
@@ -364,8 +243,7 @@ def reset_password(token):
     
     return render_template('reset_password.html', token=token)
 
-
-@app.route('/catalog')
+@myapp.route('/catalog')
 def products():
     categories = ProductCategory.query.all()
     subcategories = Subcategory.query.all()
@@ -405,7 +283,7 @@ def products():
                            subcategories=subcategories, brands=brands,
                            products=products)
 
-@app.route('/product/<int:product_id>')
+@myapp.route('/product/<int:product_id>')
 def product_detail(product_id):
     product = Product.query.get(product_id)
     related_images = RelatedImage.query.filter_by(product_id=product_id).all()
@@ -420,7 +298,7 @@ def product_detail(product_id):
     added_quantity = request.args.get('added_quantity', default=1, type=int)
     return render_template('product_detail.html', product=product, related_images=related_images,available_quantities=available_quantities,added_quantity=added_quantity)
 
-@app.route('/add_to_cart/<int:product_id>', methods=['POST'])
+@myapp.route('/add_to_cart/<int:product_id>', methods=['POST'])
 def add_to_cart(product_id):
     quantity = int(request.form['quantity'])
     cart_items = session.get('cart', {})
@@ -438,7 +316,7 @@ def add_to_cart(product_id):
     
     return redirect(url_for('cart'))
 
-@app.route('/cart')
+@myapp.route('/cart')
 def cart():
     cart_items = session.get('cart', {})
     product_ids = list(map(int, cart_items.keys()))
@@ -456,9 +334,7 @@ def cart():
 
     return render_template('cart.html', products=products, cart_items=cart_items, total_price=total_price)
 
-
-
-@app.route('/remove_from_cart/<int:product_id>')
+@myapp.route('/remove_from_cart/<int:product_id>')
 def remove_from_cart(product_id):
     cart_items = session.get('cart', {})
     if str(product_id) in cart_items:  # Convert product_id to string
@@ -468,7 +344,7 @@ def remove_from_cart(product_id):
 
 from flask import session, request, redirect, url_for, flash, render_template
 
-@app.route('/checkout', methods=['GET', 'POST'])
+@myapp.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     # Check if user is authenticated
     if 'email' not in session:  # Ensure user is logged in
@@ -537,16 +413,12 @@ def calculate_total_price(products, cart_items):
         total += price * quantity
     return total
 
-
-@app.route('/order_confirmation/<int:order_id>')
+@myapp.route('/order_confirmation/<int:order_id>')
 def order_confirmation(order_id):
     order = Order.query.get(order_id)
-    
-
     if not order:
         flash('No order found!', 'warning')
         return redirect(url_for('checkout'))
-
     # Get order items
     order_items = OrderItem.query.filter_by(order_id=order.id).all()
 
@@ -559,9 +431,7 @@ def order_confirmation(order_id):
         name=order.name
     )
 
-
-
-@app.route('/update_cart/<int:product_id>/<int:quantity>', methods=['POST'])
+@myapp.route('/update_cart/<int:product_id>/<int:quantity>', methods=['POST'])
 def update_cart(product_id, quantity):
     cart_items = session.get('cart', {})
     
@@ -573,8 +443,7 @@ def update_cart(product_id, quantity):
     session['cart'] = cart_items  # Save changes to session
     return '', 204  # No content response
 
-
-@app.route('/search_suggestions', methods=['GET'])
+@myapp.route('/search_suggestions', methods=['GET'])
 def search_suggestions():
     query = request.args.get('q', '')  # Get the search query from the URL parameter
     if query:
@@ -593,10 +462,9 @@ def search_suggestions():
                 'subcategory': subcategory.name if subcategory else ''
             })
 
-        # Return the suggestions as a JSON response
+        
         return jsonify(suggestions)
     return jsonify([])  # Return an empty list if no query
 
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    myapp.run(host='0.0.0.0', port=5000, debug=True)
