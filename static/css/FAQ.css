@@ -95,21 +95,22 @@ h1 {
 
 .accordion-item {
     background-color: #ffffff;
-    border-radius: 8px;
+    border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
-    border: none;
-    max-width: 800px;
+    margin-bottom: 1rem;
+    border: 1px solid #e5e5e5;;
+    max-width: 1000px;
     margin-left: auto;
     margin-right: auto; /* Center the accordion items */
 }
 
 .accordion-header {
     margin-bottom: 0;
+    border-bottom: 1px solid #e5e5e5; /* Light border below header */
 }
 
 .question {
-    background-color: #53d366;
+    background-color: #e3e6e4;
     color: #ffffff;
     font-weight: bold;
     cursor: pointer;
@@ -119,19 +120,29 @@ h1 {
 }
 
 .accordion-button {
-    background-color: #53d366;
-    color: #ffffff;
-    font-weight: bold;
-    text-align: center; /* Center the button text */
+    font-size: 1.125rem; /* Font size for accordion buttons */
+    font-weight: 600; /* Semi-bold font weight */
+    color: #444; /* Darker text color */
+    background-color: #e5efe7; /* Light background color */
+    border: none; /* Remove default border */
+    border-radius: 0.75rem; /* Rounded corners */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transitions */
+    padding: 1rem; /* Padding for button */
+    text-align: left; /* Align text to the left */
+    width: 100%; /* Full width for button */
+    display: flex; /* Flexbox for alignment */
+    justify-content: space-between; /* Space between text and caret */
+    align-items: center; /* Center align items vertically */
 }
 
 .accordion-button:not(.collapsed) {
-    color: #ffffff;
-    background-color: #53a14d; /* Darker green when expanded */
+    color: #000000;
+    background-color: #f4f2f2; /* Darker green when expanded */
 }
 
 .accordion-button:hover {
-    background-color: #4ab75a; /* Lighter green on hover */
+    background-color: #4ab75a; /* Darker background on hover */
+    color: #000; /* Darker text color on hover */
 }
 
 .accordion-body {

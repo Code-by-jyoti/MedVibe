@@ -1,4 +1,3 @@
-<!-- checkout.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,71 +9,99 @@
 <body>
     <div class="container">
         <h1>Checkout</h1>
-
+    
         {% if products %}
         <!-- Checkout Form -->
         <form method="POST" action="{{ url_for('checkout') }}">
-            <!-- Shipping Information -->
-            <div class="shipping-info">
-                <h2>Shipping Information</h2>
-
-                <label for="name">Full Name:</label>
-                <input type="text" id="name" name="name" required>
-
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-
-                <label for="phone">Phone Number:</label>
-                <input type="text" id="phone" name="phone" required pattern="[0-9]{10}" title="Enter a 10-digit phone number">
-
-                <label for="address">Address:</label>
-                <textarea id="address" name="address" rows="3" required></textarea>
-
-                <label for="city">City:</label>
-                <input type="text" id="city" name="city" required>
-
-                <label for="state">State:</label>
-                <input type="text" id="state" name="state" required>
-
-                <label for="zip_code">Zip Code:</label>
-                <input type="text" id="zip_code" name="zip_code" required pattern="[0-9]{6}" title="Enter a valid 6-digit zip code">
+            <div class="checkout-layout">
+                <!-- Shipping Information -->
+                <div class="shipping-info">
+                    <h2>Shipping Information</h2>
+                
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" required value="{{ user.name }}" readonly>
+                
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required value="{{ user.email }}" readonly>
+                
+                    <label for="phone">Phone Number:</label>
+                    <input type="text" id="phone" name="phone" required pattern="[0-9]{10}" 
+                           title="Enter a 10-digit phone number" value="{{ user.phone }}" readonly>
+                
+                    <label for="address">Address:</label>
+                    <textarea id="address" name="address" rows="3" required readonly>{{ user.address }}</textarea>
+                
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city" required value="{{ user.city }}" readonly>
+                
+                    <label for="state">State:</label>
+                    <input type="text" id="state" name="state" required value="{{ user.state }}" readonly>
+                
+                    <label for="zip_code">Zip Code:</label>
+                    <input type="text" id="zip_code" name="zip_code" required pattern="[0-9]{6}" 
+                           title="Enter a valid 6-digit zip code" value="{{ user.zip_code }}" readonly>
+                
+                    <!-- Update and Save Buttons -->
+                    <button type="button" id="editButton" onclick="enableEditing()">Update</button>
+                    <button type="submit" id="saveButton" style="display: none;">Save</button>
+                </div>
+                
+                <script>
+                    // JavaScript function to toggle between read-only and editable modes
+                    function enableEditing() {
+                        const inputs = document.querySelectorAll('.shipping-info input, .shipping-info textarea');
+                        inputs.forEach(input => input.removeAttribute('readonly'));
+                
+                        // Hide the Update button and show the Save button
+                        document.getElementById('editButton').style.display = 'none';
+                        document.getElementById('saveButton').style.display = 'inline-block';
+                    }
+                </script>
+                
+    
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <h2>Order Summary</h2>
+                    <table class="order-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in products %}
+                            <tr>
+                                <td>{{ product.name }}</td>
+                                <td>{{ cart_items.get(product.id|string, 0) }}</td>
+                                <td>₹{{ "%.2f"|format(product.mrp * (1 - ((product.discount or 0) / 100))) }}</td>
+                                <td>₹{{ "%.2f"|format(cart_items.get(product.id|string, 0) * (product.mrp * (1 - ((product.discount or 0) / 100)))) }}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td colspan="3"><strong>Total Amount</strong></td>
+                                <td><strong>₹{{ "%.2f"|format(total_price) }}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
-            <!-- Order Summary -->
-            <div class="order-summary">
-                <h2>Order Summary</h2>
-                <table class="order-table">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for product in products %}
-                        <tr>
-                            <td>{{ product.name }}</td>
-                            <td>{{ cart_items.get(product.id|string, 0) }}</td>
-                            <td>₹{{ "%.2f"|format(product.mrp * (1 - ((product.discount or 0) / 100))) }}</td>
-                            <td>₹{{ "%.2f"|format(cart_items.get(product.id|string, 0) * (product.mrp * (1 - ((product.discount or 0) / 100)))) }}</td>
-                        </tr>
-                        {% endfor %}
-                        <tr>
-                            <td colspan="3"><strong>Total Amount</strong></td>
-                            <td><strong>₹{{ "%.2f"|format(total_price) }}</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
+    
             <!-- Payment Method -->
             <div class="payment-method">
                 <h2>Payment Method</h2>
-                <p>Cash on Delivery (COD)</p>
+                <label>
+                    <input type="radio" name="payment_method" value="cod" checked>
+                    Cash on Delivery (COD)
+                </label>
+                <label>
+                    <input type="radio" name="payment_method" value="razorpay">
+                    Pay Online with Razorpay
+                </label>
             </div>
-
+    
             <!-- Confirm Order Button -->
             <button type="submit" class="confirm-order">Confirm Order</button>
         </form>
@@ -85,7 +112,70 @@
         </div>
         {% endif %}
     </div>
+    
+<!-- Razorpay Script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.querySelector('.confirm-order').onclick = function(e) {
+        const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
 
+        if (paymentMethod === 'razorpay') {
+            e.preventDefault(); // Prevent the form from submitting
+
+            const options = {
+                "key": "rzp_test_is2RgeSGBanvEh", // Replace with your Razorpay key
+                "amount": {{ total_price * 100 }}, // Amount is in paise
+                "currency": "INR",
+                "name": "MedVibe ",
+                "description": "Order Description",
+                "image": "https://your_logo_url.com/logo.png",
+                "order_id": "", // You will set this after creating an order in your backend
+                "handler": function (response) {
+                    // After successful payment
+                    const form = document.createElement("form");
+                    form.method = "POST";
+                    form.action = "{{ url_for('checkout') }}";
+
+                    // Append Razorpay response
+                    const input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = "razorpay_payment_id";
+                    input.value = response.razorpay_payment_id;
+                    form.appendChild(input);
+
+                    // Add other form fields as needed
+        form.appendChild(createInput("name", document.getElementById("name").value));
+        form.appendChild(createInput("email", document.getElementById("email").value));
+        form.appendChild(createInput("phone", document.getElementById("phone").value));
+        form.appendChild(createInput("address", document.getElementById("address").value));
+        form.appendChild(createInput("city", document.getElementById("city").value));
+        form.appendChild(createInput("state", document.getElementById("state").value));
+        form.appendChild(createInput("zip_code", document.getElementById("zip_code").value));
+        form.appendChild(createInput("payment_method", "razorpay"));
+
+                    document.body.appendChild(form);
+                    form.submit(); // Submit the form
+                },
+                "modal": {
+                    "ondismiss": function() {
+                        alert('Payment cancelled');
+                    }
+                }
+                
+            };
+
+            const rzp1 = new Razorpay(options);
+            rzp1.open(); // Open the Razorpay payment modal
+        }
+        function createInput(name, value) {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = name;
+    input.value = value;
+    return input;
+}
+    };
+</script>
     <script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
 </body>
 </html>

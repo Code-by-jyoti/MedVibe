@@ -38,6 +38,10 @@
                 <img src="{{ url_for('static', filename='images/cart.png') }}" alt="Cart">
                 <span class="icon-text">Cart</span>
             </a>
+            <a href="{{ url_for('admin_login') }}" class="icon">
+                <img src="{{ url_for('static', filename='images/login.png') }}" alt="Admin">
+                <span class="icon-text">Admin</span>
+            </a>
         </div>
     </nav>
     {% block body%}
@@ -66,9 +70,9 @@
                 <div class="footer-column">
                   <h3>Legal</h3>
                     <ul>
-                        <li><a href="#">Terms & Conditions</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Returns & Cancellations</a></li>
+                        <li><a href="/term_conditions">Terms & Conditions</a></li>
+                        <li><a href="/privacy_policy">Privacy Policy</a></li>
+                        <li><a href="/return">Returns & Cancellations</a></li>
                     </ul>
                 </div>
     
@@ -79,7 +83,9 @@
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.instagram.com/invites/contact/?igsh=5uijuvneinvk&utm_content=vxyfakd" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
                     </div>
                 </div>
             </div>

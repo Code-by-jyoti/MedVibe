@@ -3,76 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart</title>
+    <title>Your Cart</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>Your Shopping Cart</h1>
-        {% if products %}
-            <table class="cart-table">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Image</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for product in products %}
-                        <tr>
-                            <td>{{ product.name }}</td>
-                            <td>
-                                <a href="{{ url_for('product_detail', product_id=product.id) }}">
-                                    <img src="{{ url_for('static', filename='PC_product_images/' + product.image_filename) }}" alt="{{ product.name }}" class="product-image">
-                                </a>
-                            </td>
-                            <td>
-                                <div class="quantity-controls">
-                                    <button onclick="updateQuantity('{{ product.id }}', -1, {{ product.stock }}, {{ product.mrp * (1 - ((product.discount or 0) / 100)) }})">-</button>
-                                    <input type="number" id="quantity-{{ product.id }}" value="{{ cart_items.get(product.id|string, 0) }}" min="1" readonly>
-                                    <button onclick="updateQuantity('{{ product.id }}', 1, {{ product.stock }}, {{ product.mrp * (1 - ((product.discount or 0) / 100)) }})">+</button>
-                                </div>
-                            </td>
-                            <td>₹{{ "%.2f"|format(product.mrp * (1 - ((product.discount or 0) / 100))) }}</td>
-                            <td id="total-{{ product.id }}" class="product-total">
-                                ₹{{ "%.2f"|format(cart_items.get(product.id|string, 0) * (product.mrp * (1 - ((product.discount or 0) / 100)))) }}
-                            </td>
-                            <td>
-                                <a href="{{ url_for('remove_from_cart', product_id=product.id) }}" class="remove-button"><i class="fas fa-trash-alt"></i></a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    <tr>
-                        <td colspan="4">Total Amount</td>
-                        <td id="cart-total">₹{{ "%.2f"|format(total_price) }}</td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
-        {% else %}
-        <div class="empty-cart">
-            <i class="fas fa-shopping-cart empty-icon"></i>
-            <p>Your cart is empty.</p>
-            
-        </div>
-        {% endif %}
-    
-      
-        <!-- Buttons container -->
-        <div class="cart-buttons {% if products %}with-products{% else %}without-products{% endif %}">
-          <a href="{{ url_for('index') }}" class="continue-shopping">Continue Shopping</a>
-          {% if products %}
-           <a href="{{ url_for('checkout') }}" class="proceed-button">Proceed</a>
-          {% endif %}
-        </div>
+        <h1>Your Cart</h1>
 
+        {% if cart_details %}
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Image</th> 
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price (₹)</th>
+                    <th>Total (₹)</th>
+                    <th>Remove</th> <!-- New header for remove button -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_details %}
+                    <tr>
+                        <td>
+                            <img src="{{ url_for('static', filename='PC_product_images/' + item.image_filename) }}" alt="{{ item.name }}" class="product-image">
+                        </td>
+                        <td>{{ item.name }}</td>
+                        <td>
+                            <form action="{{ url_for('update_cart', product_id=item.id) }}" method="POST" class="quantity-form">
+                                <button type="button" class="quantity-button" onclick="changeQuantity('{{ item.id }}', -1)">-</button>
+                                <input 
+                                    type="number" 
+                                    name="quantity" 
+                                    id="quantity-{{ item.id }}" 
+                                    value="{{ item.quantity }}" 
+                                    min="1"
+                                    class="quantity-input"
+                                    data-mrp="{{ item.mrp }}" 
+                                    data-discount="{{ item.discount or 0 }}"> <!-- Store product MRP and discount -->
+                                <button type="button" class="quantity-button" onclick="changeQuantity('{{ item.id }}', 1)">+</button>
+                            </form>
+                        </td>
+                        <td><p>₹{{ "%.2f"|format(item.mrp * (1 - ((item.discount or 0) / 100))) }}</p></td>
+                        <td id="subtotal-{{ item.id }}">₹{{ "%.2f"|format(item.mrp * (1 - ((item.discount or 0) / 100)) * item.quantity) }}</td> <!-- Display subtotal using discounted price -->
+                        <td>
+                            <form action="{{ url_for('remove_from_cart', product_id=item['id']) }}" method="POST">
+                                <button type="submit" class="remove-button">
+                                    <i class="fas fa-trash-alt"></i> <!-- Dustbin Icon -->
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="total-container">
+            <p><strong>Total Amount:</strong> ₹<span id="total-amount">{{ "%.2f"|format(total_amount) }}</span></p>
+        </div>
+        
+        {% else %}
+        <div class="cart-container">
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart empty-icon"></i>
+                <p>Your cart is empty.</p>
+            </div>
+        {% endif %}
+
+        <div class="cart-buttons {% if cart_details %}with-items{% else %}without-items{% endif %}">
+            <a href="{{ url_for('index') }}" class="continue-shopping">Continue Shopping</a>
+            {% if cart_details %}
+            <a href="{{ url_for('checkout') }}" class="checkout-button">Proceed to Checkout</a>
+            {% endif %}
+        </div>
     </div>
-    
-    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+
+    <script>
+        function changeQuantity(productId, change) {
+            const quantityInput = document.getElementById(`quantity-${productId}`);
+            let currentQuantity = parseInt(quantityInput.value) || 1;
+            currentQuantity += change;
+
+            // Ensure quantity is at least 1
+            if (currentQuantity < 1) {
+                currentQuantity = 1;
+            }
+
+            quantityInput.value = currentQuantity;
+
+            // Fetch MRP and Discount from data attributes
+            const mrp = parseFloat(quantityInput.dataset.mrp);
+            const discount = parseFloat(quantityInput.dataset.discount);
+
+            // Calculate the discounted price and new subtotal
+            const discountedPrice = mrp * (1 - discount / 100);
+            const newSubtotal = (discountedPrice * currentQuantity).toFixed(2);
+
+            // Update the subtotal in the DOM
+            document.getElementById(`subtotal-${productId}`).innerText = `₹${newSubtotal}`;
+
+            // Recalculate the total amount dynamically
+            recalculateTotalAmount();
+
+            // Optional: Update the backend session with fetch
+            const form = quantityInput.closest('form');
+            fetch(form.action, {
+                method: 'POST',
+                body: new URLSearchParams(new FormData(form))
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function recalculateTotalAmount() {
+            let totalAmount = 0;
+
+            // Loop through all quantity inputs and sum up the discounted subtotals
+            document.querySelectorAll('.quantity-input').forEach(input => {
+                const quantity = parseInt(input.value) || 1;
+                const mrp = parseFloat(input.dataset.mrp);
+                const discount = parseFloat(input.dataset.discount);
+
+                // Calculate the discounted price for each product
+                const discountedPrice = mrp * (1 - discount / 100);
+                totalAmount += discountedPrice * quantity;
+            });
+
+            // Update the total amount in the DOM
+            document.getElementById('total-amount').innerText = totalAmount.toFixed(2);
+        }
+    </script>
 </body>
 </html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedVibe - Prescription Services</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/prescription.css') }}">
+</head>
+<body>
+    <!-- Flash messages section -->
+    <div>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="service-container">
+        <section id="upload" class="service-section">
+            <h2>Prescription Upload</h2>
+            <p>Securely upload your prescription for quick and easy medication orders.</p>
+            <form action="/upload" method="post" enctype="multipart/form-data" id="uploadForm">
+                <label for="prescriptionFile">Upload your prescription:</label>
+                <input type="file" id="prescriptionFile" name="prescriptionFile" required>
+                <button type="submit">Upload Prescription</button>
+            </form>
+        </section>
+        
+    
+        <section id="refill" class="service-section">
+            <h2>Prescription Refill</h2>
+            <p>Request a refill for your existing prescriptions.</p>
+            <form action="/refill" method="post">
+                <label for="refillPrescription">Prescription Number:</label>
+                <input type="text" id="refillPrescription" name="refillPrescription" placeholder="Enter your prescription number" required>
+                <button type="submit">Request Refill</button>
+            </form>
+        </section>
+    </div>
+    </div>
+
+    <div id="uploadedImageContainer" style="display: none;">
+        <img id="uploadedImage" src="" alt="Uploaded Prescription" style="max-width: 200px; display: block;"/>
+        <button id="removeImage">&times;</button>
+    </div>
+    <script src="{{ url_for('static', filename='js/prescription.js') }}"></script>
+</body>
+</html>

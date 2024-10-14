@@ -20,7 +20,7 @@ body {
 }
 
 .header-left .logo {
-  max-width: 100px; /* Adjust the size of the logo */
+  max-width: 140px; /* Adjust the size of the logo */
   height: auto; /* Maintain aspect ratio */
 }
 

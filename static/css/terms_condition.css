@@ -1,0 +1,135 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a504c;
+    padding: 10px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+  
+.header-left {
+    display: flex;
+    align-items: left; /* Vertically centers the logo */
+    padding: 10px; /* Optional: adds some space around the logo */
+}
+
+.header-left .logo {
+    max-width: 100px; /* Adjust the size of the logo */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.icon {
+    display: block; /* Ensures the image is treated as a block element */
+}
+
+  
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+  
+.header-icons .icon {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+  }
+  
+  .header-icons .icon img {
+    width: 30px; /* Standardized width */
+    height: 30px; /* Standardized height */
+    object-fit: cover;
+    margin-right: 5px;
+    transition: transform 0.3s ease;
+  }
+  
+  .header-icons .icon:hover img {
+    transform: scale(1.1);
+  }
+  
+  .header-icons .icon-text {
+    display: none;
+  }
+  
+  .header-icons .icon:hover .icon-text {
+    display: inline;
+  }
+
+.container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 50px;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+    text-align: center; /* Center aligns the title and subtitle */
+    margin-bottom: 30px; /* Increased space below the header */
+    background-color: #0b7163; /* Green background */
+    padding: 20px; /* Add some padding */
+    color: white; /* Change text color to white for better contrast */
+}
+
+.title {
+    font-size: 2.5em;
+    margin: 0; /* Remove margin for a cleaner look */
+}
+
+.subtitle {
+    font-size: 1.5em;
+    margin: 5px 0 0; /* Space above the subtitle */
+}
+
+/* General Styling for p1 */
+p1 {
+    display: block; /* Ensures p1 behaves like a block-level element like <p> */
+    margin: 15px 0; /* Adds space between paragraphs */
+    font-size: 1.1rem; /* Standard font size */
+    line-height: 1.6; /* Line height for readability */
+    color: #333; /* Text color */
+    text-align: justify; /* Align text to both left and right */
+}
+h3 {
+    margin-top: 20px;
+    color: #333;
+}
+
+ul {
+    margin: 20px 0 20px 40px; /* Add more spacing around the list and indent it */
+    padding-left: 20px; /* Additional padding for better alignment */
+    list-style-type: disc; /* Use a disc for the bullet points */
+}
+
+li {
+    margin-bottom: 15px; /* Add space between list items for better readability */
+    font-size: 1.1em; /* Slightly larger font size for better readability */
+    line-height: 1.6; /* Improve line height for better spacing within each list item */
+    color: #333; /* Consistent darker color for better readability */
+}
+
+ul li::marker {
+    color: #0b7163; /* Change the bullet point color to match the theme */
+    font-size: 1.2em; /* Slightly increase the bullet point size */
+}
+
+
+a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,83 @@
+
+.slider-container1 {
+    position: relative;
+    overflow: hidden;
+    width: 100%; /* Full width of the parent container */
+    max-width: 1550px; /* Adjust the max width as needed */
+    margin: auto;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: white; /* Card background color */
+}
+
+.brand-slider {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.brand-slide {
+    flex: 0 0 calc(90% / 6 - 20px); /* Show 6 cards with space for margins */
+    min-height: 170px;
+    margin: 10px; /* Space between cards */
+    padding: 10px; /* Space inside cards */
+    background-color: #ffffff; /* Card background */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for cards */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Stack image and text vertically */
+    text-align: center; /* Center the text */
+}
+
+.brand-slide img {
+    max-width: 90%; /* Responsive image */
+    height: 70%; /* Maintain aspect ratio */
+}
+
+.brand-slide p {
+    font-size: 16px; /* Adjust font size */
+    font-weight: bold; /* Make the text bold */
+    color: #000000; /* Set text color */
+    margin: 15px 0 0; /* Space above the text */
+    text-decoration: none; /* Remove underline */
+}
+.brand-slide p {
+    text-decoration: none; /* Remove underline */
+   
+}
+
+
+
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgb(255, 255, 255);
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1;
+    font-size: 24px; /* Adjust arrow size */
+}
+
+.left-arrow {
+    left: 10px;
+}
+
+.right-arrow {
+    right: 10px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .brand-slide {
+        flex: 0 0 calc(90% / 4 - 30px); /* Show 2 cards on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .brand-slide {
+        flex: 0 0 calc(90% / 3 - 30px); /* Show 3 cards on very small screens */
+    }
+}

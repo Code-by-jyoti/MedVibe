@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Prescription</title>
+    <!-- Font Awesome CDN for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="left-section">
+            <img src="{{ url_for('static', filename='images/upload.jpg') }}" alt="Doctor's Note">
+        </div>
+        <div class="right-section">
+            <h2>Order Medicines with Doctor's Note</h2>
+            <form action="/upload" method="POST">
+                <button type="submit" class="upload-btn">
+                    <i class="fas fa-upload"></i> Upload
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ medicine.name }} - Medicine Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/med_detail.css') }}">
+    
+</head>
+<body>
+    <div class="container">
+        <div class="medicine-detail">
+            <!-- Related Images Slider -->
+            <div class="related-images-slider">
+                <img src="{{ url_for('static', filename='PC_product_images/' + medicine.image_filename) }}" 
+                     alt="{{ medicine.name }}" 
+                     data-image="{{ url_for('static', filename='PC_product_images/' + medicine.image_filename) }}"
+                     onclick="changeMainImage(this)" 
+                     style="border: 1px solid #ddd; margin: 10px 0;">
+                
+                <!-- Loop to display related images dynamically -->
+                {% for related_image in related_images %}
+                    <img src="{{ url_for('static', filename='related_images/' + related_image.image_filename) }}" 
+                         alt="{{ related_image.name }}" 
+                         data-image="{{ url_for('static', filename='related_images/' + related_image.image_filename) }}"
+                         onclick="changeMainImage(this)">
+                {% endfor %}
+            </div>
+
+            <!-- Main Medicine Image -->
+            <div class="image-wrapper">
+                <img id="mainMedicineImage" class="medicine-image zoom" src="{{ url_for('static', filename='PC_product_images/' + medicine.image_filename) }}"  alt="{{ medicine.name }}">
+            </div>
+            <!-- Zoomed Image View -->
+            <div class="zoomed-view"></div>
+
+            <!-- Medicine Information -->
+            <div class="medicine-info">
+                <h1>{{ medicine.name }}</h1>
+                <p><strong>Description:</strong> {{ medicine.description }}</p>
+                <p><strong>MRP:</strong> ₹{{ medicine.mrp }}</p>
+
+                {% if medicine.discount %}
+                    <p><strong>Discounted Price:</strong> ₹{{ "%.2f"|format(medicine.mrp * (1 - medicine.discount / 100)) }}</p>
+                    
+                    <p><strong>Price:</strong> ₹{{ medicine.mrp }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Quantity Selection -->
+            <div class="price-quantity-container">
+                <p><strong>MRP:</strong> ₹{{ "%.2f"|format(medicine.mrp * (1 - ((medicine.discount or 0) / 100))) }}</p><br>
+                {% if medicine.discount %}
+                <div class="discount-badge">-{{ medicine.discount }}% OFF</div>
+              {% endif %}
+                <label for="quantity">Select Quantity:</label>
+                <form action="{{ url_for('add_to_cart', product_id=medicine.id) }}" method="POST" class="quantity-form">
+                    <select name="quantity" id="quantity" class="quantity-dropdown">
+                        {% for quantity in available_quantities %}
+                            <option value="{{ quantity }}" {% if quantity == added_quantity %}selected{% endif %}>
+                                {{ quantity }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <p id="total-price" style="font-weight: bold;">
+                        Total: ₹<span>{{ "%.2f"|format(medicine.mrp * (1 - (medicine.discount or 0) / 100)) }}</span>
+                    </p>
+                    <button type="submit" class="add-button">Add to Cart</button>
+                </form><br>
+                <!-- Back to Medicines List -->
+            <div class="back-to-medicines">
+                <a href="{{ url_for('medicine_list') }}">Back to Medicines</a>
+            </div>
+        </div>
+
+    </div><hr>
+
+    <!-- Additional Information -->
+     <button class="collapsible">
+        <span>Product Details</span>
+        <!-- Right caret -->
+    </button>
+    <div class="content">
+            <h2>Description</h2>
+            <p>{{ medicine.description }}</p>
+            
+            <h4>Features:</h4>
+    <ul>
+        {% if medicine.features %}
+            {% for feature in medicine.features.split(',') %}
+                <li>{{ feature.strip() }}</li>
+            {% endfor %}
+        {% else %}
+            <li>No features available.</li>
+        {% endif %}
+    </ul>
+
+    <h4>Uses of {{ medicine.name }}</h4>
+    
+
+    <h4>Benefits:</h4>
+    <ul>
+        {% if medicine.benefits %}
+            {% for benefit in medicine.benefits.split(',') %}
+                <li>{{ benefit.strip() }}</li>
+            {% endfor %}
+        {% else %}
+            <li>No benefits available.</li>
+        {% endif %}
+    </ul>
+
+    <h4>Uses:</h4>
+    <ul>
+        {% if medicine.uses %}
+            {% for use in medicine.uses.split(',') %}
+                <li>{{ use.strip() }}</li>
+            {% endfor %}
+        {% else %}
+            <li>No uses available.</li>
+        {% endif %}
+    </ul>
+
+    <h4>Safety Information:</h4>
+    <ul>
+        {% if medicine.safety_info %}
+            {% for safety in medicine.safety_info.split(',') %}
+                <li>{{ safety.strip() }}</li>
+            {% endfor %}
+        {% else %}
+            <li>No safety information available.</li>
+        {% endif %}
+    </ul>
+        </div>
+        <hr>
+        <div class="safety-advice">
+            <h2>Safety Advice</h2>
+            
+            <div class="info-box">
+                <h4>Country of Origin:</h4>
+                <p>{{ medicine.country_of_origin }}</p> <!-- Add this field to your product model -->
+                
+                <h4>Manufacturer:</h4>
+                <p>{{ medicine.manufacturer }}</p> <!-- Add this field to your product model -->
+            </div>
+        </div>
+    </div>
+       
+    <script>
+        document.getElementById('quantity').addEventListener('change', function() {
+            const quantity = this.value;
+    
+            // Directly pass the value without formatting issues
+            const price = {{ medicine.mrp * (1 - ((medicine.discount or 0) / 100)) | round(2) }};  // Rounded to 2 decimal places
+    
+            const total = (price * quantity).toFixed(2); // Calculate total price
+            document.getElementById('total-price').querySelector('span').innerText = total; // Update the displayed total
+        });
+    </script>
+    
+    <script src="{{ url_for('static', filename='js/med_zoom.js') }}"></script>
+</body>
+</html>

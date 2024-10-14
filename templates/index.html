@@ -8,12 +8,14 @@
     <title>MedVibe Navigation Bar</title>
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/header.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/items.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/brand.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}">
 </head>
 <body>
     
 
     <nav class="navbar">
-        <a href="#" class="nav">Buy Medicines</a>
+        <a href="/medicines" class="nav">Buy Medicines</a>
         <a href="/main" class="nav">Health Blogs</a>
         
     </nav>
@@ -104,9 +106,7 @@
         <div class="search-container">
             <input type="text" id="search-input" placeholder="Search Medicines" onkeyup="showSuggestions()">
             <div id="suggestions-dropdown" class="dropdown-content-search"></div>
-        </div>
-        
-        
+        </div> 
     </section>
     <br><br>
 
@@ -114,9 +114,7 @@
         <div class="slider">
             <!-- Loop through images dynamically -->
             {% for image in images %}
-            <div class="slide">
-                <img src="{{ url_for('static', filename='images/' + image) }}" alt="Image {{ loop.index }}">
-            </div>
+            <div class="slide"><img src="{{ url_for('static', filename='images/' + image) }}" alt="Image {{ loop.index }}"></div>
             {% endfor %}
         </div>
         <button class="prev" onclick="prevSlide()">&#10094;</button>
@@ -124,11 +122,27 @@
         <div class="dots">
             <!-- Add dots dynamically based on the number of images -->
             {% for image in images %}
-            <span class="dot" onclick="currentSlide({ loopindex0 })"></span>
+            <span class="dot" onclick="currentSlide({{ loop.index0 }})"></span>
             {% endfor %}
         </div>
     </div>
-    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script><br><br><br>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script><br><br>
+
+    <div class="container1">
+        <div class="left-section">
+            <img src="{{ url_for('static', filename='images/upload.jpg') }}" alt="Doctor's Note">
+        </div>
+        <div class="right-section">
+            <h2>Order Medicines with Doctor's Note</h2>
+            <form action="{{ url_for('prescription') }}" method="GET">
+
+                <button type="submit" class="upload-btn">
+                    <i class="fas fa-upload"></i> Upload
+                </button>
+            </form>
+        </div>
+    </div>
+    </div><br>
 
     <div class="category_container">
         <div class="sidebar">
@@ -187,115 +201,120 @@
                     <img src="{{ url_for('static', filename='product_img/wellness.png') }}" alt="Sexual Wellness">
                     <p>Sexual Wellness</p>
                 </a>
-                <a href="{{ url_for('products') }}?product_category={{ category_id }}" class="view-all" data-category="Personal Care">View All Personal Care Products >></a>
+                <a href="{{ url_for('products') }}?category_range=1-6" class="view-all" data-category="Personal Care">View All Personal Care Products >></a>
 
+                
                 <!-- Health Conditions -->
-                <a href="bone-joint-care.html" class="product-item" data-category="Health Conditions">
+                <a href="{{ url_for('products') }}?product_category=16" class="product-item" data-category="Health Conditions">
                     <img src="{{ url_for('static', filename='product_img/bone and jont care.png') }}" alt="Bone and Joint Care">
                     <p>Bone and Joint Care</p>
                 </a>
 
-                <a href="digestive-care.html" class="product-item" data-category="Health Conditions">
+                <a href="{{ url_for('products') }}?product_category=17" class="product-item" data-category="Health Conditions">
                     <img src="{{ url_for('static', filename='product_img/digestive care.png') }}" alt="Digestive Care">
                     <p>Digestive Care</p>
                 </a>
-
-                <a href="eye-care.html" class="product-item" data-category="Health Conditions">
+                <a href="{{ url_for('products') }}?product_category=18" class="product-item" data-category="Health Conditions">
                     <img src="{{ url_for('static', filename='product_img/eye care.png') }}" alt="Eye Care">
                     <p>Eye Care</p>
                 </a>
 
-                <a href="pain-relief.html" class="product-item" data-category="Health Conditions">
+                <a href="{{ url_for('products') }}?product_category=19" class="product-item" data-category="Health Conditions">
                     <img src="{{ url_for('static', filename='product_img/pain relief.png') }}" alt="Pain Relief">
                     <p>Pain Relief</p>
                 </a>
 
-                <a href="smoking-cessation.html" class="product-item" data-category="Health Conditions">
+                <a href="{{ url_for('products') }}?product_category=20" class="product-item" data-category="Health Conditions">
                     <img src="{{ url_for('static', filename='product_img/smoking.png') }}" alt="Smoking Cessation">
                     <p>Smoking Cessation</p>
                 </a>
 
-                <a href="liver-care.html" class="product-item" data-category="Health Conditions">
+                <a href="{{ url_for('products') }}?product_category=21" class="product-item" data-category="Health Conditions">
                     <img src="{{ url_for('static', filename='product_img/liver care.png') }}" alt="Liver Care">
                     <p>Liver Care</p>
                 </a>
-                <a href="Stomach Care.html" class="product-item" data-category="Health Conditions">
+                <a href="{{ url_for('products') }}?product_category=22" class="product-item" data-category="Health Conditions">
                     <img src="{{ url_for('static', filename='product_img/Stomach care-Photoroom.png') }}" alt="Stomach Care">
                     <p>Stomach Care</p>
                 </a>
-                <a href="Cold and Cough.html" class="product-item" data-category="Health Conditions">
+                <a href="{{ url_for('products') }}?product_category=23" class="product-item" data-category="Health Conditions">
                     <img src="{{ url_for('static', filename='product_img/Cold and Cough-Photoroom.png') }}" alt="Cold and Cough">
                     <p>Cold and Cough</p>
                 </a>
-                <a href="Heart Care.html" class="product-item" data-category="Health Conditions">
+                <a href="{{ url_for('products') }}?product_category=24" class="product-item" data-category="Health Conditions">
                     <img src="{{ url_for('static', filename='product_img/heart care-Photoroom.png') }}" alt="Heart Care">
                     <p>Heart Care</p>
                 </a>
-                <a href="Kidney Care.html" class="product-item" data-category="Health Conditions">
+                <a href="{{ url_for('products') }}?product_category=25" class="product-item" data-category="Health Conditions">
                     <img src="{{ url_for('static', filename='product_img/kidney-Photoroom.png') }}" alt="Kidney Care">
                     <p>Kidney Care</p>
                 </a>
-                <a href="Piles,Fissures & Fistula.html" class="product-item" data-category="Health Conditions">
+                <a href="{{ url_for('products') }}?product_category=26" class="product-item" data-category="Health Conditions">
                     <img src="{{ url_for('static', filename='product_img/piles,Fissures & Fistula-Photoroom.png') }}" alt="Piles,Fissures & Fistula">
                     <p>Piles,Fissures & Fistula</p>
                 </a>
-                <a href="Respiratory Care.html" class="product-item" data-category="Health Conditions">
+                <a href="{{ url_for('products') }}?product_category=27" class="product-item" data-category="Health Conditions">
                     <img src="{{ url_for('static', filename='product_img/Respiratory Care-Photoroom.png') }}" alt="Respiratory Care">
                     <p>Respiratory Care</p>
                 </a>
-                <a href="Mental Wellness.html" class="product-item" data-category="Health Conditions">
+                <a href="{{ url_for('products') }}?product_category=28" class="product-item" data-category="Health Conditions">
                     <img src="{{ url_for('static', filename='product_img/Mental Wellness-Photoroom.png') }}" alt="Mental Wellness">
                     <p>Mental Wellness</p>
                 </a>
-                <a href="Derma Care.html" class="product-item" data-category="Health Conditions">
+                <a href="{{ url_for('products') }}?product_category=29" class="product-item" data-category="Health Conditions">
                     <img src="{{ url_for('static', filename='product_img/Derma care-Photoroom.png') }}" alt="Derma Care">
                     <p>Derma Care</p>
                 </a>
-                <a href="Health Conditions Products.html" class="view-all" data-category="Health Conditions">View All Health Conditions Products >></a>
+                
+                <a href="{{ url_for('products') }}?category_range=16-29" class="view-all" data-category="Health Conditions">View All Health Conditions Products >></a>
 
                 <!-- Vitamins & Supplements -->
-                <a href="multivitamins.html" class="product-item" data-category="Vitamins & Supplements">
-                    <img src="{{ url_for('static', filename='product_img/Multivitamins,Multiminerals And Antioxidants.png') }}"alt="Multivitamins, Multiminerals and Antioxidants">
+                <a href="{{ url_for('products') }}?product_category=7" class="product-item" data-category="Vitamins & Supplements">
+                    <img src="{{ url_for('static', filename='product_img/Multivitamins,Multiminerals And Antioxidants.png') }}" alt="Multivitamins & Multiminerals">
                     <p>Multivitamins & Multiminerals</p>
                 </a>
 
-                <a href="vitamins-a-to-z.html" class="product-item" data-category="Vitamins & Supplements">
+                <a href="{{ url_for('products') }}?product_category=8" class="product-item" data-category="Vitamins & Supplements">
                     <img src="{{ url_for('static', filename='product_img/Vitamins A to Z.png') }}" alt="Vitamin A to Z">
                     <p>Vitamin A to Z</p>
                 </a>
 
-                <a href="protein-supplements.html" class="product-item" data-category="Vitamins & Supplements">
+                <a href="{{ url_for('products') }}?product_category=9" class="product-item" data-category="Vitamins & Supplements">
                     <img src="{{ url_for('static', filename='product_img/Protien Suppliments.png') }}" alt="Protein Supplements">
                     <p>Protein Supplements</p>
                 </a>
 
-                <a href="supplement-powder.html" class="product-item" data-category="Vitamins & Supplements">
+                <a href="{{ url_for('products') }}?product_category=10" class="product-item" data-category="Vitamins & Supplements">
                     <img src="{{ url_for('static', filename='product_img/Supplement Powder.png') }}" alt="Supplement Powder">
                     <p>Supplement Powder</p>
                 </a>
 
-                <a href="calcium-minerals.html" class="product-item" data-category="Vitamins & Supplements">
+                <a href="{{ url_for('products') }}?product_category=11" class="product-item" data-category="Vitamins & Supplements">
                     <img src="{{ url_for('static', filename='product_img/Calcium & Mineral.png') }}" alt="Calcium & Minerals">
                     <p>Calcium & Minerals</p>
                 </a>
 
-                <a href="vitamin-b12-complex.html" class="product-item" data-category="Vitamins & Supplements">
+                <a href="{{ url_for('products') }}?product_category=12" class="product-item" data-category="Vitamins & Supplements">
                     <img src="{{ url_for('static', filename='product_img/Vitamin B12 and B Complex.png') }}" alt="Vitamin B12 and Complex">
                     <p>Vitamin B12 and Complex</p>
                 </a>
-                <a href="Mineral Supplement.html" class="product-item" data-category="Vitamins & Supplements">
+
+                <a href="{{ url_for('products') }}?product_category=13" class="product-item" data-category="Vitamins & Supplements">
                     <img src="{{ url_for('static', filename='product_img/Mineral Suppliments.png') }}" alt="Mineral Supplement">
                     <p>Mineral Supplement</p>
                 </a>
-                <a href="Immunity Boosters.html" class="product-item" data-category="Vitamins & Supplements">
+
+                <a href="{{ url_for('products') }}?product_category=14" class="product-item" data-category="Vitamins & Supplements">
                     <img src="{{ url_for('static', filename='product_img/Immunity Boosters.png') }}" alt="Immunity Boosters">
                     <p>Immunity Boosters</p>
                 </a>
-                <a href="Omega and Fish Oil.html" class="product-item" data-category="Vitamins & Supplements">
+
+                <a href="{{ url_for('products') }}?product_category=15" class="product-item" data-category="Vitamins & Supplements">
                     <img src="{{ url_for('static', filename='product_img/Omega and Fish Oil.png') }}" alt="Omega and Fish Oil">
                     <p>Omega and Fish Oil</p>
                 </a>
-                <a href="vitamins-supplements.html" class="view-all view-all-vitamins-supplements" data-category="Vitamins & Supplements">View All Vitamins & Supplements Products >></a>
+
+                <a href="{{ url_for('products') }}?category_range=7-15" class="view-all view-all-vitamins-supplements"  data-category="Vitamins & Supplements"> View All Vitamins & Supplements Products >></a>
 
                 <!-- Diabetes Care -->
                 <a href="test-strips-lancets.html" class="product-item" data-category="Diabetes Care">
@@ -378,6 +397,58 @@
     </div>
     <script src="{{ url_for('static', filename='js/item_script.js') }}"></script>
 
+    <div class="slider-container1">
+        <div class="slider-arrow left-arrow" onclick="moveSlider(-1)">❮</div>
+        <div class="brand-slider">
+            <div class="brand-slide">
+                <img src="{{ url_for('static', filename='brand_img/Nivea-Logo-2011-present.jpg') }}" alt="NIVEA">
+                <p>NIVEA</p>  
+            </div>
+            <div class="brand-slide">
+                <img src="{{ url_for('static', filename='brand_img/episoft.jpeg') }}" alt="EPISOFT">
+                <p>EPISOFT</p>
+            </div>
+            <div class="brand-slide">
+                <img src="{{ url_for('static', filename='brand_img/onetoch.jpeg') }}" alt="ONETOUCH">
+                <p>ONETOUCH</p>
+            </div>
+            <div class="brand-slide">
+                <img src="{{ url_for('static', filename='brand_img/volini.jpeg') }}" alt="VOLINI">
+                <p>VOLINI</p>
+            </div>
+            <div class="brand-slide">
+                <img src="{{ url_for('static', filename='brand_img/prohance.jpeg') }}" alt="PROHANCE">
+                <p>PROHANCE</p>
+            </div>
+            <div class="brand-slide">
+                <img src="{{ url_for('static', filename='brand_img/holland.jpeg') }}" alt="HOLLAND & BARRETT">
+                <p>HOLLAND & BARRETT</p>
+            </div>
+            <div class="brand-slide">
+                <img src="{{ url_for('static', filename='brand_img/oziva.jpg') }}" alt="OZIVA">
+                <p>OZIVA</p>
+            </div>
+            <div class="brand-slide">
+                <img src="{{ url_for('static', filename='brand_img/pampers.jpeg') }}" alt="PAMPERS">
+                <p>PAMPERS</p>
+            </div>
+            <div class="brand-slide">
+                <img src="{{ url_for('static', filename='brand_img/wellbeing.jpeg') }}" alt="WELLBEING NUTRITION">
+                <p>WELLBEING NUTRITION</p>
+            </div>
+            <div class="brand-slide">
+                <img src="{{ url_for('static', filename='brand_img/Protinex.jpg') }}" alt="PROTINEX">
+                <p>PROTINEX</p>
+            </div>
+            <div class="brand-slide">
+                <img src="{{ url_for('static', filename='brand_img/minimalist_logo.webp') }}" alt="MINIMALIST">
+                <p>MINIMALIST</p>
+            </div>
+        </div>
+        <div class="slider-arrow right-arrow" onclick="moveSlider(1)">❯</div>
+    </div>
+    <script src="{{ url_for('static', filename='js/brand.js') }}"></script>
+
     <div class="testimonial-section">
         <h2>What our customers have to say</h2>
         <p>Customer Testimonials</p>
@@ -386,31 +457,31 @@
           <!-- Customer Testimonials -->
           <div class="testimonial">
             <h3>Seamless experience with every order!</h3>
-            <p>I have been using MedVibe for a few months now, and the experience has always been smooth. The app is user-friendly, and the medicines are delivered on time. Highly recommended!</p>
+            <p>I have been using MedVibe for a few months now, and the experience has always been smooth. </p>
             <div class="author">- Rohit Mehra</div>
           </div>
     
           <div class="testimonial">
             <h3>The go-to pharmacy for my family's health needs.</h3>
-            <p>Thanks to MedVibe, managing my family's prescriptions has never been easier. The quick delivery and professional service keep us coming back.</p>
+            <p>Thanks to MedVibe, managing my family's prescriptions has never been easier. </p>
             <div class="author">- Anjali Verma</div>
           </div>
     
           <div class="testimonial">
             <h3>Affordable prices and excellent service!</h3>
-            <p>MedVibe not only offers affordable medication but also delivers right to my door within hours! The savings and convenience are unbeatable.</p>
+            <p>MedVibe not only offers affordable medication but also delivers right to my door within hours!.</p>
             <div class="author">- Priya Sharma</div>
           </div>
     
           <div class="testimonial">
             <h3>Fast and reliable with great customer support.</h3>
-            <p>I ordered my medication through MedVibe, and it arrived sooner than expected. Their customer service team was also very helpful with my queries.</p>
+            <p>I ordered my medication through MedVibe, and it arrived sooner than expected.</p>
             <div class="author">- Vikram Singh</div>
           </div>
     
           <div class="testimonial">
             <h3>Easy to upload prescriptions and great discounts!</h3>
-            <p> MedVibe makes it so easy to upload prescriptions, and I appreciate the regular discounts they offer on medicines. It’s my top choice for ordering medications.</p>
+            <p> MedVibe makes it so easy to upload prescriptions, and I appreciate the regular discounts they offer on medicines.</p>
             <div class="author">- Neha Patil</div>
           </div>
     
@@ -451,6 +522,7 @@
     
     <script src="{{ url_for('static', filename='js/faq_home.js') }}"></script><br><br>
     <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+    
 </body>
 </html>
 

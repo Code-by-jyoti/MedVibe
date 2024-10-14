@@ -10,7 +10,6 @@
     <title>Profile Page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/userprofile.css') }}">
-
 </head>
 <body>
     <div class="container">
@@ -18,6 +17,16 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                <div class="alert alert-success" role="alert">
+                                    {% for message in messages %}
+                                        {{ message }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                        
                         <h2 class="card-title">MY PROFILE</h2>
                         <form method="POST" action="{{ url_for('profile') }}">
                             <div class="form-row">

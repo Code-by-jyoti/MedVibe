@@ -248,7 +248,6 @@
     line-height: 1.6;
 }
 
-/* Team Section Styling */
 .about-team {
     background: #ffffff;
     border-radius: 10px;
@@ -260,10 +259,10 @@
 
 .team-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* Default: Five equal columns */
+    grid-template-columns: repeat(2, 1fr); /* Adjust to display two columns by default */
     gap: 20px;
-    max-width: 1000px;
-    margin: 0 auto; /* Centering the grid */
+    max-width: 900px; /* Adjusted for a cleaner width */
+    margin: 0 auto;
 }
 
 .team-member {
@@ -271,7 +270,7 @@
     border-radius: 10px;
     padding: 20px;
     text-align: center;
-    width: 100%; /* Adjust to fit within the grid cell */
+    width: 100%;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -298,6 +297,26 @@
     font-size: 1em;
     color: #666;
 }
+
+/* Media Queries for Responsiveness */
+@media (min-width: 768px) {
+    .team-grid {
+        grid-template-columns: repeat(4, 1fr); /* For larger screens, 4 members in a row */
+    }
+}
+
+@media (max-width: 767px) {
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr); /* Two members per row on tablet-sized screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .team-grid {
+        grid-template-columns: 1fr; /* One member per row on mobile screens */
+    }
+}
+
 
 /* Footer Section Styling */
 .about-footer {

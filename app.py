@@ -5,9 +5,12 @@ import os
 from dotenv import load_dotenv
 from flask_migrate import Migrate
 from datetime import timedelta
-from werkzeug.security import check_password_hash  # Make sure to use hashed passwords
+import razorpay
+# Initialize Razorpay client with your Razorpay API key and secret
+razorpay_client = razorpay.Client(auth=("rzp_test_is2RgeSGBanvEh", "HV9n88oRKPFhPkHzBFqWWbtO"))
+from werkzeug.security import check_password_hash  
 from werkzeug.security import generate_password_hash  # Import for password hashing
-from models import db, User, ResetToken, FAQ, Category, Blog, ProductCategory, Subcategory, Brand, Product, RelatedImage, Order, OrderItem
+from models import db, User, ResetToken, FAQ, Category, Blog, ProductCategory, Subcategory, Brand, Product, RelatedImage, Order, OrderItem,Medicine
 # Load environment variables from .env file
 load_dotenv()
 
@@ -19,8 +22,8 @@ myapp.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 myapp.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 myapp.config['SESSION_COOKIE_SECURE'] = False  # Change to True if using HTTPS
 
-db.init_app(myapp)
-migrate = Migrate(myapp, db)
+
+#migrate = Migrate(myapp, db)
 
 # Configure email
 myapp.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -31,12 +34,29 @@ myapp.config['MAIL_USE_TLS'] = False
 myapp.config['MAIL_USE_SSL'] = True
 
 mail = Mail(myapp)
+db.init_app(myapp)
+# Hash the password and store it securely (in a real app, use a database)
+ADMIN_EMAIL = 'mateshital@gmail.com'
+ADMIN_PASSWORD_HASH = generate_password_hash('admin123')  # Store this hash securely
 
+@myapp.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
+        if email == ADMIN_EMAIL and check_password_hash(ADMIN_PASSWORD_HASH, password):
+            session['admin_logged_in'] = True
+            return redirect(url_for('index'))  # Redirect to admin dashboard
+        else:
+            flash('Invalid credentials. Please try again.')
+
+    return render_template('admin_login.html')
 
 @myapp.route('/')
 def index():
     faqs = FAQ.query.limit(6).all()  # Fetch all the FAQ data
-    images = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg', '8.jpg']  # Sample images for Home
+    images = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg', '8.jpg','9.jpg']  # Sample images for Home
     return render_template("index.html", faqs=faqs, images=images)
 
 @myapp.route('/main')
@@ -62,6 +82,14 @@ def items():
 def contact():
     return render_template('contact.html')
 
+@myapp.route('/term_conditions')
+def terms_conditions():
+    return render_template('term_conditions.html')
+
+@myapp.route('/privacy_policy')
+def privacy_policy():
+    return render_template('privacy_policy.html')
+
 @myapp.route('/testimonals')
 def testimonials():
     return render_template("testimonals.html")
@@ -85,6 +113,14 @@ def blog_detail(blog_id):
     blog = Blog.query.get_or_404(blog_id)
     return render_template('main.html', blog=blog)
 
+@myapp.route('/prescription')
+def prescription():
+    return render_template('prescription.html')
+
+@myapp.route('/return')  # Add the slash here
+def returns_policy():
+    return render_template('return.html')
+
 @myapp.route('/FAQ')
 def faq():
     faqs = FAQ.query.all()  # This should fetch all the FAQ data
@@ -94,9 +130,18 @@ def faq():
 def Footer():
     return render_template("footer.html")
 
+@myapp.route('/upload')
+def upload():
+    return render_template('upload.html')
+
+@myapp.route('/brand')
+def brand():
+    return render_template('brand.html')
+
 @myapp.route('/userprofilenavbar')
 def userp():
     return render_template("userprofilenavbar.html")
+
 
 def send_reset_email(email, token):
     msg = Message('Password Reset Request',
@@ -163,6 +208,10 @@ def login():
 
         if user and check_password_hash(user.password, password):  # Check hashed password
             session['email'] = user.email  # You may not need this if using Flask-Login
+            session['phone'] = user.phone
+            session['address'] = user.address
+            session['city'] = user.city
+            session['state'] = user.state
             return redirect(url_for('profile'))  # Redirect to the profile page
         else:
             flash('email or password is wrong. Please try again.', 'danger')
@@ -245,43 +294,73 @@ def reset_password(token):
 
 @myapp.route('/catalog')
 def products():
-    categories = ProductCategory.query.all()
-    subcategories = Subcategory.query.all()
-    brands = Brand.query.all()
+    selected_category = request.args.get('product_category', type=int)
+    category_range = request.args.get('category_range')  # New: Get category range if specified
+    selected_subcategory = request.args.get('subcategory', type=int)
+    selected_brand = request.args.get('brand', type=int)
+    selected_price = request.args.get('price')  # Get the selected price range
 
-    # Fetch filter values from query parameters
-    selected_category = request.args.get('product_category')
-    selected_subcategory = request.args.get('subcategory')
-    selected_brand = request.args.get('brand')
-    selected_price = request.args.get('price')
+    # Base query to get all products
+    query = Product.query
 
-    products_query = Product.query
+    # New: Apply filters for category range (e.g., 1-6, 7-11, or 16-29)
+    if category_range:
+        range_start, range_end = map(int, category_range.split('-'))
+        query = query.filter(Product.category_id.between(range_start, range_end))
 
-    # Filter products based on selected criteria
-    if selected_category:
-        products_query = products_query.filter_by(category_id=selected_category)
+    # Apply filters based on selected category, subcategory, brand, and price
+    elif selected_category:  # Priority given to category_range, if present
+        query = query.filter(Product.category_id == selected_category)
+
     if selected_subcategory:
-        products_query = products_query.filter_by(subcategory_id=selected_subcategory)
+        query = query.filter(Product.subcategory_id == selected_subcategory)
     if selected_brand:
-        products_query = products_query.filter_by(brand_id=selected_brand)
-    if selected_category:
-        brands = Brand.query.filter_by(category_id=selected_category).all()
-    # Alternatively, you can filter based on subcategory
-   
-    
-    price_range = request.args.get('price')
-    if price_range:
-        min_price, max_price = map(float, price_range.split('-'))
-        products_query = products_query.filter(Product.mrp >= min_price,
-                                               Product.mrp <= max_price)
-    # Pagination
-    page = request.args.get('page', 1, type=int)  # Get current page, default to 1
-    per_page = 10  # Number of products per page
-    products = products_query.paginate(page=page, per_page=per_page)  # Paginate the products
+        query = query.filter(Product.brand_id == selected_brand)
+    if selected_price:
+        price_range = selected_price.split('-')
+        if len(price_range) == 2:
+            min_price = float(price_range[0])
+            max_price = float(price_range[1])
+            query = query.filter(Product.mrp >= min_price, Product.mrp <= max_price)
 
-    return render_template('products.html', categories=categories,
+    products = query.paginate(page=request.args.get('page', 1, type=int), per_page=20)
+
+    # Fetch subcategories and brands based on the selected category range
+    if category_range:
+        range_start, range_end = map(int, category_range.split('-'))
+        if range_start == 1:  # Categories 1-6
+            subcategories = Subcategory.query.filter(Subcategory.category_id.between(1, 6)).all()
+            brands = Brand.query.filter(Brand.category_id.between(1, 6)).all()
+        elif range_start == 7:  # Categories 7-11
+            subcategories = Subcategory.query.filter(Subcategory.category_id.between(7, 15)).all()
+            brands = Brand.query.filter(Brand.category_id.between(7, 15)).all()
+        elif range_start == 16:  # Categories 16-29
+            subcategories = Subcategory.query.filter(Subcategory.category_id.between(16, 29)).all()
+            brands = Brand.query.filter(Brand.category_id.between(16, 29)).all()
+    elif selected_category is not None:
+        if selected_category <= 6:  # Categories 1 to 6
+            subcategories = Subcategory.query.filter_by(category_id=selected_category).all()
+            brands = []  # We will show brands after a subcategory is selected
+        elif selected_category >= 7:  # Categories 7 and after
+            subcategories = []
+            brands = Brand.query.filter(Brand.category_id == selected_category).all()
+    else:
+        subcategories = []
+        brands = Brand.query.all()
+
+    # If a subcategory is selected, fetch related brands
+    if selected_subcategory:
+        brands = Brand.query.filter_by(subcategory_id=selected_subcategory).all()
+        
+    categories = ProductCategory.query.all()
+    
+
+    return render_template('products.html', products=products, categories=categories,
                            subcategories=subcategories, brands=brands,
-                           products=products)
+                           selected_category=selected_category,
+                           selected_subcategory=selected_subcategory,
+                           selected_brand=selected_brand,
+                           selected_price=selected_price)  # Pass selected_price to template
 
 @myapp.route('/product/<int:product_id>')
 def product_detail(product_id):
@@ -300,49 +379,70 @@ def product_detail(product_id):
 
 @myapp.route('/add_to_cart/<int:product_id>', methods=['POST'])
 def add_to_cart(product_id):
+    # Fetch the product from the database
+    product = Product.query.get_or_404(product_id)
+
+    # Get the quantity from the form submission
     quantity = int(request.form['quantity'])
+
+    # Retrieve cart from session or initialize an empty one
     cart_items = session.get('cart', {})
 
-    print(f"Adding product {product_id} with quantity {quantity}")  # Debugging line
-
+    # Add the product to the cart or update the quantity
     product_id_str = str(product_id)
     if product_id_str in cart_items:
         cart_items[product_id_str] += quantity
     else:
         cart_items[product_id_str] = quantity
 
+    # Save the updated cart in the session
     session['cart'] = cart_items
-    print(f"Current cart items: {session['cart']}")  # Debugging line
-    
+
+    flash(f"{product.name} added to cart!", "success")
     return redirect(url_for('cart'))
+
 
 @myapp.route('/cart')
 def cart():
-    cart_items = session.get('cart', {})
-    product_ids = list(map(int, cart_items.keys()))
+    cart_items = session.get('cart', {})  # Retrieve the cart from the session
+    product_ids = [int(pid) for pid in cart_items.keys()]
+
     products = Product.query.filter(Product.id.in_(product_ids)).all()
 
-    total_price = 0
+    cart_details = []
+    total_amount = 0
+
     for product in products:
         quantity = cart_items[str(product.id)]
-        discounted_price = product.mrp * (1 - (product.discount or 0) / 100)
-        total_price += discounted_price * quantity
+        subtotal = product.mrp * (1 - (product.discount or 0) / 100) * quantity
+        total_amount += subtotal
 
-    if 'email' not in session:
-        flash('Please log in to access your cart.', 'danger')
-        return redirect(url_for('login'))  # Redirect to login if not logged in    
+        cart_details.append({
+            'id': product.id,
+            'name': product.name,
+            'quantity': quantity,
+            'mrp': product.mrp,
+            'discount': product.discount,
+            'subtotal': round(subtotal, 2),
+            'image_filename': product.image_filename
+        })
 
-    return render_template('cart.html', products=products, cart_items=cart_items, total_price=total_price)
+    return render_template('cart.html', cart_details=cart_details, total_amount=round(total_amount, 2))
 
-@myapp.route('/remove_from_cart/<int:product_id>')
+
+
+@myapp.route('/remove_from_cart/<int:product_id>', methods=['POST'])
 def remove_from_cart(product_id):
-    cart_items = session.get('cart', {})
-    if str(product_id) in cart_items:  # Convert product_id to string
-        del cart_items[str(product_id)]  # Remove product from cart
-        session['cart'] = cart_items
+    cart = session.get('cart', {})
+
+    if str(product_id) in cart:
+        del cart[str(product_id)]
+
+    session['cart'] = cart
+    session.modified = True  # Mark session as modified
+
     return redirect(url_for('cart'))
 
-from flask import session, request, redirect, url_for, flash, render_template
 
 @myapp.route('/checkout', methods=['GET', 'POST'])
 def checkout():
@@ -350,6 +450,17 @@ def checkout():
     if 'email' not in session:  # Ensure user is logged in
         flash('Please log in to place an order.', 'warning')
         return redirect(url_for('login'))  # Adjust 'login' to your login route name
+
+    # Get user data from session
+    user_profile = {
+        'name': session.get('name', ''),
+        'email': session.get('email', ''),
+        'phone': session.get('phone', ''),
+        'address': session.get('address', ''),
+        'city': session.get('city', ''),
+        'state': session.get('state', ''),
+        'zip_code': session.get('zip_code', ''),
+    }
 
     # Get the cart items from the session
     cart_items = session.get('cart', {})
@@ -372,9 +483,12 @@ def checkout():
         city = request.form['city']
         state = request.form['state']
         zip_code = request.form['zip_code']
+        
+        payment_method = request.form.get('payment_method')
+        razorpay_payment_id = request.form.get('razorpay_payment_id')
 
         # Create a new Order instance
-        order = Order(user_email=email, total_amount=total_price,name=name)
+        order = Order(user_email=email, total_amount=total_price, name=name)
         db.session.add(order)
         db.session.flush()  # Flush to get the order ID for the items
 
@@ -392,17 +506,29 @@ def checkout():
                 )
                 db.session.add(order_item)
 
+        # Check the payment method
+        if payment_method == 'razorpay' and razorpay_payment_id:
+            order.payment_id = razorpay_payment_id
+            order.status = 'Paid'  # Payment successful
+        else:
+            order.status = 'Pending'  # Cash on Delivery
+
         db.session.commit()  # Commit all changes
 
         # Clear the cart after placing the order
         session.pop('cart', None)
 
         # Display success message and redirect to confirmation page
-        flash('Your order has been placed successfully! Cash on Delivery.', 'success')
+        flash('Your order has been placed successfully!', 'success')
         return redirect(url_for('order_confirmation', order_id=order.id))
 
-    # Render checkout page with products and total price
-    return render_template('checkout.html', products=products, total_price=total_price, cart_items=cart_items)
+    # Render checkout page with user profile, products, and total price
+    return render_template('checkout.html', 
+                           products=products, 
+                           total_price=total_price, 
+                           cart_items=cart_items, 
+                           user=user_profile)
+
 
 def calculate_total_price(products, cart_items):
     """Helper function to calculate the total price based on cart items and discounts."""
@@ -431,17 +557,55 @@ def order_confirmation(order_id):
         name=order.name
     )
 
-@myapp.route('/update_cart/<int:product_id>/<int:quantity>', methods=['POST'])
-def update_cart(product_id, quantity):
-    cart_items = session.get('cart', {})
-    
-    if quantity <= 0:
-        cart_items.pop(str(product_id), None)  # Remove product from cart if quantity is 0
-    else:
-        cart_items[str(product_id)] = quantity  # Update quantity
+@myapp.route('/order_history', methods=['GET'])
+def order_history():
+    # Check if user is authenticated
+    if 'email' not in session:  # Ensure user is logged in
+        flash('Please log in to view your order history.', 'warning')
+        return redirect(url_for('login'))  # Adjust 'login' to your login route name
 
-    session['cart'] = cart_items  # Save changes to session
-    return '', 204  # No content response
+    # Fetch orders for the logged-in user
+    user_email = session['email']
+    orders = Order.query.filter_by(user_email=user_email).all()
+
+    return render_template('order_history.html', orders=orders)
+
+
+@myapp.route('/update_cart/<int:product_id>', methods=['POST'])
+def update_cart(product_id):
+    quantity = request.form.get('quantity', type=int)
+
+    if quantity is None:
+        return jsonify({'error': 'Quantity is required.'}), 400
+
+    item_product = Product.query.get(product_id)  # Fetch the product
+
+    if not item_product:
+        return jsonify({'error': 'Product not found.'}), 404
+
+    available_stock = item_product.stock
+    cart_items = session.get('cart', {})
+
+    if quantity > available_stock:
+        return jsonify({'error': f'Only {available_stock} items available in stock.'}), 400
+
+    if quantity <= 0:
+        cart_items.pop(str(product_id), None)
+    else:
+        cart_items[str(product_id)] = quantity
+
+    session['cart'] = cart_items
+
+    # Calculate total amount using mrp instead of price
+    total_amount = 0
+    for item_id, qty in cart_items.items():
+        item_product = Product.query.get(item_id)
+        if item_product:
+            total_amount += item_product.mrp * qty  # Use MRP to calculate total
+
+    return jsonify({'total_amount': round(total_amount, 2)}), 200
+
+
 
 @myapp.route('/search_suggestions', methods=['GET'])
 def search_suggestions():
@@ -465,6 +629,56 @@ def search_suggestions():
         
         return jsonify(suggestions)
     return jsonify([])  # Return an empty list if no query
+
+@myapp.route('/medicines', methods=['GET'])
+def medicine_list():
+    letter = request.args.get('letter', 'A')
+    page = int(request.args.get('page', 1))  # Handle pagination, default to page 1
+    per_page = 10  # Number of items per page
+
+    if letter == '0-9':
+        medicines_query = Product.query.filter(Product.id >= 73, Product.name.op('REGEXP')('^[0-9]'))
+    else:
+        medicines_query = Product.query.filter(Product.id >= 73, Product.name.like(f'{letter}%'))
+
+    # Pagination logic
+    medicines_paginated = medicines_query.paginate(page=page, per_page=per_page, error_out=False)
+
+    return render_template(
+        'medicine_list.html',
+        medicines=medicines_paginated.items,
+        active_letter=letter,
+        current_page=page,
+        total_pages=medicines_paginated.pages,
+    )
+
+
+@myapp.route('/medicine/<int:id>')
+def medicine_detail(id):
+    # Fetch the medicine from the database by its ID
+    medicine = Product.query.get_or_404(id)  # Assuming the 'Product' model is used
+
+    # Generate available quantities based on the stock
+    if medicine.stock > 0:
+        available_quantities = list(range(1, medicine.stock + 1))  # e.g., [1, 2, ..., stock]
+    else:
+        available_quantities = []  # No stock available
+
+    # Get the selected quantity from query parameters (defaults to 1)
+    added_quantity = request.args.get('added_quantity', default=1, type=int)
+
+    # Fetch related images
+    related_images = RelatedImage.query.filter_by(product_id=id).all()  # Adjust this query based on your model structure
+
+    # Render the medicine detail template with the required data
+    return render_template(
+        'medicine_detail.html', 
+        medicine=medicine, 
+        available_quantities=available_quantities, 
+        added_quantity=added_quantity,
+        related_images=related_images  # Pass related images to the template
+    )
+
 
 if __name__ == '__main__':
     myapp.run(host='0.0.0.0', port=5000, debug=True)

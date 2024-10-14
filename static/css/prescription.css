@@ -1,0 +1,141 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    background-image: url('/static/images/presp_bg.avif');  /* Add your background image URL */
+    background-size: cover; /* Ensures the background covers the entire page */
+    background-position: center; /* Centers the background image */
+    background-repeat: no-repeat; /* Ensures the image doesn't repeat */
+}
+
+/* Service Container */
+.service-container {
+    display: flex;
+    justify-content: space-between; /* Adjust as needed */
+    margin-top: 100px; /* Add margin to separate from header */
+}
+
+.service-section {
+    flex: 1; /* Allows sections to grow and fill space */
+    margin: 0 10px; /* Adjust space between sections */
+    padding: 20px; /* Add padding for aesthetics */
+    border: 1px solid #ccc; /* Optional: border for visual separation */
+    border-radius: 5px; /* Optional: rounded corners */
+    background-color: #f9f9f9; /* Optional: background color */
+    transition: all 0.3s ease;
+}
+
+.service-section:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Form Styling */
+h2 {
+    color: #10847e;
+}
+
+form {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+input[type="file"],
+input[type="text"],
+input[type="datetime-local"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="file"]:focus,
+input[type="text"]:focus,
+input[type="datetime-local"]:focus {
+    border-color: #10847e;
+    outline: none;
+}
+
+/* Button Styling */
+button {
+    padding: 10px 20px;
+    background-color: #10847e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #0c7065;
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Flash Messages Styling */
+.flashes {
+    list-style-type: none;
+    padding: 10px;
+    background-color: #f8d7da; /* Light red background */
+    color: #721c24; /* Dark red text */
+    border: 1px solid #f5c6cb; /* Light red border */
+    margin: 10px 0;
+}
+
+/* Uploaded Image Preview Styling */
+#uploadedImageContainer {
+    position: relative;
+    margin-top: 10px;
+    margin-left: 40px;
+    padding: 10px;
+    background: #f0f0f0;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+#uploadedImage {
+    max-width: 200px;
+}
+
+#removeImage {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: none;
+    border: none;
+    color: red;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 1;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    .service-container {
+        flex-direction: column;
+    }
+}

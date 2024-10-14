@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Slider</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/brand.css') }}">
+</head>
+<body>
+    <div class="slider-container1">
+        <div class="slider-arrow left-arrow" onclick="moveSlider(-1)">❮</div>
+        <div class="brand-slider">
+            <div class="brand-slide" onclick="openBrandPage('nivea.html')">
+                <img src="{{ url_for('static', filename='brand_img/Nivea-Logo-2011-present.jpg') }}" alt="NIVEA">
+                <p>NIVEA</p>  
+            </div>
+            <div class="brand-slide" onclick="openBrandPage('episoft.html')">
+                <img src="{{ url_for('static', filename='brand_img/episoft.jpeg') }}" alt="EPISOFT">
+                <p>EPISOFT</p>
+            </div>
+            <div class="brand-slide" onclick="openBrandPage('onetouch.html')">
+                <img src="{{ url_for('static', filename='brand_img/onetoch.jpeg') }}" alt="ONETOUCH">
+                <p>ONETOUCH</p>
+            </div>
+            <div class="brand-slide" onclick="openBrandPage('volini.html')">
+                <img src="{{ url_for('static', filename='brand_img/volini.jpeg') }}" alt="VOLINI">
+                <p>VOLINI</p>
+            </div>
+            <div class="brand-slide" onclick="openBrandPage('PROHANCE.html')">
+                <img src="{{ url_for('static', filename='brand_img/prohance.jpeg') }}" alt="PROHANCE">
+                <p>PROHANCE</p>
+            </div>
+            <div class="brand-slide" onclick="openBrandPage('HOLLAND & BARRETT.html')">
+                <img src="{{ url_for('static', filename='brand_img/holland.jpeg') }}" alt="HOLLAND & BARRETT">
+                <p>HOLLAND & BARRETT</p>
+            </div>
+            <div class="brand-slide" onclick="openBrandPage('OZIVA.html')">
+                <img src="{{ url_for('static', filename='brand_img/oziva.jpg') }}" alt="OZIVA">
+                <p>OZIVA</p>
+            </div>
+            <div class="brand-slide" onclick="openBrandPage('PAMPERS.html')">
+                <img src="{{ url_for('static', filename='brand_img/pampers.jpeg') }}" alt="PAMPERS">
+                <p>PAMPERS</p>
+            </div>
+            <div class="brand-slide" onclick="openBrandPage('WELLBEING NUTRITION.html')">
+                <img src="{{ url_for('static', filename='brand_img/wellbeing.jpeg') }}" alt="WELLBEING NUTRITION">
+                <p>WELLBEING NUTRITION</p>
+            </div>
+            <div class="brand-slide" onclick="openBrandPage('PROTINEX.html')">
+                <img src="{{ url_for('static', filename='brand_img/Protinex.jpg') }}" alt="PROTINEX">
+                <p>PROTINEX</p>
+            </div>
+            <div class="brand-slide" onclick="openBrandPage('MINIMALIST.html')">
+                <img src="{{ url_for('static', filename='brand_img/minimalist_logo.webp') }}" alt="MINIMALIST">
+                <p>MINIMALIST</p>
+            </div>
+        </div>
+        <div class="slider-arrow right-arrow" onclick="moveSlider(1)">❯</div>
+    </div>
+    <script src="{{ url_for('static', filename='js/brand.js') }}"></script>
+</body>
+</html>

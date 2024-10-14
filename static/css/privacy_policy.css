@@ -1,0 +1,112 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a504c;
+    padding: 10px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+  
+.header-left {
+    display: flex;
+    align-items: left; /* Vertically centers the logo */
+    padding: 10px; /* Optional: adds some space around the logo */
+}
+
+.header-left .logo {
+    max-width: 100px; /* Adjust the size of the logo */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.icon {
+    display: block; /* Ensures the image is treated as a block element */
+}
+
+  
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+  
+.header-icons .icon {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+  }
+  
+  .header-icons .icon img {
+    width: 30px; /* Standardized width */
+    height: 30px; /* Standardized height */
+    object-fit: cover;
+    margin-right: 5px;
+    transition: transform 0.3s ease;
+  }
+  
+  .header-icons .icon:hover img {
+    transform: scale(1.1);
+  }
+  
+  .header-icons .icon-text {
+    display: none;
+  }
+  
+  .header-icons .icon:hover .icon-text {
+    display: inline;
+  }
+
+.privacy-policy {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 40px;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+    text-align: center; /* Center aligns the title and subtitle */
+    margin-bottom: 40px; /* Space below the header */
+    background-color: #105d52; /* Green background */
+    padding: 20px; /* Padding around header */
+    color: white; /* Change text color to white */
+}
+
+h1 {
+    font-size: 2.5em;
+    margin: 0; /* Remove margin for a cleaner look */
+}
+
+h2 {
+    font-size: 1.5em;
+    margin: 10px 0; /* Space above and below subtitles */
+}
+
+p {
+    margin: 10px 0;
+    color: black; /* Set paragraph text color to black */
+    font-size: 1.1em; /* Adjust paragraph text size */
+}
+
+ul {
+    margin: 10px 0 10px 20px; /* Indentation for list items */
+}
+
+a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

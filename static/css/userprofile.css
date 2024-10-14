@@ -8,24 +8,29 @@ body {
 
 /* Container and Card Styling */
 .container {
-    margin-top: 60px;
+    margin-top: 5px;
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Center content horizontally */
     align-items: center;
     min-height: 30vh;
-    
+}
 
 .card {
+    width: 140%; /* Increase the width of the card */
+    max-width: 700px; /* Set a maximum width to prevent it from being too wide */
+    margin: 0 auto; /* Center the card horizontally */
     border-radius: 20px;
     box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s, box-shadow 0.3s;
     background-color: #fff;
     padding: 30px;
+    position: relative; /* Necessary for the decorative elements */
+    overflow: hidden; /* To contain the decorative elements */
 }
 
 /* Card Title Styling */
 .card-title {
-    font-size: 2.2rem;
+    font-size: 2.4rem; /* Slightly larger for better visibility */
     font-weight: bold;
     color: #343a40;
     text-align: center;
@@ -40,7 +45,7 @@ body {
     content: '';
     width: 60px;
     height: 4px;
-    background-color: #007bff;
+    background-color: #1d8874;
     display: block;
     margin: 10px auto 0;
     border-radius: 5px;
@@ -62,14 +67,14 @@ body {
 }
 
 .form-control:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
+    border-color: #2e9b80;
+    box-shadow: 0 0 10px rgba(33, 142, 93, 0.4);
     background-color: #fff;
 }
 
 /* Button Styling */
 .btn-primary {
-    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    background: linear-gradient(135deg, #1b7760 0%, #16705a 100%);
     border: none;
     border-radius: 50px;
     padding: 12px 40px;
@@ -79,11 +84,12 @@ body {
     color: #fff;
     transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
     letter-spacing: 1px;
+    cursor: pointer; /* Indicate clickable */
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #0056b3 0%, #003f7f 100%);
-    box-shadow: 0px 8px 20px rgba(0, 123, 255, 0.5);
+    background: linear-gradient(135deg, #16705a 0%, #16705a 100%);
+    box-shadow: 0px 8px 20px rgba(25, 139, 97, 0.5);
     transform: scale(1.05);
 }
 
@@ -105,19 +111,39 @@ body {
 @media only screen and (max-width: 768px) {
     .container {
         margin-top: 20px;
+        flex-direction: column; /* Stack elements vertically */
     }
 
     .card-title {
-        font-size: 1.8rem;
+        font-size: 2rem; /* Adjust size for smaller screens */
     }
 
     .form-group label {
-        font-size: 1rem;
+        font-size: 1rem; /* Adjust label size */
     }
 
     .btn-primary {
-        padding: 10px 30px;
-        font-size: 1rem;
+        padding: 10px 30px; /* Adjust button padding */
+        font-size: 1rem; /* Adjust button font size */
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .card {
+        padding: 20px; /* Adjust card padding */
+    }
+
+    .card-title {
+        font-size: 1.8rem; /* Further reduce title size */
+    }
+
+    .form-control, .form-group input {
+        padding: 10px; /* Reduce padding for smaller screens */
+    }
+
+    .btn-primary {
+        padding: 8px 20px; /* Further reduce button padding */
+        font-size: 0.9rem; /* Further adjust font size */
     }
 }
 
@@ -132,6 +158,7 @@ body {
     background: rgba(0, 123, 255, 0.1);
     border-radius: 50%;
     z-index: -1;
+    transition: transform 0.3s; /* Add transition for hover effects */
 }
 
 .card::after {
@@ -144,4 +171,10 @@ body {
     background: rgba(0, 123, 255, 0.1);
     border-radius: 50%;
     z-index: -1;
+}
+
+/* Hover Effects for the Card */
+.card:hover::before,
+.card:hover::after {
+    transform: scale(1.1); /* Scale decorative elements on hover */
 }

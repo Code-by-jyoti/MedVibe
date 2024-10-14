@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/medicine_list.css') }}">
+    <script>
+        // Fetch medicines by letter and page number
+        function fetchMedicines(letter, page = 1) {
+            const url = `/medicines?letter=${letter}&page=${page}`;
+
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data, 'text/html');
+                    const newContent = doc.querySelector('.medicine-container').innerHTML;
+                    document.querySelector('.medicine-container').innerHTML = newContent;
+                })
+                .catch(error => console.error('Error fetching medicines:', error));
+        }
+
+        // Handle pagination change
+        function changePage(direction) {
+            let currentLetter = '{{ active_letter }}';
+            let currentPage = parseInt('{{ current_page }}', 10);
+            let totalPages = parseInt('{{ total_pages }}', 10);
+
+            if (direction === 'prev' && currentPage > 1) {
+                fetchMedicines(currentLetter, currentPage - 1);
+            } else if (direction === 'next' && currentPage < totalPages) {
+                fetchMedicines(currentLetter, currentPage + 1);
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <div class="medicine-list">
+        <h1>All Medicines</h1>
+        <p>Find your medicines here</p>
+
+        <!-- Pagination Section -->
+        <div class="pagination-container">
+            <button class="prev" onclick="changePage('prev')">&#60;</button>
+            <div class="pagination-wrapper">
+                <div class="pagination">
+                    <a href="?letter=0-9" class="page {% if active_letter == '0-9' %}active{% endif %}" 
+                       onclick="fetchMedicines('0-9'); return false;">0-9</a>
+                    {% for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' %}
+                        <a href="?letter={{ letter }}" class="page {% if active_letter == letter %}active{% endif %}" 
+                           onclick="fetchMedicines('{{ letter }}'); return false;">{{ letter }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <button class="next" onclick="changePage('next')">&#62;</button>
+        </div>
+
+        <div class="medicine-container">
+            {% if medicines|length == 0 %}
+                <p>No medicines available for this letter.</p>
+            {% else %}
+                <ul>
+                    {% for medicine in medicines %}
+                        <li><a href="{{ url_for('medicine_detail', id=medicine.id) }}">{{ medicine.name }}</a></li>
+                    {% endfor %}
+                </ul>
+
+                <!-- Pagination Controls -->
+                
+            {% endif %}
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

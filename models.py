@@ -108,3 +108,24 @@ class OrderItem(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
     total = db.Column(db.Float, nullable=False)
+
+class Medicine(db.Model):
+    __tablename__ = 'medicine'  # Specify the table name for the medicine module
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)  # Medicine name
+    description = db.Column(db.Text, nullable=True)  # Description of the medicine
+    mrp = db.Column(db.Float, nullable=False)  # Maximum Retail Price
+    discount = db.Column(db.Float, nullable=True)  # Discount percentage
+    manufacturer = db.Column(db.String(100), nullable=True)  # Manufacturer of the medicine
+    uses = db.Column(db.Text, nullable=True)  # Uses of the medicine
+    safety_info = db.Column(db.Text, nullable=True)  # Safety information
+    country_of_origin = db.Column(db.String(50), nullable=True)  # Country of origin
+    image_filename = db.Column(db.String(100), nullable=True)  # Image filename for the medicine
+    stock = db.Column(db.Integer, nullable=False, default=0)  # Stock quantity available
+    benefits = db.Column(db.Text, nullable=True)  # New field for benefits of the medicine
+    directions = db.Column(db.Text, nullable=True)  # Directions for use
+    features = db.Column(db.Text, nullable=True)  # Features of the medicine
+
+
+    def __repr__(self):
+        return f'<Medicine {self.name}>'
