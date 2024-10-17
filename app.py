@@ -40,8 +40,6 @@ myapp.config['MAIL_USE_SSL'] = True
 mail = Mail(myapp)
 db.init_app(myapp)
 # Hash the password and store it securely (in a real app, use a database)
-ADMIN_EMAIL = 'mateshital@gmail.com'
-ADMIN_PASSWORD_HASH = generate_password_hash('admin123')  # Store this hash securely
 # Initialize Flask-Admin
 admin = Admin(myapp, name='Admin Panel', template_mode='bootstrap3')
 # Add Model Views to Admin Panel
@@ -53,19 +51,7 @@ admin.add_view(ModelView(FAQ, db.session))
 admin.add_view(ModelView(Blog, db.session))
 
 
-@myapp.route('/admin/login', methods=['GET', 'POST'])
-def admin_login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
 
-        if email == ADMIN_EMAIL and check_password_hash(ADMIN_PASSWORD_HASH, password):
-            session['admin_logged_in'] = True
-            return redirect(url_for('index'))  # Redirect to admin dashboard
-        else:
-            flash('Invalid credentials. Please try again.')
-
-    return render_template('admin_login.html')
 
 @myapp.route('/')
 def index():
