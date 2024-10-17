@@ -14,89 +14,12 @@
 <body>
     
 
-    <nav class="navbar">
+    <div class="navbar">
         <a href="/medicines" class="nav">Buy Medicines</a>
         <a href="/main" class="nav">Health Blogs</a>
+        <a href="/financial_assistance" class="nav">Finance</a>
         
-    </nav>
-    
-    <nav class="navbar-dropdown">
-        <div class="dropdown">
-            <button class="dropdown-button">Health Conditions</button>
-            <div class="dropdown-content">
-                <a href="#">Bone and Joint Care</a>
-                <a href="#">Digestive Care</a>
-                <a href="#">Eye Care</a>
-                <a href="#">Pain Relief</a>
-                <a href="#">Smoking Cessation</a>
-                <a href="#">Liver Care</a>
-                <a href="#">Stomach Care</a>
-                <a href="#">Cold and Cough</a>
-                <a href="#">Heart Care</a>
-                <a href="#">Kidney Care</a>
-                <a href="#">Piles, Fissures & Fistula</a>
-                <a href="#">Respiratory Care</a>
-                <a href="#">Mental Wellness</a>
-                <a href="#">Derma Care</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropdown-button">Vitamins & Supplements</button>
-            <div class="dropdown-content">
-                <a href="#">Multivitamins, Multiminerals and Antioxidants</a>
-                <a href="#">Vitamins A to Z</a>
-                <a href="#">Protein Supplements</a>
-                <a href="#">Supplement Powder</a>
-                <a href="#">Vitamin B12 & B Complex</a>
-                <a href="#">Mineral Supplements</a>
-                <a href="#">Immunity Boosters</a>
-                <a href="#">Omega and Fish Oil</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropdown-button">Healthcare Devices</button>
-            <div class="dropdown-content">
-                <a href="#">Supports & Splints</a>
-                <a href="#">BP Monitors</a>
-                <a href="#">Nebulizers and Vaporizers</a>
-                <a href="#">Health Accessories</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropdown-button">Ayurveda</button>
-            <div class="dropdown-content">
-                <a href="#">Health Concerns</a>
-                <a href="#">Herbs</a>
-                <a href="#">Chyawanprash</a>
-                <a href="#">Herbal Juices</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropdown-button">Diabetes Care</button>
-            <div class="dropdown-content">
-                <a href="#">Test Strips and Lancets</a>
-                <a href="#">Blood Glucose Monitors</a>
-                <a href="#">Diabetic Diet</a>
-                <a href="#">Sugar Substitutes</a>
-                <a href="#">Diabetes Ayurvedic Medicines</a>
-                <a href="#">Homeopathy</a>
-                <a href="#">Syringes and Pens</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropdown-button">Personal care</button>
-            <div class="dropdown-content">
-                <a href="{{ url_for('products', product_category=1) }}">Skin Care</a>
-                <a href="{{ url_for('products', product_category=2) }}">Hair Care</a>
-                <a href="{{ url_for('products', product_category=3) }}">Oral Care</a>
-                <a href="{{ url_for('products', product_category=4) }}">Sexual Wellness</a>
-                <a href="{{ url_for('products', product_category=5) }}">Baby and Mom Care</a>
-                <a href="{{ url_for('products', product_category=6) }}">Elderly Care</a>
-            </div>
-            
-        </div>
-
-    </nav>
+    </div>
 
     <section class="container">
         <div class="animated-text">
@@ -398,11 +321,11 @@
     <script src="{{ url_for('static', filename='js/item_script.js') }}"></script>
 
     <div class="slider-container1">
-        <div class="slider-arrow left-arrow" onclick="moveSlider(-1)">❮</div>
+        <button class="slider-arrow left-arrow" onclick="moveSlider(-1)">❮</button>
         <div class="brand-slider">
             <div class="brand-slide">
                 <img src="{{ url_for('static', filename='brand_img/Nivea-Logo-2011-present.jpg') }}" alt="NIVEA">
-                <p>NIVEA</p>  
+                <p>NIVEA</p>
             </div>
             <div class="brand-slide">
                 <img src="{{ url_for('static', filename='brand_img/episoft.jpeg') }}" alt="EPISOFT">
@@ -445,9 +368,20 @@
                 <p>MINIMALIST</p>
             </div>
         </div>
-        <div class="slider-arrow right-arrow" onclick="moveSlider(1)">❯</div>
+        <button class="slider-arrow right-arrow" onclick="moveSlider(1)">❯</button>
     </div>
-    <script src="{{ url_for('static', filename='js/brand.js') }}"></script>
+    <script>
+        // JavaScript to handle slider movement
+        const brandSlider = document.querySelector('.brand-slider');
+        const slideWidth = document.querySelector('.brand-slide').offsetWidth + 16; // Slide width + margin
+
+        function moveSlider(direction) {
+            brandSlider.scrollBy({
+                left: direction * slideWidth,  // Scroll left or right based on direction
+                behavior: 'smooth'  // Smooth scrolling effect
+            });
+        }
+    </script>
 
     <div class="testimonial-section">
         <h2>What our customers have to say</h2>

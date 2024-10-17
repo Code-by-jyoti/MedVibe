@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refill Prescription</title>
+    <style>
+        /* Reset some default styles */
+        body {
+            font-family: 'Arial', sans-serif; /* Use a clean, modern font */
+            line-height: 1.6; /* Improve readability */
+            margin: 0; /* Remove default margin */
+            padding: 20px; /* Add some padding */
+            background: linear-gradient(to right, #25895c, #0f7569); /* Gradient background */
+            color: #333; /* Default text color */
+        }
+
+        /* Main container for the content */
+        .container {
+            max-width: 600px; /* Set a maximum width */
+            margin: 0 auto; /* Center the container */
+            background-color: #ffffff; /* White background for the container */
+            padding: 30px; /* Add padding */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+            transition: transform 0.2s; /* Animation on hover */
+        }
+
+        .container:hover {
+            transform: translateY(-5px); /* Slight lift effect on hover */
+        }
+
+        /* Heading styles */
+        h1 {
+            text-align: center; /* Center the main heading */
+            color: #157a49; /* Blue color for heading */
+            font-size: 2.5em; /* Larger heading */
+            margin-bottom: 20px; /* Space below the heading */
+        }
+
+        /* Styles for the flash messages */
+        ul {
+            list-style-type: none; /* Remove default list style */
+            padding: 0; /* Remove padding */
+        }
+
+        ul li {
+            background-color: #e74c3c; /* Red background for error messages */
+            color: white; /* White text for contrast */
+            padding: 12px; /* Padding for the message */
+            margin-bottom: 10px; /* Space between messages */
+            border-radius: 5px; /* Rounded corners for messages */
+            animation: fadeIn 0.5s; /* Fade in effect */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Prescription details styles */
+        h2 {
+            color: #27ae60; /* Green color for subheading */
+            margin-top: 30px; /* Space above the subheading */
+            font-size: 1.8em; /* Slightly larger subheading */
+        }
+
+        p {
+            color: #000000; /* Darker gray for paragraph text */
+            margin: 5px 0; /* Vertical spacing for paragraphs */
+            font-weight: bold;
+         
+        }
+
+        /* Form styles */
+        form {
+            display: flex; /* Use flexbox for layout */
+            flex-direction: column; /* Stack items vertically */
+            margin-top: 20px; /* Space above the form */
+        }
+
+        label {
+            margin-bottom: 5px; /* Space below the label */
+            font-weight: bold; /* Bold labels for emphasis */
+            color: #34495e; /* Dark gray for labels */
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="container"> <!-- Main container -->
+        <h1>Refill Prescription</h1>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Your form for requesting a refill -->
+        <form method="POST" action="/refill">
+            
+        </form>
+
+        <!-- Optionally show current prescription details -->
+        {% if prescription %}
+            <h2>Prescription Details:</h2>
+            <p>Prescription No. : {{ prescription.id }}</p>
+            <p>Email: {{ prescription.user_email }}</p>
+            <p>Refill Count: {{ prescription.refill_count }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>

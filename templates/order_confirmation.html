@@ -21,5 +21,38 @@
         <p>Your order will be delivered to your address with Cash on Delivery.</p>
         <a href="{{ url_for('index') }}" class="continue-shopping">Continue Shopping</a>
     </div>
+    <!-- Add the Canvas Confetti library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <!-- Confetti Trigger Script -->
+    <script>
+        function launchConfetti() {
+            var duration = 5 * 1000; // Duration of confetti in milliseconds (e.g. 5 seconds)
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 2000 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 } 
+                }));
+            }, 250);
+        }
+
+        window.onload = function() {
+            launchConfetti();
+        };
+    </script>
 </body>
 </html>

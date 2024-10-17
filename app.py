@@ -2,27 +2,31 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from flask_mail import Mail, Message
 import secrets
 import os
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 from dotenv import load_dotenv
 from flask_migrate import Migrate
 from datetime import timedelta
 import razorpay
-# Initialize Razorpay client with your Razorpay API key and secret
 razorpay_client = razorpay.Client(auth=("rzp_test_is2RgeSGBanvEh", "HV9n88oRKPFhPkHzBFqWWbtO"))
 from werkzeug.security import check_password_hash  
 from werkzeug.security import generate_password_hash  # Import for password hashing
-from models import db, User, ResetToken, FAQ, Category, Blog, ProductCategory, Subcategory, Brand, Product, RelatedImage, Order, OrderItem,Medicine
+from werkzeug.utils import secure_filename
+from models import db, User, ResetToken, FAQ, Category, Blog, ProductCategory, Subcategory, Brand, Product, RelatedImage, Order, OrderItem,AssistanceApplication,Prescription,RefillRequest,AdminUser
 # Load environment variables from .env file
 load_dotenv()
 
 myapp = Flask(__name__)
 
 myapp.secret_key = secrets.token_hex(32)
-myapp.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
+myapp.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://avnadmin:AVNS_5g5JAO_QRXn3sbMwflp@mysql-1744ddf1-mateshital41-5b9c.i.aivencloud.com:22765/medvibe2'
 myapp.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 myapp.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 myapp.config['SESSION_COOKIE_SECURE'] = False  # Change to True if using HTTPS
-
-
+myapp.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')
+# Make sure the uploads directory exists
+if not os.path.exists(myapp.config['UPLOAD_FOLDER']):
+    os.makedirs(myapp.config['UPLOAD_FOLDER'])
 #migrate = Migrate(myapp, db)
 
 # Configure email
@@ -38,6 +42,16 @@ db.init_app(myapp)
 # Hash the password and store it securely (in a real app, use a database)
 ADMIN_EMAIL = 'mateshital@gmail.com'
 ADMIN_PASSWORD_HASH = generate_password_hash('admin123')  # Store this hash securely
+# Initialize Flask-Admin
+admin = Admin(myapp, name='Admin Panel', template_mode='bootstrap3')
+# Add Model Views to Admin Panel
+admin.add_view(ModelView(AdminUser, db.session))
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Product, db.session))
+admin.add_view(ModelView(Order, db.session))
+admin.add_view(ModelView(FAQ, db.session))
+admin.add_view(ModelView(Blog, db.session))
+
 
 @myapp.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
@@ -117,6 +131,109 @@ def blog_detail(blog_id):
 def prescription():
     return render_template('prescription.html')
 
+@myapp.route('/upload', methods=['POST'])
+def upload_prescription():
+    if 'email' not in session:
+        flash('You must be logged in to request a refill.')
+        return redirect(url_for('login'))
+    
+    if 'prescriptionFile' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+
+    file = request.files['prescriptionFile']
+
+    if file.filename == '':
+        flash('No selected file')
+        return redirect(request.url)
+
+    if file:
+        # Save the file to the designated upload folder
+        filepath = os.path.join(myapp.config['UPLOAD_FOLDER'], file.filename)
+        file.save(filepath)
+
+        # Save the file information to the database
+        new_prescription = Prescription(filename=file.filename, user_email=session['email'])
+        db.session.add(new_prescription)
+        db.session.commit()
+
+        # Set session variable to indicate the prescription has been uploaded
+        session['upload_prescription'] = True
+
+        flash('Prescription uploaded successfully!')
+        return redirect(url_for('cart')) 
+
+@myapp.route('/refill', methods=['GET', 'POST'])
+def request_refill():
+    if request.method == 'POST':
+        prescription_number = request.form['refillPrescription']
+
+        # Ensure user is logged in
+        if 'email' not in session:
+            flash('You must be logged in to request a refill.')
+            return redirect(url_for('login'))
+
+        # Fetch the prescription
+        prescription = Prescription.query.filter_by(id=prescription_number, user_email=session['email']).first()
+        
+        if not prescription:
+            flash('Prescription not found or you do not have permission to refill this prescription.')
+            return redirect(request.url)  # Redirect back to the same page
+
+        # Check refill count
+        MAX_REFILLS = 3
+        if prescription.refill_count >= MAX_REFILLS:
+            flash('Maximum refill limit of 3 reached for this prescription.')
+            return render_template('refill.html', prescription=prescription)  # Render the refill page with the prescription
+
+        # Create refill request
+        user_email = session['email']  # Get email from session
+        new_refill_request = RefillRequest(prescription_id=prescription.id, user_email=user_email)
+        
+        # Try to add the refill request to the database
+        try:
+            db.session.add(new_refill_request)
+            prescription.refill_count += 1  # Increment refill count
+            db.session.commit()
+            flash('Refill request submitted successfully.')
+        except Exception as e:
+            db.session.rollback()
+            flash('An error occurred while submitting your refill request: {}'.format(str(e)))
+
+        return redirect(url_for('view_refills'))
+
+    # Handle GET request logic here if needed
+    return render_template('refill.html')  # Render the refill page for GET requests
+
+
+
+@myapp.route('/view_prescriptions')
+def view_prescriptions():
+    # Check if user is logged in
+    if 'email' not in session:
+        flash('You need to log in to view your prescriptions.', 'warning')
+        return redirect(url_for('login'))
+
+    user_email = session['email']  # Get the logged-in user's email
+
+    # Fetch prescriptions for the logged-in user
+    prescriptions = Prescription.query.filter_by(user_email=user_email).all()
+    return render_template('view_prescriptions.html', prescriptions=prescriptions)
+
+@myapp.route('/view_refills')
+def view_refills():
+    # Check if user is logged in
+    if 'email' not in session:
+        flash('You need to log in to view your refill requests.', 'warning')
+        return redirect(url_for('login'))
+
+    user_email = session['email']  # Get the logged-in user's email
+
+    # Fetch refill requests for the logged-in user
+    refill_requests = RefillRequest.query.filter_by(user_email=user_email).all()
+    return render_template('view_refills.html', refill_requests=refill_requests)
+
+
 @myapp.route('/return')  # Add the slash here
 def returns_policy():
     return render_template('return.html')
@@ -141,6 +258,43 @@ def brand():
 @myapp.route('/userprofilenavbar')
 def userp():
     return render_template("userprofilenavbar.html")
+
+@myapp.route('/financial_assistance', methods=['GET', 'POST'])
+def financial_assistance():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        phone = request.form['phone']
+        income = request.form['household_income']
+        medication = request.form['medication']
+        document = request.files['supporting_document']
+
+        # Handle file upload
+        if document:
+            filename = secure_filename(document.filename)
+            filepath = os.path.join(myapp.config['UPLOAD_FOLDER'], filename)
+            document.save(filepath)
+        else:
+            filepath = None
+
+        # Create new application instance
+        new_application = AssistanceApplication(
+            name=name,
+            email=email,
+            phone=phone,
+            household_income=float(income),  # Convert to float
+            medication=medication,
+            supporting_documents=filepath
+        )
+
+        # Store data in the database
+        db.session.add(new_application)
+        db.session.commit()
+
+        flash('Your application has been submitted successfully!', 'success')
+        return redirect(url_for('financial_assistance'))
+
+    return render_template('financial_assistance.html')
 
 
 def send_reset_email(email, token):
@@ -404,11 +558,25 @@ def add_to_cart(product_id):
 
 @myapp.route('/cart')
 def cart():
-    cart_items = session.get('cart', {})  # Retrieve the cart from the session
+    # Ensure user is logged in
+    if 'email' not in session:  # Replace 'email' with the key you use for session tracking
+        flash('Please log in to view your cart.', 'warning')
+        return redirect(url_for('login'))  # Redirect to your login route
+
+    # Retrieve the cart from the session
+    cart_items = session.get('cart', {})
+    
+    # No items in cart
+    if not cart_items:
+        return render_template('cart.html', cart_details=None, total_amount=0)
+
+    # Retrieve product IDs from cart
     product_ids = [int(pid) for pid in cart_items.keys()]
-
+    
+    # Fetch products from the database
     products = Product.query.filter(Product.id.in_(product_ids)).all()
-
+    
+    # Prepare cart details and calculate total amount
     cart_details = []
     total_amount = 0
 
@@ -424,10 +592,13 @@ def cart():
             'mrp': product.mrp,
             'discount': product.discount,
             'subtotal': round(subtotal, 2),
-            'image_filename': product.image_filename
+            'image_filename': product.image_filename,
+            'prescription_required' : product.prescription_required        
         })
 
+    # Render the cart template with cart details
     return render_template('cart.html', cart_details=cart_details, total_amount=round(total_amount, 2))
+
 
 
 

@@ -404,3 +404,47 @@ body {
     border-color: #ff7f50;
 }
 
+.prescription-warning {
+    background-color: #ffcccc;
+    border: 1px solid #ff0000;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.prescription-warning strong {
+    color: #b30000;
+}
+
+/* Upload Button Styles */
+.upload-btn {
+    background-color: #2b842e; /* Button background color */
+    color: #ffffff;            /* Button text color */
+    padding: 10px 20px;       /* Padding for the button */
+    border: none;              /* Remove border */
+    border-radius: 8px;       /* Rounded corners */
+    font-size: 1.1em;         /* Font size */
+    cursor: pointer;           /* Pointer cursor on hover */
+    display: flex;             /* Flex display for icon alignment */
+    align-items: center;       /* Center icon and text vertically */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+}
+
+.upload-btn i {
+    margin-right: 8px; /* Spacing between icon and text */
+}
+
+/* Hover effect for the upload button */
+.upload-btn:hover {
+    background-color: #57c96c; /* Darker background on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+/* Responsive Styles for Upload Button */
+@media (max-width: 768px) {
+    .upload-btn {
+        width: 100%; /* Make button full width on small screens */
+        font-size: 1em; /* Adjust font size for better fit */
+    }
+}
+

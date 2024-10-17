@@ -6,6 +6,123 @@
     <title>Your Cart</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+   /* Styles for popup */
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%; /* Full width on small screens */
+    max-width: 450px; /* Maximum width */
+    padding: 20px;
+    background: linear-gradient(135deg, #ffffff, #f9f9f9); /* Soft gradient background */
+    border: none; /* No border */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+    z-index: 1000;
+    display: none; /* Hidden by default */
+    transition: all 0.3s ease-in-out; /* Smooth transition */
+    animation: fadeIn 0.5s; /* Animation on appearance */
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Active state */
+.popup.active {
+    display: block; /* Show when active */
+}
+
+/* Header styles */
+.popup h2 {
+    margin-top: 0;
+    color: #d9534f; /* Bright red for attention */
+    font-family: 'Poppins', sans-serif; /* Modern font */
+    font-size: 24px; /* Larger font size */
+    text-align: center; /* Centered text */
+}
+
+/* Message styles */
+.popup p {
+    color: #333; /* Darker text for readability */
+    font-family: 'Arial', sans-serif; /* Change font */
+    text-align: center; /* Centered text */
+    line-height: 1.5; /* Improved line spacing */
+}
+
+/* Button styling */
+.popup-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* Button common styles */
+.popup-buttons button {
+    flex: 1; /* Make buttons take equal space */
+    padding: 10px;
+    margin: 0 5px; /* Add spacing between buttons */
+    font-size: 16px;
+    font-weight: bold;
+    border: none; /* No border */
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    transition: background-color 0.3s, transform 0.2s; /* Transition effects */
+}
+
+/* Cancel button styles */
+.popup-buttons button:first-child {
+    background-color: #f0ad4e; /* Bootstrap warning color */
+    color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+.popup-buttons button:first-child:hover {
+    background-color: #ec971f; /* Darker on hover */
+    transform: translateY(-3px); /* Slight lift effect */
+}
+
+/* Upload button styles */
+.popup-buttons .upload-btn {
+    background-color: #5cb85c; /* Bootstrap success color */
+    color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+.popup-buttons .upload-btn:hover {
+    background-color: #4cae4c; /* Darker on hover */
+    transform: translateY(-3px); /* Slight lift effect */
+}
+
+/* Overlay styles */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
+    z-index: 999;
+    display: none; /* Hidden by default */
+}
+
+/* Overlay active state */
+.overlay.active {
+    display: block; /* Show when active */
+}
+
+
+    </style>
 </head>
 <body>
     <div class="container">
@@ -20,7 +137,8 @@
                     <th>Quantity</th>
                     <th>Price (₹)</th>
                     <th>Total (₹)</th>
-                    <th>Remove</th> <!-- New header for remove button -->
+                    <th>Prescription</th>
+                    <th>Remove</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,16 +159,23 @@
                                     min="1"
                                     class="quantity-input"
                                     data-mrp="{{ item.mrp }}" 
-                                    data-discount="{{ item.discount or 0 }}"> <!-- Store product MRP and discount -->
+                                    data-discount="{{ item.discount or 0 }}"> 
                                 <button type="button" class="quantity-button" onclick="changeQuantity('{{ item.id }}', 1)">+</button>
                             </form>
                         </td>
-                        <td><p>₹{{ "%.2f"|format(item.mrp * (1 - ((item.discount or 0) / 100))) }}</p></td>
-                        <td id="subtotal-{{ item.id }}">₹{{ "%.2f"|format(item.mrp * (1 - ((item.discount or 0) / 100)) * item.quantity) }}</td> <!-- Display subtotal using discounted price -->
+                        <td>₹{{ "%.2f"|format(item.mrp * (1 - ((item.discount or 0) / 100))) }}</td>
+                        <td id="subtotal-{{ item.id }}">₹{{ "%.2f"|format(item.mrp * (1 - ((item.discount or 0) / 100)) * item.quantity) }}</td>
+                        <td>
+                            {% if item.prescription_required %}
+                                <span class="prescription-required" data-prescription="true">⚠ Required</span>
+                            {% else %}
+                                <span class="no-prescription">Not Required</span>
+                            {% endif %}
+                        </td>
                         <td>
                             <form action="{{ url_for('remove_from_cart', product_id=item['id']) }}" method="POST">
                                 <button type="submit" class="remove-button">
-                                    <i class="fas fa-trash-alt"></i> <!-- Dustbin Icon -->
+                                    <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
                         </td>
@@ -62,7 +187,7 @@
         <div class="total-container">
             <p><strong>Total Amount:</strong> ₹<span id="total-amount">{{ "%.2f"|format(total_amount) }}</span></p>
         </div>
-        
+
         {% else %}
         <div class="cart-container">
             <div class="empty-cart">
@@ -74,70 +199,90 @@
         <div class="cart-buttons {% if cart_details %}with-items{% else %}without-items{% endif %}">
             <a href="{{ url_for('index') }}" class="continue-shopping">Continue Shopping</a>
             {% if cart_details %}
-            <a href="{{ url_for('checkout') }}" class="checkout-button">Proceed to Checkout</a>
+            <button class="checkout-button" onclick="checkPrescription()">Proceed to Checkout</button>
             {% endif %}
         </div>
     </div>
 
-    <script>
-        function changeQuantity(productId, change) {
-            const quantityInput = document.getElementById(`quantity-${productId}`);
-            let currentQuantity = parseInt(quantityInput.value) || 1;
-            currentQuantity += change;
+    <!-- Popup HTML -->
+<div class="overlay" id="overlay"></div>
+<div class="popup" id="popup">
+    <h2>Prescription Required</h2>
+    <p>Some products in your cart require a prescription to proceed with the checkout. Please upload the prescription to continue.</p>
+    <div class="popup-buttons">
+        <button onclick="closePopup()">Cancel</button>
+        <form action="{{ url_for('prescription') }}" method="GET">
+            <button type="submit" class="upload-btn">
+                <i class="fas fa-upload"></i> Upload
+            </button>
+        </form>
+    </div>
+</div>
 
-            // Ensure quantity is at least 1
-            if (currentQuantity < 1) {
-                currentQuantity = 1;
-            }
 
-            quantityInput.value = currentQuantity;
+<script>
+    function checkPrescription() {
+        const itemsNeedingPrescription = document.querySelectorAll('.prescription-required');
 
-            // Fetch MRP and Discount from data attributes
-            const mrp = parseFloat(quantityInput.dataset.mrp);
-            const discount = parseFloat(quantityInput.dataset.discount);
+        if (itemsNeedingPrescription.length > 0) {
+            // Show the popup if any item needs a prescription
+            document.getElementById('overlay').classList.add('active');
+            document.getElementById('popup').classList.add('active');
+        } else {
+            // Proceed to the checkout page
+            window.location.href = "{{ url_for('checkout') }}";
+        }
+    }
 
-            // Calculate the discounted price and new subtotal
-            const discountedPrice = mrp * (1 - discount / 100);
-            const newSubtotal = (discountedPrice * currentQuantity).toFixed(2);
+    function closePopup() {
+        document.getElementById('overlay').classList.remove('active');
+        document.getElementById('popup').classList.remove('active');
+    }
 
-            // Update the subtotal in the DOM
-            document.getElementById(`subtotal-${productId}`).innerText = `₹${newSubtotal}`;
+    function uploadPrescription() {
+        alert("Prescription upload feature coming soon!"); 
+        closePopup();
+    }
 
-            // Recalculate the total amount dynamically
-            recalculateTotalAmount();
+    function changeQuantity(productId, change) {
+        const quantityInput = document.getElementById(`quantity-${productId}`);
+        let currentQuantity = parseInt(quantityInput.value);
 
-            // Optional: Update the backend session with fetch
-            const form = quantityInput.closest('form');
-            fetch(form.action, {
-                method: 'POST',
-                body: new URLSearchParams(new FormData(form))
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    alert(data.error);
-                }
-            })
-            .catch(error => console.error('Error:', error));
+        // Update quantity based on the change value
+        currentQuantity += change;
+
+        // Ensure the quantity does not go below 1
+        if (currentQuantity < 1) {
+            currentQuantity = 1;
         }
 
-        function recalculateTotalAmount() {
-            let totalAmount = 0;
+        // Update the input value
+        quantityInput.value = currentQuantity;
 
-            // Loop through all quantity inputs and sum up the discounted subtotals
-            document.querySelectorAll('.quantity-input').forEach(input => {
-                const quantity = parseInt(input.value) || 1;
-                const mrp = parseFloat(input.dataset.mrp);
-                const discount = parseFloat(input.dataset.discount);
+        // Calculate the subtotal
+        const mrp = parseFloat(quantityInput.getAttribute('data-mrp'));
+        const discount = parseFloat(quantityInput.getAttribute('data-discount'));
+        const totalPrice = mrp * (1 - (discount / 100)) * currentQuantity;
 
-                // Calculate the discounted price for each product
-                const discountedPrice = mrp * (1 - discount / 100);
-                totalAmount += discountedPrice * quantity;
-            });
+        // Update the subtotal display
+        document.getElementById(`subtotal-${productId}`).innerText = `₹${totalPrice.toFixed(2)}`;
 
-            // Update the total amount in the DOM
-            document.getElementById('total-amount').innerText = totalAmount.toFixed(2);
-        }
-    </script>
+        // Update the total amount
+        updateTotalAmount();
+    }
+
+    function updateTotalAmount() {
+        let totalAmount = 0;
+        // Sum up all the subtotals
+        const subtotals = document.querySelectorAll('[id^="subtotal-"]');
+        subtotals.forEach(subtotal => {
+            totalAmount += parseFloat(subtotal.innerText.replace('₹', ''));
+        });
+
+        // Update the total amount display
+        document.getElementById('total-amount').innerText = `₹${totalAmount.toFixed(2)}`;
+    }
+</script>
+
 </body>
 </html>

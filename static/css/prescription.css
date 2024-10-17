@@ -4,37 +4,87 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    color: #333;
-    background-image: url('/static/images/presp_bg.avif');  /* Add your background image URL */
-    background-size: cover; /* Ensures the background covers the entire page */
-    background-position: center; /* Centers the background image */
-    background-repeat: no-repeat; /* Ensures the image doesn't repeat */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a504c;
+    padding: 10px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+  
+.header-left {
+    display: flex;
+    align-items: left; /* Vertically centers the logo */
+    padding: 10px; /* Optional: adds some space around the logo */
 }
 
-/* Service Container */
+.header-left .logo {
+    max-width: 100px; /* Adjust the size of the logo */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.icon {
+    display: block; /* Ensures the image is treated as a block element */
+}
+
+  
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+  
+.header-icons .icon {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+  }
+  
+  .header-icons .icon img {
+    width: 30px; /* Standardized width */
+    height: 30px; /* Standardized height */
+    object-fit: cover;
+    margin-right: 5px;
+    transition: transform 0.3s ease;
+  }
+  
+  .header-icons .icon:hover img {
+    transform: scale(1.1);
+  }
+  
+  .header-icons .icon-text {
+    display: none;
+  }
+  
+  .header-icons .icon:hover .icon-text {
+    display: inline;
+  }
+
+
 .service-container {
     display: flex;
-    justify-content: space-between; /* Adjust as needed */
-    margin-top: 100px; /* Add margin to separate from header */
+    flex-direction: column; /* Stack sections vertically */
+    gap: 20px; /* Space between sections */
+    padding: 20px; /* Optional padding for the container */
+    background-color: #f9f9f9; /* Optional background color */
+    border-radius: 8px; /* Optional border radius */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for better appearance */
+    max-width: 500px; /* Set a maximum width for the container */
+    margin-left: 20px; /* Align container to the left with some space from the left edge */
 }
 
 .service-section {
-    flex: 1; /* Allows sections to grow and fill space */
-    margin: 0 10px; /* Adjust space between sections */
-    padding: 20px; /* Add padding for aesthetics */
-    border: 1px solid #ccc; /* Optional: border for visual separation */
-    border-radius: 5px; /* Optional: rounded corners */
-    background-color: #f9f9f9; /* Optional: background color */
-    transition: all 0.3s ease;
+    padding: 15px; /* Optional padding for each section */
+    background-color: #ffffff; /* Background color for each section */
+    border: 1px solid #e0e0e0; /* Border for each section */
+    border-radius: 4px; /* Rounded corners for each section */
 }
 
-.service-section:hover {
-    transform: scale(1.02);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
+
 
 /* Form Styling */
 h2 {
@@ -138,4 +188,13 @@ button:hover {
     .service-container {
         flex-direction: column;
     }
+}
+.manage-buttons {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+    justify-content: center; /* Center the buttons */
+}
+
+.manage-buttons a {
+    flex: 1; /* Allow buttons to grow equally */
 }

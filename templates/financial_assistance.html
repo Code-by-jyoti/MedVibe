@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Assistance Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/financial_assistance.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Financial Assistance Application</h1>
+        <ul class="flashes">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </ul>
+        <form method="POST" enctype="multipart/form-data">
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" required placeholder="Enter your full name">
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required placeholder="example@domain.com">
+
+            <label for="phone">Phone:</label>
+            <input type="tel" name="phone" id="phone" required placeholder="Enter your phone number" pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number">
+
+            <label for="household_income">Household Income:</label>
+            <input type="number" name="household_income" id="household_income" required placeholder="Enter your household income" step="0.01"><br>
+            <br>
+            <label for="medication">Medication:</label>
+            <input type="text" name="medication" id="medication" required placeholder="Enter your medication name">
+
+            <!-- File inputs for multiple documents -->
+            <label for="aadhaar_card">Aadhaar Card:</label>
+            <input type="file" name="aadhaar_card" id="aadhaar_card" required>
+
+            <label for="ration_card">Ration Card:</label>
+            <input type="file" name="ration_card" id="ration_card" required>
+
+            <label for="income_certificate">Income Certificate:</label>
+            <input type="file" name="income_certificate" id="income_certificate" required>
+
+            <label for="photo">Photo:</label>
+            <input type="file" name="photo" id="photo" required>
+
+            <label for="signature">Signature:</label>
+            <input type="file" name="signature" id="signature" required>
+
+            <label for="supporting_document">Supporting Document (Address proof) :</label>
+            <input type="file" name="supporting_document" id="supporting_document">
+
+            <input type="submit" value="Submit" class="submit-button">
+        </form>
+    </div>
+</body>
+</html>

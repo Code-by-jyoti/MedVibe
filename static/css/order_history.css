@@ -1,0 +1,166 @@
+/* General Styling */
+body {
+    background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Container */
+.order-history-container {
+    background-color: #f8f9fa; /* Light background for better contrast */
+    padding: 20px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.order-history-container:hover {
+    transform: translateY(-5px);
+}
+
+/* Header */
+.title {
+    color: #179a88; /* Blue color for the title */
+    font-weight: bold; /* Bold title */
+}
+.back-btn {
+    background-color: #126652; /* Bootstrap primary color */
+    color: white; /* White text */
+}
+
+.back-btn:hover {
+    color: #8da09d;
+}
+
+/* Accordion Cards */
+.order-card {
+    margin-bottom: 15px; /* Space between cards */
+}
+
+.order-card:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+/* Order Header */
+.order-header {
+    background-color: #218e66; /* Light grey header */
+    border-bottom: 1px solid #dee6e1; /* Bottom border */
+}
+
+.order-btn {
+    width: 100%; /* Full width button */
+    text-align: left; /* Align text to the left */
+}
+
+.order-info {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items to the start */
+    margin: 5px 0; /* Add vertical spacing */
+}
+
+.order-id,
+.order-date,
+.order-total,
+.order-status {
+    font-size: 1rem; /* Adjust font size */
+    font-weight: 500; /* Slightly bold */
+    color: #ffffff; /* Consistent color for the text */
+    margin: 2px 0; /* Add spacing between items */
+}
+
+.items-title {
+    margin-top: 15px; /* Space above ordered items title */
+    font-weight: bold; /* Bold title */
+}
+
+.no-orders {
+    color: #dc3545; /* Red color for no orders message */
+    font-weight: bold; /* Bold message */
+}
+
+.order-btn:hover {
+    background-color: #004d40;
+}
+
+.order-btn span {
+    margin: 0 8px;
+}
+
+/* Status Badge */
+.status {
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.status.completed {
+    background-color: #4caf50;
+    color: #ffffff;
+}
+
+.status.pending {
+    background-color: #ffb300;
+    color: white;
+}
+
+.status.cancelled {
+    background-color: #e57373;
+    color: white;
+}
+
+/* Order Body */
+.order-body {
+    padding: 20px;
+    background: #fafafa;
+    border-top: 1px solid #d6d6d6;
+}
+
+.order-body h5 {
+    font-weight: 600;
+    color: #004d61;
+    margin-bottom: 12px;
+}
+
+ul.list-group {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul.list-group-item {
+    border: none;
+    font-size: 1rem;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+}
+
+ul.list-group-item:nth-child(odd) {
+    background: #f0f4c3;
+}
+
+ul.list-group-item:nth-child(even) {
+    background: #e1f5fe;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .order-btn {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .order-btn span {
+        margin: 5px 0;
+    }
+}
+
+

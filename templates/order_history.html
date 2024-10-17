@@ -5,32 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order History</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/order_history.css') }}">
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>Order History</h2>
-        <a href="{{ url_for('profile') }}" class="btn btn-primary mb-3">Back to Profile</a>
+    <div class="container mt-5 order-history-container">
+        <h2 class="title">Order History</h2>
+        <a href="{{ url_for('profile') }}" class="btn back-btn mb-3">Back to Profile</a>
 
         {% if orders %}
             <div class="accordion" id="orderAccordion">
                 {% for order in orders %}
-                    <div class="card">
-                        <div class="card-header" id="heading{{ order.id }}">
+                    <div class="card order-card">
+                        <div class="card-header order-header" id="heading{{ order.id }}">
                             <h5 class="mb-0">
-                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ order.id }}" aria-expanded="true" aria-controls="collapse{{ order.id }}">
-                                    Order ID: {{ order.id }} | Date: {{ order.created_at.strftime('%Y-%m-%d') }} | Total: {{ order.total_amount }} | Status: {{ order.status }}
+                                <button class="btn btn-link order-btn" type="button" 
+                                    data-toggle="collapse" data-target="#collapse{{ order.id }}" 
+                                    aria-expanded="true" aria-controls="collapse{{ order.id }}">
+                                    <div class="order-info">
+                                        <span class="order-id">Order ID: {{ order.id }}</span>
+                                        <span class="order-date">Date: {{ order.created_at.strftime('%Y-%m-%d') }}</span>
+                                        <span class="order-total">Total: {{ order.total_amount }}</span>
+                                        <span class="order-status">{{ order.status }}</span>
+                                    </div>
                                 </button>
                             </h5>
                         </div>
 
-                        <div id="collapse{{ order.id }}" class="collapse" aria-labelledby="heading{{ order.id }}" data-parent="#orderAccordion">
+                        <div id="collapse{{ order.id }}" class="collapse" 
+                             aria-labelledby="heading{{ order.id }}" data-parent="#orderAccordion">
                             <div class="card-body">
-                                <h5>Ordered Items:</h5>
+                                <h5 class="items-title">Ordered Items:</h5>
                                 {% if order.items %}
                                     <ul class="list-group">
                                         {% for item in order.items %}
                                             <li class="list-group-item">
-                                                {{ item.product_name }} - Quantity: {{ item.quantity }} - Price: {{ item.price }} - Total: {{ item.total }}
+                                                <span class="item-name">{{ item.product_name }}</span> 
+                                                - Quantity: <span>{{ item.quantity }}</span> 
+                                                - Price: <span>{{ item.price }}</span> 
+                                                - Total: <span>{{ item.total }}</span>
                                             </li>
                                         {% endfor %}
                                     </ul>
@@ -43,7 +55,7 @@
                 {% endfor %}
             </div>
         {% else %}
-            <p>No orders found.</p>
+            <p class="no-orders">No orders found.</p>
         {% endif %}
     </div>
 

@@ -12,6 +12,14 @@ class User(db.Model):
     state = db.Column(db.String(100), nullable=True)
     address = db.Column(db.Text, nullable=True)  # Use Text for longer addresses
 
+# Admin Model
+class AdminUser(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(150), unique=True, nullable=False)
+    password = db.Column(db.String(150), nullable=False)
+
+
+
 class ResetToken(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     token = db.Column(db.String(255), unique=True, nullable=False)
@@ -81,6 +89,7 @@ class Product(db.Model):
     safety_information = db.Column(db.Text, nullable=True)  # Optional field for safety information
     country_of_origin = db.Column(db.String(100), nullable=True)  # Country of origin field
     manufacturer = db.Column(db.String(100), nullable=True)        # Manufacturer field
+    prescription_required = db.Column(db.Boolean, nullable=True)  # Nullable Boolean field
     
     def __repr__(self):
         return f'<Product {self.name}>'
@@ -109,23 +118,44 @@ class OrderItem(db.Model):
     price = db.Column(db.Float, nullable=False)
     total = db.Column(db.Float, nullable=False)
 
-class Medicine(db.Model):
-    __tablename__ = 'medicine'  # Specify the table name for the medicine module
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)  # Medicine name
-    description = db.Column(db.Text, nullable=True)  # Description of the medicine
-    mrp = db.Column(db.Float, nullable=False)  # Maximum Retail Price
-    discount = db.Column(db.Float, nullable=True)  # Discount percentage
-    manufacturer = db.Column(db.String(100), nullable=True)  # Manufacturer of the medicine
-    uses = db.Column(db.Text, nullable=True)  # Uses of the medicine
-    safety_info = db.Column(db.Text, nullable=True)  # Safety information
-    country_of_origin = db.Column(db.String(50), nullable=True)  # Country of origin
-    image_filename = db.Column(db.String(100), nullable=True)  # Image filename for the medicine
-    stock = db.Column(db.Integer, nullable=False, default=0)  # Stock quantity available
-    benefits = db.Column(db.Text, nullable=True)  # New field for benefits of the medicine
-    directions = db.Column(db.Text, nullable=True)  # Directions for use
-    features = db.Column(db.Text, nullable=True)  # Features of the medicine
 
+class AssistanceApplication(db.Model):
+    __tablename__ = 'assistance_applications'
+
+    id = db.Column(db.Integer, primary_key=True)  # Auto-incrementing primary key
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    phone = db.Column(db.String(15), nullable=False)
+    household_income = db.Column(db.Float, nullable=False)  # Adjust type based on your needs
+    medication = db.Column(db.String(200), nullable=False)
+    supporting_documents = db.Column(db.String(200), nullable=True)  # Path to the uploaded file
 
     def __repr__(self):
-        return f'<Medicine {self.name}>'
+        return f'<AssistanceApplication {self.name}, {self.email}>'
+    
+class Prescription(db.Model):
+    __tablename__ = 'prescriptions'
+
+    id = db.Column(db.Integer, primary_key=True)  # Unique ID
+    filename = db.Column(db.String(255), nullable=False)  # Prescription file name
+    upload_date = db.Column(db.DateTime, default=db.func.now())  # Upload timestamp
+    refill_count = db.Column(db.Integer, default=0)  # Number of refills
+    user_email = db.Column(db.String(120), nullable=False)  # Email of the user who uploaded the prescription
+
+    # Relationship with RefillRequest
+    refills = db.relationship('RefillRequest', backref='prescription', lazy=True, cascade="all, delete")
+
+    def __repr__(self):
+        return f"<Prescription(id={self.id}, filename={self.filename}, refill_count={self.refill_count}, user_email={self.user_email})>"
+
+class RefillRequest(db.Model):
+    __tablename__ = 'refill_requests'
+
+    id = db.Column(db.Integer, primary_key=True)  # Unique ID
+    prescription_id = db.Column(db.Integer, db.ForeignKey('prescriptions.id'), nullable=False)  # FK to Prescription
+    request_date = db.Column(db.DateTime, default=db.func.now())  # Request timestamp
+    status = db.Column(db.String(50), default='Pending')  # Refill status (Pending, Approved, Rejected)
+    user_email = db.Column(db.String(120), nullable=False)  # Email of the user who requested the refill
+
+    def __repr__(self):
+        return f"<RefillRequest(id={self.id}, prescription_id={self.prescription_id}, status={self.status}, user_email={self.user_email})>"

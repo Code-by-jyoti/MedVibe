@@ -1,3 +1,5 @@
+{% extends "layout4.html" %}
+{% block body%}<br><br>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +9,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/prescription.css') }}">
 </head>
 <body>
-    <!-- Flash messages section -->
     <div>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -19,10 +20,11 @@
             {% endif %}
         {% endwith %}
     </div>
+    
 
     <div class="service-container">
         <section id="upload" class="service-section">
-            <h2>Prescription Upload</h2>
+            <h2>Upload Prescription</h2>
             <p>Securely upload your prescription for quick and easy medication orders.</p>
             <form action="/upload" method="post" enctype="multipart/form-data" id="uploadForm">
                 <label for="prescriptionFile">Upload your prescription:</label>
@@ -30,7 +32,6 @@
                 <button type="submit">Upload Prescription</button>
             </form>
         </section>
-        
     
         <section id="refill" class="service-section">
             <h2>Prescription Refill</h2>
@@ -42,12 +43,9 @@
             </form>
         </section>
     </div>
-    </div>
+  
 
-    <div id="uploadedImageContainer" style="display: none;">
-        <img id="uploadedImage" src="" alt="Uploaded Prescription" style="max-width: 200px; display: block;"/>
-        <button id="removeImage">&times;</button>
-    </div>
     <script src="{{ url_for('static', filename='js/prescription.js') }}"></script>
 </body>
-</html>
+</html><br><br>
+{% endblock %}
