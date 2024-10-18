@@ -1,0 +1,110 @@
+{% extends "layout2.html" %}
+{% block body%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome to MedVibe</title>
+    <link rel="stylesheet" href="static/css/donation.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Welcome to MedVibe</h1>
+        <!-- Donation Header Section -->
+        <div class="header-section">
+            <div class="header-text">
+                <h1>Donate to Support Healthcare Access</h1>
+                <p>Your donations help improve lives through better healthcare. Every contribution makes a difference.</p>
+                <a href="#donation-form" class="cta-button">Donate Now</a>
+            </div>
+            <div class="header-image">
+                <img src="https://img.freepik.com/free-vector/people-holding-charity-medicine-box-flat-vector-illustration-donation-refugees-humanitarian-aid-support-love-medication-help-pharmacy-assistance-concept_74855-26076.jpg" alt="Healthcare Support" />
+            </div>
+        </div>
+
+        <!-- Donation Cards with Payment Integration -->
+        <div id="donation-form" class="donation-section">
+            <h2>Select a Donation Amount</h2>
+            <div class="donation-cards">
+                <div class="card">
+                    <h3>₹100</h3>
+                    <img src="https://static.vecteezy.com/system/resources/previews/010/810/334/non_2x/home-delivery-of-medicines-medical-supplies-in-a-paper-bag-illustration-in-cartoon-style-vector.jpg" alt="Basic Medical Supplies">
+                    <p>Support essential medical supplies for communities.</p>
+                    <button class="payment-button" data-amount="100">Donate ₹100</button>
+                </div>
+                <div class="card">
+                    <h3>₹200</h3>
+                    <img src="https://img.freepik.com/free-vector/hpv-education-programs-abstract-concept-illustration-hpv-awareness-programs-human-papillomavirus-explained-health-education-online-consultation-virus-information-abstract-metaphor_335657-530.jpg" alt="Healthcare Programs">
+                    <p>Help fund healthcare programs for families.</p>
+                    <button class="payment-button" data-amount="200">Donate ₹200</button>
+                </div>
+                <div class="card">
+                    <h3>₹300</h3>
+                    <img src="https://www.shutterstock.com/image-vector/smile-face-disability-people-family-260nw-1180408450.jpg" alt="Health Education Programs">
+                    <p>Enable health education programs for remote communities.</p>
+                    <button class="payment-button" data-amount="300">Donate ₹300</button>
+                </div>
+                <div class="card">
+                    <h3>₹400</h3>
+                    <img src="https://www.bsitsoftware.com/images/Healthcare/healthcare_BSIT_Software_Services_Public_Health_and_Government_Agencies.jpg" alt="Long-Term Healthcare Support">
+                    <p>Provide long-term healthcare support and initiatives.</p>
+                    <button class="payment-button" data-amount="400">Donate ₹400</button>
+                </div>
+            </div>
+
+            <h3>Or enter a custom amount:</h3>
+            <form id="custom-donation-form">
+                <div class="input-group">
+                    <input type="number" id="custom-amount" name="custom_amount" placeholder="Enter custom amount" required>
+                </div>
+                <button type="submit" class="submit-button">Proceed To Donation</button>
+            </form>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="reviews-section">
+            <h2>What Our Donors Say</h2>
+            <div class="reviews">
+                <div class="review">
+                    <p>“MedVibe is transforming lives through its healthcare programs. I'm proud to support their mission!”</p>
+                    <p>- Sarah D.</p>
+                </div>
+                <div class="review">
+                    <p>“My donation went directly to helping communities in need. Highly recommend contributing to MedVibe!”</p>
+                    <p>- John M.</p>
+                </div>
+                <div class="review">
+                    <p>“Thanks to MedVibe, I know my donations are being used effectively to support healthcare access for all.”</p>
+                    <p>- Emily R.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle button click events for donation cards
+        const paymentButtons = document.querySelectorAll('.payment-button');
+        paymentButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const amount = this.getAttribute('data-amount');
+                // Redirect to donation-details with the amount as a query parameter
+                window.location.href = `/donation-details?amount=${amount}`;
+            });
+        });
+
+        // Handle form submission for custom donation amount
+        const customForm = document.getElementById('custom-donation-form');
+        customForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            const customAmount = document.getElementById('custom-amount').value;
+            // Redirect to donation-details with the custom amount as a query parameter
+            window.location.href = `/donation-details?amount=${customAmount}`;
+        });
+    </script>
+
+</body>
+</html>.
+{% endblock %}

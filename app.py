@@ -25,6 +25,8 @@ myapp.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 myapp.config['SESSION_COOKIE_SECURE'] = False  # Change to True if using HTTPS
 myapp.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')
 # Make sure the uploads directory exists
+UPLOAD_FOLDER = 'uploads/'
+
 if not os.path.exists(myapp.config['UPLOAD_FOLDER']):
     os.makedirs(myapp.config['UPLOAD_FOLDER'])
 #migrate = Migrate(myapp, db)
@@ -69,6 +71,34 @@ def main():
     separate_blogs = Blog.query.filter_by(category_id=None).limit(11).all()
 
     return render_template("main.html", categories=categories, category_blogs=category_blogs, separate_blogs=separate_blogs)
+
+@myapp.route('/donation')
+def donation():
+    return render_template('donation.html')
+
+@myapp.route('/donation-details', methods=['GET', 'POST'])
+def donation_details():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        address = request.form.get('address')
+        phone = request.form.get('phone')
+        amount = request.form.get('amount')
+
+        return redirect(url_for('review_details', name=name, email=email, address=address, phone=phone, amount=amount))
+    amount = request.args.get('amount')
+    return render_template('donation-details.html', amount=amount)
+
+@myapp.route('/review-details')
+def review_details():
+    name = request.args.get('name')
+    email = request.args.get('email')
+    address = request.args.get('address')
+    phone = request.args.get('phone')
+    amount = request.args.get('amount')
+
+    return render_template('review_details.html', name=name, email=email, address=address, phone=phone, amount=amount)
+
 
 @myapp.route('/layout')
 def lay():
@@ -119,35 +149,25 @@ def prescription():
 
 @myapp.route('/upload', methods=['POST'])
 def upload_prescription():
-    if 'email' not in session:
-        flash('You must be logged in to request a refill.')
-        return redirect(url_for('login'))
-    
     if 'prescriptionFile' not in request.files:
         flash('No file part')
         return redirect(request.url)
 
-    file = request.files['prescriptionFile']
+    prescription = request.files['prescriptionFile']
 
-    if file.filename == '':
+    if prescription.filename == '':
         flash('No selected file')
         return redirect(request.url)
 
-    if file:
-        # Save the file to the designated upload folder
-        filepath = os.path.join(myapp.config['UPLOAD_FOLDER'], file.filename)
-        file.save(filepath)
+    if prescription:
+        # Save the file to the specified upload folder
+        file_path = os.path.join(UPLOAD_FOLDER, prescription.filename)
+        prescription.save(file_path)
 
-        # Save the file information to the database
-        new_prescription = Prescription(filename=file.filename, user_email=session['email'])
-        db.session.add(new_prescription)
-        db.session.commit()
+        # Redirect to the checkout page after a successful upload
+        return redirect(url_for('checkout'))
 
-        # Set session variable to indicate the prescription has been uploaded
-        session['upload_prescription'] = True
-
-        flash('Prescription uploaded successfully!')
-        return redirect(url_for('cart')) 
+    return redirect(url_for('cart'))
 
 @myapp.route('/refill', methods=['GET', 'POST'])
 def request_refill():

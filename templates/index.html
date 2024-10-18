@@ -18,7 +18,7 @@
         <a href="/medicines" class="nav">Buy Medicines</a>
         <a href="/main" class="nav">Health Blogs</a>
         <a href="/financial_assistance" class="nav">Finance</a>
-        
+        <a href="/donation" class="nav">Donation</a>
     </div>
 
     <section class="container">
@@ -320,68 +320,6 @@
     </div>
     <script src="{{ url_for('static', filename='js/item_script.js') }}"></script>
 
-    <div class="slider-container1">
-        <button class="slider-arrow left-arrow" onclick="moveSlider(-1)">❮</button>
-        <div class="brand-slider">
-            <div class="brand-slide">
-                <img src="{{ url_for('static', filename='brand_img/Nivea-Logo-2011-present.jpg') }}" alt="NIVEA">
-                <p>NIVEA</p>
-            </div>
-            <div class="brand-slide">
-                <img src="{{ url_for('static', filename='brand_img/episoft.jpeg') }}" alt="EPISOFT">
-                <p>EPISOFT</p>
-            </div>
-            <div class="brand-slide">
-                <img src="{{ url_for('static', filename='brand_img/onetoch.jpeg') }}" alt="ONETOUCH">
-                <p>ONETOUCH</p>
-            </div>
-            <div class="brand-slide">
-                <img src="{{ url_for('static', filename='brand_img/volini.jpeg') }}" alt="VOLINI">
-                <p>VOLINI</p>
-            </div>
-            <div class="brand-slide">
-                <img src="{{ url_for('static', filename='brand_img/prohance.jpeg') }}" alt="PROHANCE">
-                <p>PROHANCE</p>
-            </div>
-            <div class="brand-slide">
-                <img src="{{ url_for('static', filename='brand_img/holland.jpeg') }}" alt="HOLLAND & BARRETT">
-                <p>HOLLAND & BARRETT</p>
-            </div>
-            <div class="brand-slide">
-                <img src="{{ url_for('static', filename='brand_img/oziva.jpg') }}" alt="OZIVA">
-                <p>OZIVA</p>
-            </div>
-            <div class="brand-slide">
-                <img src="{{ url_for('static', filename='brand_img/pampers.jpeg') }}" alt="PAMPERS">
-                <p>PAMPERS</p>
-            </div>
-            <div class="brand-slide">
-                <img src="{{ url_for('static', filename='brand_img/wellbeing.jpeg') }}" alt="WELLBEING NUTRITION">
-                <p>WELLBEING NUTRITION</p>
-            </div>
-            <div class="brand-slide">
-                <img src="{{ url_for('static', filename='brand_img/Protinex.jpg') }}" alt="PROTINEX">
-                <p>PROTINEX</p>
-            </div>
-            <div class="brand-slide">
-                <img src="{{ url_for('static', filename='brand_img/minimalist_logo.webp') }}" alt="MINIMALIST">
-                <p>MINIMALIST</p>
-            </div>
-        </div>
-        <button class="slider-arrow right-arrow" onclick="moveSlider(1)">❯</button>
-    </div>
-    <script>
-        // JavaScript to handle slider movement
-        const brandSlider = document.querySelector('.brand-slider');
-        const slideWidth = document.querySelector('.brand-slide').offsetWidth + 16; // Slide width + margin
-
-        function moveSlider(direction) {
-            brandSlider.scrollBy({
-                left: direction * slideWidth,  // Scroll left or right based on direction
-                behavior: 'smooth'  // Smooth scrolling effect
-            });
-        }
-    </script>
 
     <div class="testimonial-section">
         <h2>What our customers have to say</h2>

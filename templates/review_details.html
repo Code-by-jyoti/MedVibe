@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Review Details | MedVibe</title>
+    <link rel="stylesheet" href="static/css/review_detail.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script> <!-- Razorpay Library -->
+</head>
+<body>
+
+    <div class="container">
+        <!-- Progress Indicator -->
+        <div class="progress-bar">
+            <div class="step completed">1. Select Amount</div>
+            <div class="step completed">2. Enter Details</div>
+            <div class="step current">3. Review & Confirm</div>
+        </div>
+
+        <h1 class="form-title">Review Your Donation</h1>
+        <p class="form-description">Please review your details and proceed to payment.</p>
+
+        <table class="review-table">
+            <tr>
+                <th>Field</th>
+                <th>Detail</th>
+            </tr>
+            <tr>
+                <td>Full Name</td>
+                <td>{{ name }}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{ email }}</td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>{{ address }}</td>
+            </tr>
+            <tr>
+                <td>Phone Number</td>
+                <td>{{ phone }}</td>
+            </tr>
+            <tr>
+                <td>Donation Amount</td>
+                <td>₹{{ amount }}</td>
+            </tr>
+        </table>
+
+        <div class="action-buttons">
+            <button id="go-back" class="back-button">Go Back</button>
+            <button id="proceed-to-payment" class="submit-button">Proceed to Payment</button>
+        </div>
+    </div>
+
+    <script>
+        // Go Back Button Event
+        document.getElementById('go-back').addEventListener('click', function () {
+            window.history.back();
+        });
+
+        // Razorpay Payment Integration
+        document.getElementById('proceed-to-payment').addEventListener('click', function () {
+            var options = {
+                "key": "rzp_test_is2RgeSGBanvEh", // Replace with your Razorpay Key ID
+                "amount": {{ amount }} * 100, // Amount in paise (multiply by 100)
+                "currency": "INR",
+                "name": "MedVibe Donation",
+                "description": "Thank you for your contribution!",
+                "image": "https://yourwebsite.com/logo.png", // Optional logo
+                "handler": function (response) {
+                    alert("Payment successful. Payment ID: " + response.razorpay_payment_id);
+                    // You can make an AJAX request here to update the payment status in your backend.
+                },
+                "prefill": {
+                    "name": "{{ name }}",
+                    "email": "{{ email }}",
+                    "contact": "{{ phone }}"
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        });
+    </script>
+
+</body>
+</html>
