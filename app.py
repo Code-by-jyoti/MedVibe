@@ -52,9 +52,6 @@ admin.add_view(ModelView(Order, db.session))
 admin.add_view(ModelView(FAQ, db.session))
 admin.add_view(ModelView(Blog, db.session))
 
-
-
-
 @myapp.route('/')
 def index():
     faqs = FAQ.query.limit(6).all()  # Fetch all the FAQ data
