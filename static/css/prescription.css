@@ -11,30 +11,30 @@
     background-color: #1a504c;
     padding: 10px 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
 }
-  
+
 .header-left {
     display: flex;
-    align-items: left; /* Vertically centers the logo */
-    padding: 10px; /* Optional: adds some space around the logo */
+    align-items: left;
+    padding: 10px;
 }
 
 .header-left .logo {
-    max-width: 100px; /* Adjust the size of the logo */
-    height: auto; /* Maintain aspect ratio */
+    max-width: 100px;
+    height: auto;
 }
 
 .icon {
-    display: block; /* Ensures the image is treated as a block element */
+    display: block;
 }
 
-  
 .header-icons {
     display: flex;
     align-items: center;
     gap: 15px;
 }
-  
+
 .header-icons .icon {
     display: flex;
     align-items: center;
@@ -42,49 +42,47 @@
     text-decoration: none;
     font-size: 14px;
     transition: color 0.3s ease;
-  }
-  
-  .header-icons .icon img {
-    width: 30px; /* Standardized width */
-    height: 30px; /* Standardized height */
+}
+
+.header-icons .icon img {
+    width: 30px;
+    height: 30px;
     object-fit: cover;
     margin-right: 5px;
     transition: transform 0.3s ease;
-  }
-  
-  .header-icons .icon:hover img {
+}
+
+.header-icons .icon:hover img {
     transform: scale(1.1);
-  }
-  
-  .header-icons .icon-text {
+}
+
+.header-icons .icon-text {
     display: none;
-  }
-  
-  .header-icons .icon:hover .icon-text {
+}
+
+.header-icons .icon:hover .icon-text {
     display: inline;
-  }
+}
 
-
+/* Service Container Styling */
 .service-container {
     display: flex;
-    flex-direction: column; /* Stack sections vertically */
-    gap: 20px; /* Space between sections */
-    padding: 20px; /* Optional padding for the container */
-    background-color: #f9f9f9; /* Optional background color */
-    border-radius: 8px; /* Optional border radius */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for better appearance */
-    max-width: 500px; /* Set a maximum width for the container */
-    margin-left: 20px; /* Align container to the left with some space from the left edge */
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin-left: 20px;
 }
 
 .service-section {
-    padding: 15px; /* Optional padding for each section */
-    background-color: #ffffff; /* Background color for each section */
-    border: 1px solid #e0e0e0; /* Border for each section */
-    border-radius: 4px; /* Rounded corners for each section */
+    padding: 15px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
 }
-
-
 
 /* Form Styling */
 h2 {
@@ -140,9 +138,9 @@ button:hover {
 .flashes {
     list-style-type: none;
     padding: 10px;
-    background-color: #f8d7da; /* Light red background */
-    color: #721c24; /* Dark red text */
-    border: 1px solid #f5c6cb; /* Light red border */
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
     margin: 10px 0;
 }
 
@@ -176,25 +174,53 @@ button:hover {
 
 /* Responsive Styling */
 @media (max-width: 768px) {
-    nav ul {
+    .header {
         flex-direction: column;
-        text-align: center;
+        align-items: flex-start;
     }
 
-    nav ul li {
-        margin: 10px 0;
+    .header-left {
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    .header-icons {
+        justify-content: center;
+        width: 100%;
+        gap: 10px;
     }
 
     .service-container {
-        flex-direction: column;
+        max-width: 100%;
+        margin-left: 0;
     }
 }
+
+@media (max-width: 480px) {
+    .header-icons .icon {
+        font-size: 12px;
+    }
+
+    .header-icons .icon img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .service-container {
+        padding: 15px;
+    }
+
+    button {
+        padding: 8px 16px;
+    }
+}
+
 .manage-buttons {
     display: flex;
-    gap: 10px; /* Space between buttons */
-    justify-content: center; /* Center the buttons */
+    gap: 10px;
+    justify-content: center;
 }
 
 .manage-buttons a {
-    flex: 1; /* Allow buttons to grow equally */
+    flex: 1;
 }
