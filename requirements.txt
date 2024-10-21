@@ -16,7 +16,8 @@ SQLAlchemy==2.0.32
 typing_extensions==4.12.2
 Werkzeug==3.0.4
 razorpay
-flask_admin
+WTForms==3.0.1
+Flask-Admin==1.6.0
 setuptools
 mysqlclient
 
